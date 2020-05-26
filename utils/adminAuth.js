@@ -85,7 +85,23 @@ const loginAdmin = async (data, res) => {
     return res.status(400).send(errors);
   }
   const mail = await Account.findOne({ email: email });
-  res.send(mail.password);
+
+  // compare password
+  const isMatch = await bcrypt.compare(password, mail.password);
+  if (!isMatch) {
+    errors.push({ msg: "Email or password incorrect!" });
+    return res.status(400).send(errors);
+  }
+  const payload = { _id: mail._id, role: mail.role, email: mail.email };
+  const signToken = await jwt.sign(payload, KEY, {
+    expiresIn: "1 days",
+  });
+  res.cookie("auth", signToken, {
+    maxAge: 900000,
+    httpOnly: true,
+  });
+
+  return res.redirect("/admin/dashboard");
 };
 
 /**

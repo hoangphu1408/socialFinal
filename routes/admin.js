@@ -4,15 +4,32 @@ const {
   verifyEmailToken,
   loginAdmin,
 } = require("../utils/adminAuth");
+const verify = require("../config/verifyToken");
+const isLogin = require("../config/isLogin");
 
-router.get("/login", (req, res) => {
-  return res.render("adminViews/login", {
+// Display Views
+
+router.get("/register", (req, res) => {
+  return res.render("adminViews/register", {
     layout: "adminLayout",
   });
 });
 
+router.get("/login", isLogin, (req, res) => {});
+
 router.get("/verify-mail/:token", async (req, res, next) => {
   await verifyEmailToken(req.params.token, res, next);
+});
+
+router.get("/dashboard", verify, (req, res) => {
+  return res.render("adminViews/dashboard", {
+    layout: "adminLayout",
+  });
+});
+
+router.get("/logout", (req, res) => {
+  res.clearCookie("auth");
+  return res.redirect("/admin/login");
 });
 
 // Handle POST
