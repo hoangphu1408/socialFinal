@@ -7,7 +7,7 @@ module.exports = function (req, res, next) {
 
   try {
     const verified = jwt.verify(token, KEY);
-    req.use = verified;
+    req.user = verified;
     return next();
   } catch (err) {
     res.clearCookie("auth");

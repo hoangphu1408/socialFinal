@@ -7,13 +7,9 @@ module.exports = function (req, res, next) {
     if (token && jwt.verify(token, KEY))
       return res.redirect("/admin/dashboard");
     res.clearCookie("auth");
-    return res.render("adminViews/login", {
-      layout: "adminLayout",
-    });
+    return res.render("adminViews/login");
   } catch {
     res.clearCookie("auth");
-    return res.render("adminViews/login", {
-      layout: "adminLayout",
-    });
+    return res.render("adminViews/login");
   }
 };

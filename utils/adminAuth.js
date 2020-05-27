@@ -100,7 +100,6 @@ const loginAdmin = async (data, res) => {
     maxAge: 900000,
     httpOnly: true,
   });
-
   return res.redirect("/admin/dashboard");
 };
 

@@ -6,6 +6,7 @@ const {
 } = require("../utils/adminAuth");
 const verify = require("../config/verifyToken");
 const isLogin = require("../config/isLogin");
+const isAdmin = require("../config/isAdmin");
 
 // Display Views
 
@@ -15,14 +16,29 @@ router.get("/register", (req, res) => {
   });
 });
 
-router.get("/login", isLogin, (req, res) => {});
+router.get("/login", isLogin, (req, res) => {
+  return res.render("adminViews/login");
+});
 
 router.get("/verify-mail/:token", async (req, res, next) => {
   await verifyEmailToken(req.params.token, res, next);
 });
 
 router.get("/dashboard", verify, (req, res) => {
+  isAdmin(req.user.role, res);
+  if (req.user.role == "boss") {
+    return res.render("adminViews/dashboard", {
+      layout: "bossLayout",
+    });
+  }
   return res.render("adminViews/dashboard", {
+    layout: "adminLayout",
+  });
+});
+
+router.get("/register", verify, (req, res) => {
+  isAdmin(req.user.role, res);
+  return res.render("adminView/register", {
     layout: "adminLayout",
   });
 });
