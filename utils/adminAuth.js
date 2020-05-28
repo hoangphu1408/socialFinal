@@ -22,10 +22,10 @@ const registrationAdmin = async (data, role, res) => {
     if (error) {
       if (error.details[0].type === "any.only") {
         errors.push({ msg: "Password do not match" });
-        return res.status(400).send(errors);
+        return res.status(400).render("adminViews/register");
       }
       errors.push({ msg: error.details[0].message });
-      return res.status(400).send(errors);
+      return res.status(400).render("adminViews/register");
     }
 
     // Check User + Email exist
@@ -77,12 +77,16 @@ const loginAdmin = async (data, res) => {
   const { error } = await loginValidation(data);
   if (error) {
     errors.push({ msg: error.details[0].message });
-    return res.status(400).send(errors);
+    return res.status(400).render("adminViews/login", {
+      errors: errors,
+    });
   }
   const isMail = await validateEmail(email);
   if (!isMail) {
     errors.push({ msg: "Email or password incorrect!" });
-    return res.status(400).send(errors);
+    return res.status(400).render("adminViews/login", {
+      errors: errors,
+    });
   }
   const mail = await Account.findOne({ email: email });
 
@@ -90,7 +94,9 @@ const loginAdmin = async (data, res) => {
   const isMatch = await bcrypt.compare(password, mail.password);
   if (!isMatch) {
     errors.push({ msg: "Email or password incorrect!" });
-    return res.status(400).send(errors);
+    return res.status(400).render("adminViews/login", {
+      errors: errors,
+    });
   }
   const payload = { _id: mail._id, role: mail.role, email: mail.email };
   const signToken = await jwt.sign(payload, KEY, {

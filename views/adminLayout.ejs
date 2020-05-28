@@ -9,7 +9,29 @@
     <script src="/js/script/awesome.js"></script>
   </head>
   <body>
-    <%-include("./adminViews/navMenu/admin");%> <%-body%>
+    <%-include("./adminViews/navMenu/admin");%>
+    <div class="main">
+      <nav
+        class="navbar navbar-expand-lg navbar-dark shadow"
+        style="background-color: #beebe9;"
+      >
+        <form class="form-inline my-2 my-lg-0">
+          <input
+            class="form-control mr-sm-2"
+            type="text"
+            placeholder="Search"
+          />
+          <button class="btn btn-secondary my-2 my-sm-0" type="submit">
+            Search
+          </button>
+        </form>
+        <a href="/admin/logout" class="btn btn-outline-secondary ml-auto"
+          >Logout</a
+        >
+      </nav>
+      <%-body%>
+    </div>
+
     <!--Script-->
     <script src="/js/script/jquery-3.5.1.slim.min.js"></script>
     <script src="/js/script/popper.min.js"></script>
