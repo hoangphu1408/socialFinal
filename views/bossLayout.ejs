@@ -1,18 +1,44 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Admin</title>
-    <link rel="stylesheet" href="/css/styles.css" />
-    <link rel="stylesheet" href="/js/script/bootstrap.min.css" />
-    <script src="/js/script/awesome.js"></script>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>Administrator Page</title>
+    <link href="/css/styles.css" rel="stylesheet" />
+    <link
+      href="/css/dataTables.bootstrap4.min.css"
+      rel="stylesheet"
+      crossorigin="anonymous"
+    />
+    <script src="/js/src/awesome.js" crossorigin="anonymous"></script>
   </head>
-  <body>
-    <%-include("./adminViews/navMenu/boss");%> <%-body%>
-    <!--Script-->
-    <script src="/js/script/jquery-3.5.1.slim.min.js"></script>
-    <script src="/js/script/popper.min.js"></script>
-    <script src="/js/script/bootstrap.min.js"></script>
+
+  <body class="sb-nav-fixed">
+    <%-include("./adminViews/navMenu/boss/nav.ejs")%>
+    <div id="layoutSidenav">
+      <%-include("./adminViews/navMenu/boss/sidebar.ejs")%> <%-body%>
+    </div>
+    <script
+      src="/js/src/jquery-3.5.1.slim.min.js"
+      crossorigin="anonymous"
+    ></script>
+    <script src="/js/src/bootstrap.bundle.min.js"></script>
+    <script src="/js/scripts/scripts.js"></script>
+
+    <script
+      src="/js/src/jquery.dataTables.min.js"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="/js/src/dataTables.bootstrap4.min.js"
+      crossorigin="anonymous"
+    ></script>
+    <script src="/js/scripts/datatable.js"></script>
   </body>
 </html>

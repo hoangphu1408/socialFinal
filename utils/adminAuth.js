@@ -127,6 +127,26 @@ const verifyEmailToken = async (token, res, next) => {
 };
 
 /**
+ *  @description List Account Admin
+ */
+
+const listAccAdmin = async (req, res) => {
+  try {
+    const admin = await Account.find({ role: "admin" });
+    var d = new Date(1469433907836);
+    admin.forEach((ad) => {});
+    return res.render("test", {
+      admin: admin,
+      datee: d.toDateString(),
+      data: moment(admin.date).format("MMMM Do YYYY, h:mm:ss a"),
+      date: moment().startOf(admin.date).fromNow(),
+    });
+  } catch (error) {
+    return res.status(400);
+  }
+};
+
+/**
  * @description Validate Options
  */
 
@@ -167,4 +187,5 @@ module.exports = {
   registrationAdmin,
   verifyEmailToken,
   loginAdmin,
+  listAccAdmin,
 };

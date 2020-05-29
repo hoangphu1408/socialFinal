@@ -3,12 +3,17 @@ const {
   registrationAdmin,
   verifyEmailToken,
   loginAdmin,
+  listAccAdmin,
 } = require("../utils/adminAuth");
 const verify = require("../config/verifyToken");
 const isLogin = require("../config/isLogin");
 const isAdmin = require("../config/isAdmin");
 
 // Display Views
+
+router.get("/test", (req, res) => {
+  listAccAdmin(req, res);
+});
 
 router.get("/register", (req, res) => {
   return res.render("adminViews/register", {
