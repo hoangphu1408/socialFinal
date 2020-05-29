@@ -2,17 +2,19 @@ const router = require("express").Router();
 const {
   registrationAdmin,
   verifyEmailToken,
+  resendMail,
   loginAdmin,
   listAccAdmin,
 } = require("../utils/adminAuth");
 const verify = require("../config/verifyToken");
 const isLogin = require("../config/isLogin");
 const isAdmin = require("../config/isAdmin");
+const getData = require("../config/getData");
 
 // Display Views
 
 router.get("/test", (req, res) => {
-  listAccAdmin(req, res);
+  res.render("adminViews/verifyMail");
 });
 
 router.get("/register", (req, res) => {
@@ -25,8 +27,18 @@ router.get("/login", isLogin, (req, res) => {
   return res.render("adminViews/login");
 });
 
+router.get("/verify-mail", getData, (req, res) => {
+  return res.render("adminViews/verifyMail", {
+    email: req.user.email,
+  });
+});
+
 router.get("/verify-mail/:token", async (req, res, next) => {
   await verifyEmailToken(req.params.token, res, next);
+});
+
+router.get("/back-to-dashboard", (req, res) => {
+  return res.render("adminViews/backtoDashboard");
 });
 
 router.get("/dashboard", verify, (req, res) => {
@@ -61,6 +73,15 @@ router.post("/register", async (req, res) => {
 
 router.post("/login", async (req, res) => {
   await loginAdmin(req.body, res);
+});
+
+// router.post("/verify-mail", async (req, res) => {
+//   await resendMail(req.body.email, res);
+//   return res.status(204).send();
+// });
+
+router.post("/verify-mail", (req, res) => {
+  
 });
 
 module.exports = router;

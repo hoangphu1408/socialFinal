@@ -98,7 +98,12 @@ const loginAdmin = async (data, res) => {
       errors: errors,
     });
   }
-  const payload = { _id: mail._id, role: mail.role, email: mail.email };
+  const payload = {
+    _id: mail._id,
+    role: mail.role,
+    email: mail.email,
+    active: mail.email_verify,
+  };
   const signToken = await jwt.sign(payload, KEY, {
     expiresIn: "1 days",
   });
@@ -120,10 +125,24 @@ const verifyEmailToken = async (token, res, next) => {
     await Account.findOneAndUpdate({ email: verified.email }, isTrue, {
       new: true,
     });
-    return res.send("success");
+    return res.redirect("/admin/dashboard");
   } catch (err) {
     return res.send("Verify Error");
   }
+};
+
+/**
+ * @description Resend mail
+ */
+
+const resendMail = async (email, res) => {
+  // Create mail token
+  const payload = { email: email };
+  const mailToken = jwt.sign(payload, MAIL, {
+    expiresIn: "1 days",
+  });
+  //  Email verify
+  await verifyEmail(email, mailToken);
 };
 
 /**
@@ -133,18 +152,18 @@ const verifyEmailToken = async (token, res, next) => {
 const listAccAdmin = async (req, res) => {
   try {
     const admin = await Account.find({ role: "admin" });
-    var d = new Date(1469433907836);
-    admin.forEach((ad) => {});
-    return res.render("test", {
+    return res.render("adminViews/listsData/listAdmin", {
+      layout: "bossLayout",
       admin: admin,
-      datee: d.toDateString(),
-      data: moment(admin.date).format("MMMM Do YYYY, h:mm:ss a"),
-      date: moment().startOf(admin.date).fromNow(),
     });
   } catch (error) {
     return res.status(400);
   }
 };
+
+/**
+ * @description Is verify mail
+ */
 
 /**
  * @description Validate Options
@@ -171,7 +190,7 @@ const verifyEmail = (email, mailToken) => {
     subject: "Please verify your email!",
     html: `
            <p>Please click the link below for verify your email address</p>
-           <a href="${url}">${url}</a>
+           <a href="${url}">Click here to active your account ! </a>
         `,
   };
   transport.sendMail(mailOptions, (error, res) => {
@@ -186,6 +205,7 @@ const verifyEmail = (email, mailToken) => {
 module.exports = {
   registrationAdmin,
   verifyEmailToken,
+  resendMail,
   loginAdmin,
   listAccAdmin,
 };

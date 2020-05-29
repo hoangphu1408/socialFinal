@@ -22,7 +22,10 @@
   <body class="sb-nav-fixed">
     <%-include("./adminViews/navMenu/boss/nav.ejs")%>
     <div id="layoutSidenav">
-      <%-include("./adminViews/navMenu/boss/sidebar.ejs")%> <%-body%>
+      <%-include("./adminViews/navMenu/boss/sidebar.ejs")%>
+      <div id="layoutSidenav_content">
+        <%-body%>
+      </div>
     </div>
     <script
       src="/js/src/jquery-3.5.1.slim.min.js"

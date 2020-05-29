@@ -1,53 +1,56 @@
-<div id="layoutSidenav_content">
-  <main>
-    <%-include("./register.ejs") %>
-    <div class="container-fluid">
-      <div class="card mb-4">
-        <div class="card-header">
-          <i class="fas fa-table mr-1"></i>DataTable Example
-        </div>
-        <div class="card-body">
-          <div class="table-responsive">
-            <table
-              class="table table-bordered"
-              id="dataTable"
-              width="100%"
-              cellspacing="0"
-            >
-              <thead>
-                <tr>
-                  <th>Name</th>
-                  <th>Position</th>
-                  <th>Office</th>
-                  <th>Age</th>
-                  <th>Start date</th>
-                  <th>Salary</th>
-                </tr>
-              </thead>
-              <tfoot>
-                <tr>
-                  <th>Name</th>
-                  <th>Position</th>
-                  <th>Office</th>
-                  <th>Age</th>
-                  <th>Start date</th>
-                  <th>Salary</th>
-                </tr>
-              </tfoot>
-              <tbody>
-                <tr>
-                  <td>Serge Baldwin</td>
-                  <td>Data Coordinator</td>
-                  <td>Singapore</td>
-                  <td>64</td>
-                  <td>2012/04/09</td>
-                  <td>$138,575</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
+<main>
+  <%-include("../register.ejs") %>
+  <div class="container-fluid">
+    <div class="card mb-4">
+      <div class="card-header">
+        <i class="fas fa-table mr-1"></i>DataTable Example
+      </div>
+      <div class="card-body">
+        <div class="table-responsive">
+          <table
+            class="table table-bordered"
+            id="dataTable"
+            width="100%"
+            cellspacing="0"
+          >
+            <thead>
+              <tr>
+                <th>STT</th>
+                <th>Email</th>
+                <th>Username</th>
+                <th>Activation</th>
+                <th>Phone Number</th>
+                <th>Day create</th>
+              </tr>
+            </thead>
+            <tfoot>
+              <tr>
+                <th>STT</th>
+                <th>Email</th>
+                <th>Username</th>
+                <th>Activation</th>
+                <th>Phone Number</th>
+                <th>Day create</th>
+              </tr>
+            </tfoot>
+            <tbody>
+              <% var i = 1 %> <% admin.forEach(ad =>{ %>
+              <tr>
+                <td><%= i++%></td>
+                <td><%=ad.email%></td>
+                <td><%=ad.username%></td>
+                <td><%=ad.email_verify %></td>
+                <td><%=ad.phoneNumber%></td>
+                <% var date = parseInt(ad.date); var time = new Date(date) %>
+                <td>
+                  <%= time.toLocaleTimeString()+ " " + time.toDateString() %>
+                </td>
+              </tr>
+              <% }) %>
+            </tbody>
+          </table>
         </div>
       </div>
     </div>
-  </main>
-</div>
+  </div>
+</main>
