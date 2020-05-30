@@ -9,6 +9,7 @@ const jwt = require("jsonwebtoken");
 const { regAdminValidation, loginValidation } = require("../config/validation");
 const moment = require("moment");
 const nodemailer = require("nodemailer");
+const rateLimit = require("express-rate-limit");
 
 /**
  * @description Register Admin
@@ -146,24 +147,30 @@ const resendMail = async (email, res) => {
 };
 
 /**
- *  @description List Account Admin
+ * @description is Boss
  */
 
-const listAccAdmin = async (req, res) => {
-  try {
-    const admin = await Account.find({ role: "admin" });
-    return res.render("adminViews/listsData/listAdmin", {
-      layout: "bossLayout",
-      admin: admin,
-    });
-  } catch (error) {
-    return res.status(400);
+const isBoss = async (role, res) => {
+  if (role != "boss") {
+    return res.status(400).redirect("/admin/dashboard");
+  }
+};
+
+const isAdmin = async function (role, res) {
+  if (role != "admin" && role != "boss") {
+    return res.status(403).redirect("/");
   }
 };
 
 /**
- * @description Is verify mail
+ * @description Rate Limit
  */
+
+const createLimit = rateLimit({
+  windowMs: 60000,
+  max: 1,
+  message: "Too many request",
+});
 
 /**
  * @description Validate Options
@@ -207,5 +214,7 @@ module.exports = {
   verifyEmailToken,
   resendMail,
   loginAdmin,
-  listAccAdmin,
+  isBoss,
+  isAdmin,
+  createLimit,
 };

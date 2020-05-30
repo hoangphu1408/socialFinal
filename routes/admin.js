@@ -1,62 +1,68 @@
 const router = require("express").Router();
+// Require Handle
 const {
   registrationAdmin,
   verifyEmailToken,
   resendMail,
   loginAdmin,
   listAccAdmin,
+  isBoss,
+  isAdmin,
+  createLimit,
 } = require("../utils/adminAuth");
+// Require View
+const { registerView } = require("../utils/adminView");
+
 const verify = require("../config/verifyToken");
 const isLogin = require("../config/isLogin");
-const isAdmin = require("../config/isAdmin");
 const getData = require("../config/getData");
 
 // Display Views
 
-router.get("/test", (req, res) => {
-  res.render("adminViews/verifyMail");
+router.get("/test", verify, (req, res) => {
+  return registerView(req.user, res);
 });
-
-router.get("/register", (req, res) => {
-  return res.render("adminViews/register", {
-    layout: "adminLayout",
-  });
+router.get("/z2", verify, (req, res) => {
+  return registerView(req.user, res);
 });
 
 router.get("/login", isLogin, (req, res) => {
   return res.render("adminViews/login");
 });
-
+// Mail Activation
 router.get("/verify-mail", getData, (req, res) => {
   return res.render("adminViews/verifyMail", {
     email: req.user.email,
   });
 });
 
-router.get("/verify-mail/:token", async (req, res, next) => {
-  await verifyEmailToken(req.params.token, res, next);
-});
-
 router.get("/back-to-dashboard", (req, res) => {
   return res.render("adminViews/backtoDashboard");
 });
 
+router.get("/verify-mail/:token", async (req, res, next) => {
+  await verifyEmailToken(req.params.token, res, next);
+});
+// Interface
 router.get("/dashboard", verify, (req, res) => {
   isAdmin(req.user.role, res);
   if (req.user.role == "boss") {
     return res.render("adminViews/dashboard", {
       layout: "bossLayout",
+      user: req.user,
     });
   }
   return res.render("adminViews/dashboard", {
     layout: "adminLayout",
+    user: req.user,
   });
 });
 
 router.get("/register", verify, (req, res) => {
-  isAdmin(req.user.role, res);
-  return res.render("adminView/register", {
-    layout: "adminLayout",
+  isBoss(req.user.role, res);
+  return res.render("adminViews/register", {
+    layout: "bossLayout",
+    user: req.user,
   });
 });
 
@@ -75,13 +81,9 @@ router.post("/login", async (req, res) => {
   await loginAdmin(req.body, res);
 });
 
-// router.post("/verify-mail", async (req, res) => {
-//   await resendMail(req.body.email, res);
-//   return res.status(204).send();
-// });
-
-router.post("/verify-mail", (req, res) => {
-  
+router.post("/verify-mail", createLimit, async (req, res) => {
+  await resendMail(req.body.email, res);
+  return res.json(req.body);
 });
 
 module.exports = router;

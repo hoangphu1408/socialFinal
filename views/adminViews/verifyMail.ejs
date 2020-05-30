@@ -1,18 +1,10 @@
 <div class="container con-form">
   <div class="card card-body">
-    <form  action="/admin/verify-mail" method="POST">
-      <input type="hidden" id="email" name="email" value="hehehemai" />
-      <button type="submit">Send</button>
-    
-      </input>
+    <form method="POST">
+      <input type="hidden" id="email" name="email" value="???" />
+      <input type="submit" id="submit"></input>
     </form>
   </div>
 </div>
-<script>
- function foo(obj) {
-    obj.disabled = true;
-    setTimeout(function () {
-      obj.disabled = false;
-    }, 2000);
-  }
-</script>
+<script src="/js/src/jquery-3.5.1.min.js"></script>
+<script src="/js/scripts/sendMail.js"></script>
