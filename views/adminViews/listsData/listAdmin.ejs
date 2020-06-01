@@ -3,7 +3,7 @@
   <div class="container-fluid">
     <div class="card mb-4">
       <div class="card-header">
-        <i class="fas fa-table mr-1"></i>DataTable Example
+        <i class="fas fa-table mr-1"></i>List Admins
       </div>
       <div class="card-body">
         <div class="table-responsive">
@@ -21,18 +21,9 @@
                 <th>Activation</th>
                 <th>Phone Number</th>
                 <th>Day create</th>
+                <th>Options</th>
               </tr>
             </thead>
-            <tfoot>
-              <tr>
-                <th>STT</th>
-                <th>Email</th>
-                <th>Username</th>
-                <th>Activation</th>
-                <th>Phone Number</th>
-                <th>Day create</th>
-              </tr>
-            </tfoot>
             <tbody>
               <% var i = 1 %> <% admin.forEach(ad =>{ %>
               <tr>
@@ -40,10 +31,17 @@
                 <td><%=ad.email%></td>
                 <td><%=ad.username%></td>
                 <td><%=ad.email_verify %></td>
+                <% if(ad.phoneNumber == null) {%>
+                <td>none</td>
+                <% }else {%>
                 <td><%=ad.phoneNumber%></td>
-                <% var date = parseInt(ad.date); var time = new Date(date) %>
+                <% } %> <% var date = parseInt(ad.date); var time = new
+                Date(date) %>
                 <td>
                   <%= time.toLocaleTimeString()+ " " + time.toDateString() %>
+                </td>
+                <td style="text-align: center;">
+                  <a href=""><i class="fas fa-cog"></i></a>
                 </td>
               </tr>
               <% }) %>

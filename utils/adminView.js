@@ -8,10 +8,32 @@ const nodemailer = require("nodemailer");
 const rateLimit = require("express-rate-limit");
 
 /**
- *  @description List Account Admin
+ * @description Dashboard view
  */
 
-const registerView = async (req, res, next) => {
+const dashboardView = async (req, res) => {
+  try {
+    isAdmin(req.role, req);
+    if (req.role == "boss") {
+      return res.render("adminViews/dashboard", {
+        layout: "bossLayout",
+        user: req,
+      });
+    }
+    return res.render("adminViews/dashboard", {
+      layout: "adminLayout",
+      user: req,
+    });
+  } catch (err) {
+    return res.status(403).redirect("/");
+  }
+};
+
+/**
+ *  @description Register view
+ */
+
+const registerView = async (req, res) => {
   if (req.role != "boss") {
     return res.redirect("/admin/dashboard");
   }
@@ -24,5 +46,6 @@ const registerView = async (req, res, next) => {
 };
 
 module.exports = {
+  dashboardView,
   registerView,
 };
