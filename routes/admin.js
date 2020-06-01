@@ -11,7 +11,11 @@ const {
   createLimit,
 } = require("../utils/adminAuth");
 // Require View
-const { dashboardView, registerView } = require("../utils/adminView");
+const {
+  dashboardView,
+  registerView,
+  registerResidentView,
+} = require("../utils/adminView");
 
 const verify = require("../config/verifyToken");
 const isLogin = require("../config/isLogin");
@@ -43,6 +47,10 @@ router.get("/dashboard", verify, (req, res) => {
 
 router.get("/manage", verify, (req, res) => {
   return registerView(req.user, res);
+});
+
+router.get("/manage-resident", verify, (req, res) => {
+  return registerResidentView(req.user, res);
 });
 
 router.get("/logout", (req, res) => {

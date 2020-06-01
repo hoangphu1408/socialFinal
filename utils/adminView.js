@@ -2,7 +2,7 @@
 const Account = require("../models/account");
 const Resident = require("../models/resident");
 // Require Handle
-const { isAdmin, isBoss } = require("../utils/adminAuth");
+const { isAdmin } = require("../utils/adminAuth");
 const moment = require("moment");
 const nodemailer = require("nodemailer");
 const rateLimit = require("express-rate-limit");
@@ -45,7 +45,21 @@ const registerView = async (req, res) => {
   });
 };
 
+/**
+ * @description Register Resident Views
+ */
+
+const registerResidentView = async (req, res) => {
+  const resident = await Resident.find({ role: "user" });
+  return res.render("adminViews/listData/listResident", {
+    layout: "bossLayout",
+    resident: resident,
+    user: req.email,
+  });
+};
+
 module.exports = {
   dashboardView,
   registerView,
+  registerResidentView,
 };

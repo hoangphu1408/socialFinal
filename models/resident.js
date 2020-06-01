@@ -39,6 +39,7 @@ const residentSchema = new Schema({
           },
         },
       ],
+      required: true,
     },
   ],
   household_registration: [
@@ -49,6 +50,7 @@ const residentSchema = new Schema({
       permanent_resident: {
         type: Boolean,
       },
+      required: true,
     },
   ],
   date: {

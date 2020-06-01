@@ -6,7 +6,11 @@ const Resident = require("../models/resident");
 const bcrypt = require("bcryptjs");
 const { KEY, MAIL, EMAIL, PASSWORD } = require("../config");
 const jwt = require("jsonwebtoken");
-const { regAdminValidation, loginValidation } = require("../config/validation");
+const {
+  regAdminValidation,
+  loginValidation,
+  regResidentValidation,
+} = require("../config/validation");
 const moment = require("moment");
 const nodemailer = require("nodemailer");
 const rateLimit = require("express-rate-limit");
@@ -109,7 +113,7 @@ const loginAdmin = async (data, res) => {
     expiresIn: "1 days",
   });
   res.cookie("auth", signToken, {
-    maxAge: 900000,
+    maxAge: 90000,
     httpOnly: true,
   });
   return res.redirect("/admin/dashboard");
@@ -146,16 +150,6 @@ const resendMail = async (email, res) => {
   await verifyEmail(email, mailToken);
 };
 
-/**
- * @description is Boss
- */
-
-const isBoss = async (role, res) => {
-  if (role != "boss") {
-    return res.status(400).redirect("/admin/dashboard");
-  }
-};
-
 const isAdmin = async function (role, res) {
   if (role != "admin" && role != "boss") {
     return res.status(403).redirect("/");
@@ -171,6 +165,19 @@ const createLimit = rateLimit({
   max: 1,
   message: "Too many request",
 });
+
+/**
+ * @description Registration Resident
+ */
+
+const registrationResident = async (data, res) => {
+  const errors = [];
+  const { error } = await regAdminValidation(data.firstName, data.lastName);
+  if (error) {
+    errors.push(error.details[0].message);
+    return res.render("adminViews/manageResident");
+  }
+};
 
 /**
  * @description Validate Options
@@ -214,7 +221,6 @@ module.exports = {
   verifyEmailToken,
   resendMail,
   loginAdmin,
-  isBoss,
   isAdmin,
   createLimit,
 };
