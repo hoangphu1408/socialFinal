@@ -1,0 +1,94 @@
+<div class="container con-form">
+  <div class="d-flex justify-content-center h-100">
+    <div class="card card-body shadow">
+      <div class="head">
+        <h1><i class="fas fa-user-shield"></i>Tạo cư dân</h1>
+      </div>
+      <%- include("../partials/messages") %>
+      <div class="form">
+        <form action="/admin/resident-manage" method="POST">
+          <hr />
+          <h6 style="text-align: center;">Thông tin cá nhân</h6>
+          <div class="form-group">
+            <label for="full_name">Tên đầy đủ</label>
+            <input
+              class="form-control"
+              type="text"
+              name="full_name"
+              id="full_name"
+            />
+          </div>
+          <div class="form-group">
+            <label for="yearOfBirth">Năm sinh</label>
+            <select id="yearOfBirth" name="yearOfBirth" class="form-control">
+              <script>
+                const date = new Date();
+                const year = date.getFullYear();
+                for (var i = year; 1850 <= i; i--) {
+                  document.write('<option value"' + i + '">' + i + "</option>");
+                }
+              </script>
+            </select>
+          </div>
+          <hr />
+          <h6 style="text-align: center;">Giấy tờ cá nhân</h6>
+          <div class="form-group">
+            <ul class="nav nav-tabs">
+              <li class="nav-item">
+                <a class="nav-link active" data-toggle="tab" href="#id_card"
+                  >Chứng minh nhân dân</a
+                >
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#birth_certificate"
+                  >Giấy khai sinh</a
+                >
+              </li>
+            </ul>
+            <div id="myTabContent" class="tab-content">
+              <div class="tab-pane fade active show" id="id_card">
+                <div class="mt-4">
+                  <input
+                    class="form-control"
+                    type="text"
+                    name="ID_CARD"
+                    id="ID_CARD"
+                  />
+                </div>
+              </div>
+              <div class="tab-pane fade" id="birth_certificate">
+                <div class="mt-4">
+                  <label for="father_name">Tên Cha</label>
+                  <input
+                    class="form-control"
+                    type="text"
+                    name="father_name"
+                    id="father_name"
+                  />
+                  <label for="mother_name">Tên Mẹ</label>
+                  <input
+                    class="form-control"
+                    type="text"
+                    name="mother_name"
+                    id="mother_name"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+          <hr />
+          <h6 style="text-align: center;">Hộ khẩu</h6>
+          <div class="form-group">
+            <select class="form-control" name="household" id="household">
+              <option value="none">Chưa bổ sung</option>
+              <option value="temporary_resident">Thường trú</option>
+              <option value="permanent_resident">Tạm trú</option>
+            </select>
+          </div>
+          <button class="btn btn-primary">Create</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<hr />

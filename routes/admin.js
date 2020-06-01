@@ -9,11 +9,13 @@ const {
   isBoss,
   isAdmin,
   createLimit,
+  registrationResident,
 } = require("../utils/adminAuth");
 // Require View
 const {
   dashboardView,
   registerView,
+  flatView,
   registerResidentView,
 } = require("../utils/adminView");
 
@@ -45,12 +47,16 @@ router.get("/dashboard", verify, (req, res) => {
   dashboardView(req.user, res);
 });
 
-router.get("/manage", verify, (req, res) => {
-  return registerView(req.user, res);
+router.get("/flat-manage", verify, (req, res) => {
+  flatView(req.user, res);
 });
 
-router.get("/manage-resident", verify, (req, res) => {
+router.get("/resident-manage", verify, (req, res) => {
   return registerResidentView(req.user, res);
+});
+
+router.get("/manage", verify, (req, res) => {
+  return registerView(req.user, res);
 });
 
 router.get("/logout", (req, res) => {
@@ -60,8 +66,8 @@ router.get("/logout", (req, res) => {
 
 // Handle POST
 
-router.post("/register", async (req, res) => {
-  await registrationAdmin(req.body, "admin", res);
+router.post("/manage", verify, async (req, res) => {
+  await registrationAdmin(req.body, req.user.email, "admin", res);
 });
 
 router.post("/login", async (req, res) => {
@@ -71,6 +77,10 @@ router.post("/login", async (req, res) => {
 router.post("/verify-mail", createLimit, async (req, res) => {
   await resendMail(req.body.email, res);
   return res.json(req.body);
+});
+
+router.post("/resident-manage", verify, async (req, res) => {
+  await registrationResident(req.body, req.user, res);
 });
 
 module.exports = router;

@@ -1,5 +1,6 @@
 // Require Database
 const Account = require("../models/account");
+const Flat = require("../models/flat");
 const Resident = require("../models/resident");
 // Require Handle
 const { isAdmin } = require("../utils/adminAuth");
@@ -38,7 +39,7 @@ const registerView = async (req, res) => {
     return res.redirect("/admin/dashboard");
   }
   const admin = await Account.find({ role: "admin" });
-  return res.render("adminViews/listsData/listAdmin", {
+  return res.render("adminViews/register", {
     layout: "bossLayout",
     admin: admin,
     user: req.email,
@@ -46,14 +47,41 @@ const registerView = async (req, res) => {
 };
 
 /**
- * @description Register Resident Views
+ * @description Register Resident view
  */
 
 const registerResidentView = async (req, res) => {
   const resident = await Resident.find({ role: "user" });
-  return res.render("adminViews/listData/listResident", {
+  if (req.role == "admin") {
+    return res.render("adminViews/registerResident", {
+      layout: "adminLayout",
+      resident: resident,
+      user: req.email,
+    });
+  }
+  return res.render("adminViews/registerResident", {
     layout: "bossLayout",
     resident: resident,
+    user: req.email,
+  });
+};
+
+/**
+ * @description Flat view
+ */
+
+const flatView = async (req, res) => {
+  const flat = await Flat.find();
+  if (req.role == "admin") {
+    return res.render("adminViews/flat", {
+      layout: "adminLayout",
+      flat: flat,
+      user: req.email,
+    });
+  }
+  return res.render("adminViews/flat", {
+    layout: "bossLayout",
+    flat: flat,
     user: req.email,
   });
 };
@@ -62,4 +90,5 @@ module.exports = {
   dashboardView,
   registerView,
   registerResidentView,
+  flatView,
 };

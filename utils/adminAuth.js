@@ -19,18 +19,29 @@ const rateLimit = require("express-rate-limit");
  * @description Register Admin
  */
 
-const registrationAdmin = async (data, role, res) => {
+const registrationAdmin = async (data, email, role, res) => {
   try {
     const errors = [];
+    const admin = await Account.find({ role: "admin" });
     const { username, email, password, password2 } = data;
     const { error } = await regAdminValidation(data);
     if (error) {
       if (error.details[0].type === "any.only") {
         errors.push({ msg: "Password do not match" });
-        return res.status(400).render("adminViews/register");
+        return res.status(400).render("adminViews/register", {
+          layout: "bossLayout",
+          admin: admin,
+          errors: errors,
+          user: email,
+        });
       }
       errors.push({ msg: error.details[0].message });
-      return res.status(400).render("adminViews/register");
+      return res.status(400).render("adminViews/register", {
+        layout: "bossLayout",
+        admin: admin,
+        errors: errors,
+        user: email,
+      });
     }
 
     // Check User + Email exist
@@ -113,7 +124,7 @@ const loginAdmin = async (data, res) => {
     expiresIn: "1 days",
   });
   res.cookie("auth", signToken, {
-    maxAge: 90000,
+    maxAge: 900000,
     httpOnly: true,
   });
   return res.redirect("/admin/dashboard");
@@ -170,13 +181,61 @@ const createLimit = rateLimit({
  * @description Registration Resident
  */
 
-const registrationResident = async (data, res) => {
+const registrationResident = async (data, user, res) => {
   const errors = [];
-  const { error } = await regAdminValidation(data.firstName, data.lastName);
+  const {
+    full_name,
+    yearOfBirth,
+    ID_CARD,
+    father_name,
+    mother_name,
+    household,
+  } = data;
+  const private_information = [];
+  const household_registration = [];
+  const validate = { full_name: full_name };
+  const { error } = await regResidentValidation(validate);
   if (error) {
-    errors.push(error.details[0].message);
-    return res.render("adminViews/manageResident");
+    errors.push({ msg: error.details[0].message });
+    return user.role == "boss"
+      ? res.render("adminViews/registerResident", {
+          layout: "bossLayout",
+          user: user.email,
+          errors: errors,
+        })
+      : res.render("adminViews/registerResident", {
+          layout: "adminLayout",
+          user: user.email,
+          errors: errors,
+        });
   }
+
+  if (ID_CARD != "") {
+    private_information.push({ ID_CARD: ID_CARD });
+  } else if (father_name != "" || mother_name != "") {
+    private_information.push({
+      birthCetificate: {
+        father_name: father_name,
+        mother_name: mother_name,
+      },
+    });
+  }
+  if (household == "temporary_resident") {
+    household_registration.push({ temporary_resident: true });
+  } else if (household == "permanent_resident") {
+    household_registration.push({ permanent_resident: true });
+  } else {
+    household_registration.push({ none: true });
+  }
+  const newResident = new Resident({
+    full_name: full_name,
+    year_of_birth: yearOfBirth,
+    private_information: private_information,
+    household_registration: household_registration,
+    date: Date.now(),
+  });
+  await newResident.save();
+  res.send(newResident);
 };
 
 /**
@@ -223,4 +282,5 @@ module.exports = {
   loginAdmin,
   isAdmin,
   createLimit,
+  registrationResident,
 };

@@ -51,23 +51,14 @@ const loginValidation = (data) => {
 
 const regResidentValidation = (data) => {
   const schema = Joi.object({
-    first_name: Joi.string()
-      .pattern(new RegExp("^[a-zA-Z0-9]{6,30}$"))
-      .required()
-      .messages({
-        "string.empty": "First name cannot be an empty field",
-        "string.required": "first name is required",
-        "string.pattern.base": "Name invalid",
-      }),
-    last_name: Joi.string()
-      .pattern(new RegExp("^[a-zA-Z0-9]{6,30}$"))
-      .required()
-      .messages({
-        "string.empty": "Last name cannot be an empty field",
-        "string.required": "Last name is required",
-        "string.pattern.base": "Name invalid",
-      }),
+    full_name: Joi.string().messages({
+      "string.empty": `Fullname cannot empty`,
+      "string.min": `Fullname is minimum of length 6`,
+      "string.max": `Fullname is maximum of length 30`,
+      "any.required": `Fullname is required`,
+    }),
   });
+  return schema.validate(data);
 };
 
 module.exports = {
