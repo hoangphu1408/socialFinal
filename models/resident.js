@@ -18,6 +18,10 @@ const residentSchema = new Schema({
     type: String,
     required: true,
   },
+  status: {
+    type: Boolean,
+    required: true,
+  },
 });
 
 module.exports = mongoose.model("resident", residentSchema);

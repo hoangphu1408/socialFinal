@@ -26,6 +26,10 @@ const flatSchema = new Schema({
     type: String,
     required: true,
   },
+  status: {
+    type: Boolean,
+    required: true,
+  },
 });
 
 module.exports = mongoose.model("flat", flatSchema);

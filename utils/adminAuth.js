@@ -241,6 +241,14 @@ const registrationResident = async (data, user, res) => {
 };
 
 /**
+ * @description Admin Update
+ */
+
+const updateAdmin = async (data, res) => {
+  const { id, username, phone, role } = data;
+};
+
+/**
  * @description Validate Options
  */
 

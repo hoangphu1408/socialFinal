@@ -77,7 +77,7 @@
                           <a
                             class="nav-link active"
                             data-toggle="tab"
-                            href="#edit"
+                            href="#edit<%= ad._id%>"
                             >Edit</a
                           >
                         </li>
@@ -85,14 +85,26 @@
                           <a
                             class="nav-link"
                             data-toggle="tab"
-                            href="#changepassword"
+                            href="#changepassword<%= ad._id%>"
                             >Update Password</a
                           >
+                        </li>
+                        <li class="na-item">
+                          <a
+                            class="nav-link"
+                            data-toggle="tab"
+                            href="#activation<%= ad._id %>"
+                          >
+                            Activation
+                          </a>
                         </li>
                       </ul>
                       <div id="myTabContent" class="tab-content">
                         <!--Edit-->
-                        <div class="tab-pane fade show active" id="edit">
+                        <div
+                          class="tab-pane fade show active"
+                          id="edit<%= ad._id%>"
+                        >
                           <form
                             action="/admin/update/<%= ad._id%>"
                             method="POST"
@@ -153,7 +165,10 @@
                           </form>
                         </div>
                         <!--Change Password-->
-                        <div class="tab-pane fade" id="changepassword">
+                        <div
+                          class="tab-pane fade"
+                          id="changepassword<%= ad._id%>"
+                        >
                           <form
                             action="/admin/changepassword/<%=ad._id%>"
                             method="POST"
@@ -178,6 +193,31 @@
                             <button class="btn btn-primary float-right">
                               Update
                             </button>
+                          </form>
+                        </div>
+                        <!--Activation-->
+                        <div class="tab-pane fade" id="activation<%= ad._id %>">
+                          <form
+                            action="/admin/active/<%= ad._id%>"
+                            method="POST"
+                          >
+                            <div class="form-group">
+                              <label for="active">Activation</label>
+                              <select
+                                class="form-control"
+                                name="active"
+                                id="active"
+                              >
+                                <option value="true">Kích hoạt</option>
+                                <option value="false">Chưa xác thực</option>
+                              </select>
+                              <button
+                                type="submit"
+                                class="btn btn-primary float-right"
+                              >
+                                Update
+                              </button>
+                            </div>
                           </form>
                         </div>
                       </div>
