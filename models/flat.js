@@ -18,17 +18,13 @@ const flatSchema = new Schema({
     type: String,
     default: null,
   },
-  numberOfPeople: {
-    type: String,
-    default: null,
-  },
+  numberOfPeople: {},
   date: {
     type: String,
     required: true,
   },
   status: {
     type: Boolean,
-    required: true,
   },
 });
 

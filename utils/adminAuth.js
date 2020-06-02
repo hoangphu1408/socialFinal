@@ -74,10 +74,11 @@ const registrationAdmin = async (data, email, role, res) => {
       email: email,
       password: hashedPassword,
       date: Date.now(),
+      status: true,
     });
 
     await newAccount.save();
-    return res.send("success");
+    return res.redirect("back");
   } catch (err) {
     return res.send(err);
   }
@@ -235,6 +236,7 @@ const registrationResident = async (data, user, res) => {
     private_information: private_information,
     household_registration: household_registration,
     date: Date.now(),
+    status: true,
   });
   await newResident.save();
   return res.redirect("back");
@@ -245,9 +247,101 @@ const registrationResident = async (data, user, res) => {
  */
 
 const updateAdmin = async (data, res) => {
-  const { id, username, phone, role } = data;
+  const { id, phone, role } = data;
+  const update = { phoneNumber: phone, role: role };
+  const admin = await Account.findOneAndUpdate({ _id: id }, update, {
+    new: true,
+  });
+  return res.redirect("back");
 };
 
+const updatePasswordAd = async (data, res) => {
+  const { id, newPass } = data;
+  const hashedPassword = await bcrypt.hash(newPass, 12);
+  const update = { password: hashedPassword };
+  const admin = await Account.findByIdAndUpdate({ _id: id }, update, {
+    new: true,
+  });
+  return res.redirect("back");
+};
+
+const updateActivation = async (data, res) => {
+  const { id, active } = data;
+  const update = { email_verify: active };
+  const admin = await Account.findByIdAndUpdate({ _id: id }, update, {
+    new: true,
+  });
+  return res.redirect("back");
+};
+
+const deleteAdmin = async (id, res) => {
+  const admin = await Account.findByIdAndDelete({ _id: id }, (error, data) => {
+    if (error) {
+      alert("Cant delete now");
+      throw error;
+    } else {
+      return res.redirect("back");
+    }
+  });
+};
+
+/**
+ * @description Resident Update
+ */
+
+const updateResident = async (data, res) => {
+  const {
+    id,
+    full_name,
+    yearOfBirth,
+    ID_CARD,
+    father_name,
+    mother_name,
+    household,
+  } = data;
+  const private_information = [];
+  const household_registration = [];
+  if (ID_CARD != "") {
+    private_information.push({ type: "Chứng minh thư", serial: ID_CARD });
+  } else if (father_name != "" || mother_name != "") {
+    private_information.push({
+      type: "Giấy khai sinh",
+      father_name: father_name,
+      mother_name: mother_name,
+    });
+  }
+  if (household == "temporary_resident") {
+    household_registration.push({ type: "Tạm trú" });
+  } else if (household == "permanent_resident") {
+    household_registration.push({ type: "Thường trú" });
+  } else {
+    household_registration.push({ type: "Chưa cập nhật " });
+  }
+  const update = {
+    full_name: full_name,
+    year_of_birth: yearOfBirth,
+    private_information: private_information,
+    household_registration: household_registration,
+  };
+  const resident = await Resident.findByIdAndUpdate({ _id: id }, update, {
+    new: true,
+  });
+  return res.redirect("back");
+};
+
+const deleteResident = async (id, res) => {
+  const resident = await Resident.findByIdAndDelete(
+    { _id: id },
+    (error, data) => {
+      if (error) {
+        alert("Cant delete now");
+        throw error;
+      } else {
+        return res.redirect("back");
+      }
+    }
+  );
+};
 /**
  * @description Validate Options
  */
@@ -292,5 +386,11 @@ module.exports = {
   loginAdmin,
   isAdmin,
   createLimit,
+  updateAdmin,
+  updatePasswordAd,
+  updateActivation,
+  deleteAdmin,
   registrationResident,
+  updateResident,
+  deleteResident,
 };

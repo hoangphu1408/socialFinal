@@ -44,7 +44,6 @@ const accountSchema = new Schema({
   },
   status: {
     type: Boolean,
-    required: true,
   },
 });
 

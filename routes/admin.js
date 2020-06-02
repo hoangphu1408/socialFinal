@@ -5,11 +5,15 @@ const {
   verifyEmailToken,
   resendMail,
   loginAdmin,
-  listAccAdmin,
-  isBoss,
   isAdmin,
+  updateAdmin,
+  updatePasswordAd,
+  updateActivation,
+  deleteAdmin,
   createLimit,
   registrationResident,
+  updateResident,
+  deleteResident,
 } = require("../utils/adminAuth");
 // Require View
 const {
@@ -83,10 +87,29 @@ router.post("/resident-manage", verify, async (req, res) => {
   await registrationResident(req.body, req.user, res);
 });
 // Edit Admin
-router.post("/update/:id", verify, async (req, res) => {});
+router.post("/update/:id", verify, async (req, res) => {
+  await updateAdmin(req.body, res);
+});
 
-router.post("/updatepassword/:id", verify, async (req, res) => {});
+router.post("/update_password/:id", verify, async (req, res) => {
+  await updatePasswordAd(req.body, res);
+});
 
-router.post("/delete/:id", verify, async (req, res) => {});
+router.post("/active/:id", verify, async (req, res) => {
+  await updateActivation(req.body, res);
+});
+
+router.get("/delete/:id", verify, async (req, res) => {
+  await deleteAdmin(req.params.id, res);
+});
+
+// Edit Resident
+router.post("/resident-update/:id", verify, async (req, res) => {
+  await updateResident(req.body, res);
+});
+
+router.get("/resident-delete/:id", verify, async (req, res) => {
+  await deleteResident(req.params.id, res);
+});
 
 module.exports = router;

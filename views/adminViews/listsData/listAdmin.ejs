@@ -133,6 +133,7 @@
                                 name="username"
                                 id="username"
                                 value="<%=ad.username%>"
+                                disabled
                               />
                             </div>
                             <div class="form-group">
@@ -142,7 +143,7 @@
                                 type="text"
                                 name="phone"
                                 id="phone"
-                                value="<%= ad.phone%>"
+                                value="<%= ad.phoneNumber%>"
                               />
                             </div>
                             <div class="form-group">
@@ -170,7 +171,7 @@
                           id="changepassword<%= ad._id%>"
                         >
                           <form
-                            action="/admin/changepassword/<%=ad._id%>"
+                            action="/admin/update_password/<%=ad._id%>"
                             method="POST"
                           >
                             <input
@@ -201,6 +202,12 @@
                             action="/admin/active/<%= ad._id%>"
                             method="POST"
                           >
+                            <input
+                              type="hidden"
+                              name="id"
+                              id="id"
+                              value="<%= ad._id%>"
+                            />
                             <div class="form-group">
                               <label for="active">Activation</label>
                               <select
