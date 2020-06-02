@@ -82,5 +82,11 @@ router.post("/verify-mail", createLimit, async (req, res) => {
 router.post("/resident-manage", verify, async (req, res) => {
   await registrationResident(req.body, req.user, res);
 });
+// Edit Admin
+router.post("/update/:id", verify, async (req, res) => {});
+
+router.post("/updatepassword/:id", verify, async (req, res) => {});
+
+router.post("/delete/:id", verify, async (req, res) => {});
 
 module.exports = router;

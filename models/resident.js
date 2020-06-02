@@ -4,7 +4,7 @@ const Schema = require("mongoose").Schema;
 const residentSchema = new Schema({
   full_name: {
     type: String,
-    lowercase: true,
+    trim: true,
     required: true,
   },
 
@@ -12,8 +12,8 @@ const residentSchema = new Schema({
     type: Number,
     default: 1900,
   },
-  private_information: [{}],
-  household_registration: [{}],
+  private_information: {},
+  household_registration: {},
   date: {
     type: String,
     required: true,

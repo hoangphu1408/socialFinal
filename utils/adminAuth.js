@@ -182,6 +182,7 @@ const createLimit = rateLimit({
  */
 
 const registrationResident = async (data, user, res) => {
+  const resident = await Resident.find({});
   const errors = [];
   const {
     full_name,
@@ -202,30 +203,31 @@ const registrationResident = async (data, user, res) => {
           layout: "bossLayout",
           user: user.email,
           errors: errors,
+          resident: resident,
         })
       : res.render("adminViews/registerResident", {
           layout: "adminLayout",
           user: user.email,
           errors: errors,
+          resident: resident,
         });
   }
 
   if (ID_CARD != "") {
-    private_information.push({ ID_CARD: ID_CARD });
+    private_information.push({ type: "Chứng minh thư", serial: ID_CARD });
   } else if (father_name != "" || mother_name != "") {
     private_information.push({
-      birthCetificate: {
-        father_name: father_name,
-        mother_name: mother_name,
-      },
+      type: "Giấy khai sinh",
+      father_name: father_name,
+      mother_name: mother_name,
     });
   }
   if (household == "temporary_resident") {
-    household_registration.push({ temporary_resident: true });
+    household_registration.push({ type: "Tạm trú" });
   } else if (household == "permanent_resident") {
-    household_registration.push({ permanent_resident: true });
+    household_registration.push({ type: "Thường trú" });
   } else {
-    household_registration.push({ none: true });
+    household_registration.push({ type: "Chưa cập nhật " });
   }
   const newResident = new Resident({
     full_name: full_name,
@@ -235,7 +237,7 @@ const registrationResident = async (data, user, res) => {
     date: Date.now(),
   });
   await newResident.save();
-  res.send(newResident);
+  return res.redirect("back");
 };
 
 /**

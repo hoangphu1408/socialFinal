@@ -51,7 +51,7 @@ const registerView = async (req, res) => {
  */
 
 const registerResidentView = async (req, res) => {
-  const resident = await Resident.find({ role: "user" });
+  const resident = await Resident.find({});
   if (req.role == "admin") {
     return res.render("adminViews/registerResident", {
       layout: "adminLayout",
