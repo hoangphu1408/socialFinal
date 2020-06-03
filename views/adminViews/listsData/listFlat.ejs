@@ -1,0 +1,48 @@
+<div class="container-fluid">
+  <div class="card mb-4">
+    <div class="card-header"><i class="fas fa-table mr-1"></i>List Flats</div>
+    <div class="card-body">
+      <div class="table-responsive">
+        <table
+          class="table table-bordered"
+          id="dataTable"
+          width="100%"
+          cellspacing="0"
+        >
+          <thead>
+            <tr>
+              <th>STT</th>
+              <th>Khu</th>
+              <th>Tầng</th>
+              <th>Số Căn Hộ</th>
+              <th>Chủ sở hữu</th>
+              <th>Nhân khẩu</th>
+              <th>Ngày tạo</th>
+              <th>Tình trạng</th>
+              <th>Options</th>
+              <th>Delete</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% var i = 1; %><% flat.forEach(fl=>{ %>
+            <td><%=i++; %></td>
+            <td><%=fl.block%></td>
+            <td><%=fl.floorId%></td>
+            <td><%=fl.flatId%></td>
+            <td><%=fl.ownerName%></td>
+            <td><%=fl.numberOfPeople%></td>
+            <% var date = parseInt(fl.date); var time = new Date(date) %>
+            <td>
+              <%= time.toLocaleTimeString()+ " " + time.toDateString() %>
+            </td>
+            <% if(fl.status == true){ %>
+            <td>Đã sở hữu</td>
+            <%}else{ %>
+            <td>Chưa sở hữu</td>
+            <% } %> <% })%>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

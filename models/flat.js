@@ -6,7 +6,7 @@ const flatSchema = new Schema({
     type: String,
     required: true,
   },
-  blockOfFlat: {
+  floorId: {
     type: String,
     required: true,
   },
@@ -14,10 +14,8 @@ const flatSchema = new Schema({
     type: String,
     required: true,
   },
-  owner: {
-    type: String,
-    default: null,
-  },
+  owner: {},
+  ownerName: {},
   numberOfPeople: {},
   date: {
     type: String,

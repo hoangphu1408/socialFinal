@@ -3,10 +3,11 @@ const Account = require("../models/account");
 const Flat = require("../models/flat");
 const Resident = require("../models/resident");
 // Require Handle
-const { isAdmin } = require("../utils/adminAuth");
+const { isAdmin, listFlat } = require("../utils/adminAuth");
 const moment = require("moment");
 const nodemailer = require("nodemailer");
 const rateLimit = require("express-rate-limit");
+const mongoose = require("mongoose");
 
 /**
  * @description Dashboard view
@@ -71,21 +72,22 @@ const registerResidentView = async (req, res) => {
  */
 
 const flatView = async (req, res) => {
-  const resident = await Resident.find({});
-  const flat = await Flat.find();
+  const resident = await Resident.find();
+  const flat = await Flat.find({});
+
   if (req.role == "admin") {
     return res.render("adminViews/flat", {
       layout: "adminLayout",
       flat: flat,
-      user: req.email,
       resident: resident,
+      user: req.email,
     });
   }
   return res.render("adminViews/flat", {
     layout: "bossLayout",
     flat: flat,
-    user: req.email,
     resident: resident,
+    user: req.email,
   });
 };
 

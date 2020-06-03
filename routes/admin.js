@@ -14,6 +14,7 @@ const {
   registrationResident,
   updateResident,
   deleteResident,
+  createFlat,
 } = require("../utils/adminAuth");
 // Require View
 const {
@@ -112,4 +113,8 @@ router.get("/resident-delete/:id", verify, async (req, res) => {
   await deleteResident(req.params.id, res);
 });
 
+// Edit Flat
+router.post("/flat-manage", verify, async (req, res) => {
+  await createFlat(req.body, req.user.email, res);
+});
 module.exports = router;

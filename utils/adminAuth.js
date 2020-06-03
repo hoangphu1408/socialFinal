@@ -1,6 +1,7 @@
 // require  Model
 const Account = require("../models/account");
 const Resident = require("../models/resident");
+const Flat = require("../models/flat");
 
 // require module
 const bcrypt = require("bcryptjs");
@@ -16,7 +17,9 @@ const nodemailer = require("nodemailer");
 const rateLimit = require("express-rate-limit");
 
 /**
+ * !------------------------------------- !
  * @description Register Admin
+ * !------------------------------------- !
  */
 
 const registrationAdmin = async (data, email, role, res) => {
@@ -85,7 +88,9 @@ const registrationAdmin = async (data, email, role, res) => {
 };
 
 /**
+ * !------------------------------------- !
  * @description Login Admin
+ * !------------------------------------- !
  */
 
 const loginAdmin = async (data, res) => {
@@ -132,7 +137,9 @@ const loginAdmin = async (data, res) => {
 };
 
 /**
+ * !------------------------------------- !
  * @description Verify Email
+ * !------------------------------------- !
  */
 
 const verifyEmailToken = async (token, res, next) => {
@@ -149,7 +156,9 @@ const verifyEmailToken = async (token, res, next) => {
 };
 
 /**
+ * !------------------------------------- !
  * @description Resend mail
+ * !------------------------------------- !
  */
 
 const resendMail = async (email, res) => {
@@ -169,7 +178,9 @@ const isAdmin = async function (role, res) {
 };
 
 /**
+ * !------------------------------------- !
  * @description Rate Limit
+ * !------------------------------------- !
  */
 
 const createLimit = rateLimit({
@@ -179,7 +190,9 @@ const createLimit = rateLimit({
 });
 
 /**
+ * !------------------------------------- !
  * @description Registration Resident
+ * !------------------------------------- !
  */
 
 const registrationResident = async (data, user, res) => {
@@ -243,7 +256,9 @@ const registrationResident = async (data, user, res) => {
 };
 
 /**
+ * !------------------------------------- !
  * @description Admin Update
+ * !------------------------------------- !
  */
 
 const updateAdmin = async (data, res) => {
@@ -286,7 +301,9 @@ const deleteAdmin = async (id, res) => {
 };
 
 /**
+ * !------------------------------------- !
  * @description Resident Update
+ * !------------------------------------- !
  */
 
 const updateResident = async (data, res) => {
@@ -342,8 +359,84 @@ const deleteResident = async (id, res) => {
     }
   );
 };
+
 /**
+ * !------------------------------------- !
+ * @description Create Flat
+ * !------------------------------------- !
+ */
+
+const createFlat = async (data, email, res) => {
+  const errors = [];
+  const { block, floorId, flatId, owner, number } = data;
+  const resident = await Resident.find();
+  const ownerr = owner.split("|");
+  const people = [];
+  number.forEach((num) => {
+    const x = num.split("|");
+    people.push({ id: x[0], name: x[1] });
+  });
+  const flat = await Flat.findOne({
+    block: block,
+    floorId: floorId,
+    flatId: flatId,
+  });
+  if (flat) {
+    errors.push({ msg: "This flat is already created" });
+    return res.render("adminViews/flat", {
+      layout: "bossLayout",
+      errors: errors,
+      resident: resident,
+      data: data,
+      user: email,
+    });
+  }
+  if (owner === "none") {
+    const newFlat = new Flat({
+      block: block,
+      floorId: floorId,
+      flatId: flatId,
+      owner: ownerr[0],
+      ownerName: ownerr[1],
+      numberOfPeople: ["null"],
+      date: Date.now(),
+      status: false,
+    });
+    await newFlat.save();
+    return res.redirect("back");
+  }
+  if (number === "none") {
+    const newFlat = new Flat({
+      block: block,
+      floorId: floorId,
+      flatId: flatId,
+      owner: ownerr[0],
+      ownerName: ownerr[1],
+      numberOfPeople: [null],
+      date: Date.now(),
+      status: true,
+    });
+    await newFlat.save();
+    return res.redirect("back");
+  }
+  const newFlat = new Flat({
+    block: block,
+    floorId: floorId,
+    flatId: flatId,
+    owner: ownerr[0],
+    ownerName: ownerr[1],
+    numberOfPeople: people,
+    date: Date.now(),
+    status: true,
+  });
+  await newFlat.save();
+  return res.redirect("back");
+};
+
+/**
+ * !------------------------------------- !
  * @description Validate Options
+ * !------------------------------------- !
  */
 
 const validateUsername = async (username) => {
@@ -393,4 +486,5 @@ module.exports = {
   registrationResident,
   updateResident,
   deleteResident,
+  createFlat,
 };

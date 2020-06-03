@@ -7,9 +7,11 @@
       <%- include("../partials/messages") %>
       <div class="form">
         <form action="/admin/flat-manage" method="POST">
+          <hr />
+          <h6 style="text-align: center;">Địa chỉ</h6>
           <div class="form-group">
-            <label for="blockOfFlat">Block</label>
-            <select class="form-control" name="blockOfFlat" id="blockOfFlat">
+            <label for="block">Khu</label>
+            <select class="form-control" name="block" id="block">
               <option selected value="A">A</option>
               <option value="B">B</option>
               <option value="C">C</option>
@@ -17,7 +19,7 @@
           </div>
           <div class="form-row">
             <div class="form-group col-md-6">
-              <label for="floorId">Floor</label>
+              <label for="floorId">Tầng</label>
               <select class="form-control" name="floorId" id="floorId">
                 <option selected value="1">1</option>
                 <option value="2">2</option>
@@ -32,8 +34,8 @@
               </select>
             </div>
             <div class="form-group col-md-6">
-              <label for="flatNumber">Flat Number</label>
-              <select class="form-control" name="flatNumber" id="flatNumber">
+              <label for="flatId">Số căn hộ</label>
+              <select class="form-control" name="flatId" id="flatId">
                 <option selected value="1">1</option>
                 <option value="2">2</option>
                 <option value="3">3</option>
@@ -47,30 +49,63 @@
               </select>
             </div>
           </div>
+          <hr />
+          <h6 style="text-align: center;">Chủ sở hữu</h6>
           <div class="form-group">
-            <label for="owner">Owner</label>
-            <select class="form-control" name="owner" id="owner">
+            <select class="form-control number" name="owner" id="owner">
+              <option value="none">Trống</option>
               <% resident.forEach(res => { %>
-              <option value="<%= res._id%>"><%= res.full_name%></option>
+              <option value="<%= res._id%>|<%= res.full_name%>"
+                ><%= res.full_name%></option
+              >
               <% }) %>
             </select>
           </div>
+          <!--Add input field-->
+          <hr />
+          <h6 style="text-align: center;">Số nhân khẩu</h6>
           <div class="form-group">
-            <label for="number">Number</label>
-            <select class="form-control" name="number" id="number">
-              <option value="1">1</option>
-              <option value="2">2</option>
-            </select>
+            <div class="input-group control-group after-add-more">
+              <select class="form-control number" name="number" id="number">
+                <option value="none">Trống</option>
+                <% resident.forEach(res => { %>
+                <option value="<%= res._id%>|<%= res.full_name%>"
+                  ><%= res.full_name%></option
+                >
+                <% }) %>
+              </select>
+              <div class="input-group-btn">
+                <button class="btn btn-success add-more" type="button">
+                  Add
+                </button>
+              </div>
+            </div>
           </div>
-          <div class="form-group number"></div>
-          <div class="form-group" id="people"></div>
+
           <button class="btn btn-primary btn-block">Create</button>
         </form>
       </div>
+      <!-- Copy Fields -->
+      <div class="copy" style="display: none;">
+        <div class="control-group input-group" style="margin-top: 10px;">
+          <select class="form-control number" name="number" id="number">
+            <option value="none">Trống</option>
+            <% resident.forEach(res => { %>
+            <option value="<%= res._id%>|<%= res.full_name%>"
+              ><%= res.full_name%></option
+            >
+            <% }) %>
+          </select>
+          <div class="input-group-btn">
+            <button class="btn btn-danger remove" type="button">
+              Remove
+            </button>
+          </div>
+        </div>
+      </div>
+      <!---->
     </div>
   </div>
 </div>
 <hr />
-<script>
-  $("#number").change(function () {});
-</script>
+<%-include("./listsData/listFlat.ejs") %>
