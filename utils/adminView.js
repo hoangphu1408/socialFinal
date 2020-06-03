@@ -67,6 +67,25 @@ const registerResidentView = async (req, res) => {
   });
 };
 
+const accountResidentView = async (req, res) => {
+  const resident = await Resident.find({});
+  const account = await Account.find({ role: "user" });
+  if (req.role == "admin") {
+    return res.render("adminViews/residentAccount", {
+      layout: "adminLayout",
+      resident: resident,
+      account: account,
+      user: req.email,
+    });
+  }
+  return res.render("adminViews/residentAccount", {
+    layout: "bossLayout",
+    resident: resident,
+    account: account,
+    user: req.email,
+  });
+};
+
 /**
  * @description Flat view
  */
@@ -96,4 +115,5 @@ module.exports = {
   registerView,
   registerResidentView,
   flatView,
+  accountResidentView,
 };

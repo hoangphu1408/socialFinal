@@ -5,6 +5,7 @@ const accountSchema = new Schema({
   id_resident: {
     type: String,
   },
+  residentName: {},
   role: {
     type: String,
     required: true,
@@ -14,8 +15,8 @@ const accountSchema = new Schema({
   username: {
     type: String,
     trim: true,
-    required: true,
   },
+
   email: {
     type: String,
     default: null,

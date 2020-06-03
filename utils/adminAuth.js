@@ -11,6 +11,7 @@ const {
   regAdminValidation,
   loginValidation,
   regResidentValidation,
+  regAccountResident,
 } = require("../config/validation");
 const moment = require("moment");
 const nodemailer = require("nodemailer");
@@ -22,7 +23,7 @@ const rateLimit = require("express-rate-limit");
  * !------------------------------------- !
  */
 
-const registrationAdmin = async (data, email, role, res) => {
+const registrationAdmin = async (data, zemail, role, res) => {
   try {
     const errors = [];
     const admin = await Account.find({ role: "admin" });
@@ -35,7 +36,7 @@ const registrationAdmin = async (data, email, role, res) => {
           layout: "bossLayout",
           admin: admin,
           errors: errors,
-          user: email,
+          user: zemail,
         });
       }
       errors.push({ msg: error.details[0].message });
@@ -43,7 +44,7 @@ const registrationAdmin = async (data, email, role, res) => {
         layout: "bossLayout",
         admin: admin,
         errors: errors,
-        user: email,
+        user: zemail,
       });
     }
 
@@ -302,6 +303,73 @@ const deleteAdmin = async (id, res) => {
 
 /**
  * !------------------------------------- !
+ * @description Create Account Resident
+ * !------------------------------------- !
+ */
+
+const accountResident = async (data, zemail, res) => {
+  const { resident, email, password, password2 } = data;
+  const residents = await Resident.find();
+  const re = resident.split("|");
+  const errors = [];
+  const validate = { email: email, password: password, password2: password2 };
+  const { error } = await regAccountResident(validate);
+  if (error) {
+    if (error.details[0].type === "any.only") {
+      errors.push({ msg: "Password do not match" });
+      return res.status(400).render("adminViews/residentAccount", {
+        layout: "bossLayout",
+        resident: residents,
+        errors: errors,
+        user: zemail,
+      });
+    }
+    errors.push({ msg: error.details[0].message });
+    return res.status(400).render("adminViews/residentAccount", {
+      layout: "bossLayout",
+      resident: residents,
+      errors: errors,
+      user: zemail,
+    });
+  }
+  const account = await Account.findOne({ id_resident: re[0] });
+  if (account) {
+    errors.push({ msg: "This resident is already have an account" });
+    return res.status(400).render("adminViews/residentAccount", {
+      layout: "bossLayout",
+      resident: residents,
+      errors: errors,
+      user: zemail,
+    });
+  }
+  const isEmail = await Account.findOne({ email: email });
+  if (isEmail) {
+    errors.push({ msg: "This email is already created" });
+    return res.status(400).render("adminViews/residentAccount", {
+      layout: "bossLayout",
+      resident: residents,
+      errors: errors,
+      user: zemail,
+    });
+  }
+  const hashedPassword = await bcrypt.hash(password, 12);
+  const newAccount = new Account({
+    id_resident: re[0],
+    residentName: re[1],
+    role: "user",
+    email: email,
+    username: "none",
+    phoneNumber: "none",
+    password: hashedPassword,
+    date: Date.now(),
+    status: true,
+  });
+  await newAccount.save();
+  return res.redirect("back");
+};
+
+/**
+ * !------------------------------------- !
  * @description Resident Update
  * !------------------------------------- !
  */
@@ -486,5 +554,6 @@ module.exports = {
   registrationResident,
   updateResident,
   deleteResident,
+  accountResident,
   createFlat,
 };

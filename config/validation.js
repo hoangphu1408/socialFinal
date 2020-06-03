@@ -61,8 +61,31 @@ const regResidentValidation = (data) => {
   return schema.validate(data);
 };
 
+const regAccountResident = (data) => {
+  const schema = Joi.object({
+    email: Joi.string().email().required().messages({
+      "string.empty": `Email cannot empty`,
+      "string.email": `Email is invalid`,
+      "any.required": `Email is required`,
+    }),
+    password: Joi.string()
+      .min(6)
+      .pattern(new RegExp("^[a-zA-Z0-9]{6,30}$"))
+      .messages({
+        "string.empty": `password cannot be an empty field`,
+        "string.min": `password should have a minimum length of 6`,
+        "string.max": `password should have a maximum length of 30`,
+        "any.required": `password is a required field`,
+        "string.pattern.base": `Password should be clean`,
+      }),
+    password2: Joi.ref("password"),
+  });
+  return schema.validate(data);
+};
+
 module.exports = {
   regAdminValidation,
   loginValidation,
   regResidentValidation,
+  regAccountResident,
 };

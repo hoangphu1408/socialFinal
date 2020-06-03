@@ -14,6 +14,7 @@ const {
   registrationResident,
   updateResident,
   deleteResident,
+  accountResident,
   createFlat,
 } = require("../utils/adminAuth");
 // Require View
@@ -22,6 +23,7 @@ const {
   registerView,
   flatView,
   registerResidentView,
+  accountResidentView,
 } = require("../utils/adminView");
 
 const verify = require("../config/verifyToken");
@@ -58,6 +60,10 @@ router.get("/flat-manage", verify, (req, res) => {
 
 router.get("/resident-manage", verify, (req, res) => {
   return registerResidentView(req.user, res);
+});
+
+router.get("/resident-account", verify, (req, res) => {
+  return accountResidentView(req.user, res);
 });
 
 router.get("/manage", verify, (req, res) => {
@@ -111,6 +117,11 @@ router.post("/resident-update/:id", verify, async (req, res) => {
 
 router.get("/resident-delete/:id", verify, async (req, res) => {
   await deleteResident(req.params.id, res);
+});
+
+// Resident Account
+router.post("/resident-account", verify, async (req, res) => {
+  await accountResident(req.body, req.user.email, res);
 });
 
 // Edit Flat
