@@ -25,21 +25,104 @@
           </thead>
           <tbody>
             <% var i = 1; %><% flat.forEach(fl=>{ %>
-            <td><%=i++; %></td>
-            <td><%=fl.block%></td>
-            <td><%=fl.floorId%></td>
-            <td><%=fl.flatId%></td>
-            <td><%=fl.ownerName%></td>
-            <td><%=fl.numberOfPeople%></td>
-            <% var date = parseInt(fl.date); var time = new Date(date) %>
-            <td>
-              <%= time.toLocaleTimeString()+ " " + time.toDateString() %>
-            </td>
-            <% if(fl.status == true){ %>
-            <td>Đã sở hữu</td>
-            <%}else{ %>
-            <td>Chưa sở hữu</td>
-            <% } %> <% })%>
+            <tr>
+              <td><%=i++; %></td>
+              <td><%=fl.block%></td>
+              <td><%=fl.floorId%></td>
+              <td><%=fl.flatId%></td>
+              <td><%=fl.ownerName%></td>
+              <td><%=fl.numberOfPeople%></td>
+              <% var date = parseInt(fl.date); var time = new Date(date) %>
+              <td>
+                <%= time.toLocaleTimeString()+ " " + time.toDateString() %>
+              </td>
+              <% if(fl.status == true){ %>
+              <td>Đã sở hữu</td>
+              <%}else{ %>
+              <td>Chưa sở hữu</td>
+              <% } %>
+              <td style="text-align: center;">
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  data-toggle="modal"
+                  data-target="#modalOptions<%= fl._id %>"
+                >
+                  <i class="fas fa-cog"></i>
+                </button>
+              </td>
+              <!-- Modal-->
+              <div
+                class="modal fade"
+                id="modalOptions<%= fl._id%>"
+                tabindex="-1"
+                role="dialog"
+                aria-labelledby="modalOptionsLabel"
+                aria-hidden="true"
+              >
+                <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="modalOptionsLabel">
+                        Edit
+                      </h5>
+                      <button
+                        type="button"
+                        class="close"
+                        data-dismiss="modal"
+                        aria-label="Close"
+                      >
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                      <ul class="nav nav-tabs">
+                        <li class="nav-item">
+                          <a
+                            class="nav-link active"
+                            data-toggle="tab"
+                            href="#edit<%= fl._id%>"
+                            >Edit</a
+                          >
+                        </li>
+                      </ul>
+                      <div id="myTabContent" class="tab-content">
+                        <!--Edit-->
+
+                        <!--Form-->
+                        <div class="form">
+                          <form action="/admin/flat-manage" method="POST">
+                            <button>Update</button>
+                          </form>
+                        </div>
+                        <!---->
+
+                        <!--Form-->
+                      </div>
+                    </div>
+                    <div class="modal-footer">
+                      <button
+                        type="button"
+                        class="btn btn-secondary"
+                        data-dismiss="modal"
+                      >
+                        Close
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!---->
+              <td style="text-align: center;">
+                <button class="btn btn-secondary">
+                  <a style="color: #fff;" href="/admin/flat-delete/<%=fl._id%>"
+                    ><i class="far fa-trash-alt"></i
+                  ></a>
+                </button>
+              </td>
+            </tr>
+
+            <% })%>
           </tbody>
         </table>
       </div>

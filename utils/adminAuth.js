@@ -309,6 +309,7 @@ const deleteAdmin = async (id, res) => {
 
 const accountResident = async (data, zemail, res) => {
   const { resident, email, password, password2 } = data;
+  const accounts = await Account.find({ role: "user" });
   const residents = await Resident.find();
   const re = resident.split("|");
   const errors = [];
@@ -320,6 +321,7 @@ const accountResident = async (data, zemail, res) => {
       return res.status(400).render("adminViews/residentAccount", {
         layout: "bossLayout",
         resident: residents,
+        account: accounts,
         errors: errors,
         user: zemail,
       });
@@ -328,6 +330,7 @@ const accountResident = async (data, zemail, res) => {
     return res.status(400).render("adminViews/residentAccount", {
       layout: "bossLayout",
       resident: residents,
+      account: accounts,
       errors: errors,
       user: zemail,
     });
@@ -338,6 +341,7 @@ const accountResident = async (data, zemail, res) => {
     return res.status(400).render("adminViews/residentAccount", {
       layout: "bossLayout",
       resident: residents,
+      account: accounts,
       errors: errors,
       user: zemail,
     });
@@ -348,6 +352,7 @@ const accountResident = async (data, zemail, res) => {
     return res.status(400).render("adminViews/residentAccount", {
       layout: "bossLayout",
       resident: residents,
+      account: account,
       errors: errors,
       user: zemail,
     });
@@ -438,12 +443,10 @@ const createFlat = async (data, email, res) => {
   const errors = [];
   const { block, floorId, flatId, owner, number } = data;
   const resident = await Resident.find();
+  const flatz = await Flat.find();
   const ownerr = owner.split("|");
   const people = [];
-  number.forEach((num) => {
-    const x = num.split("|");
-    people.push({ id: x[0], name: x[1] });
-  });
+
   const flat = await Flat.findOne({
     block: block,
     floorId: floorId,
@@ -454,6 +457,7 @@ const createFlat = async (data, email, res) => {
     return res.render("adminViews/flat", {
       layout: "bossLayout",
       errors: errors,
+      flat: flatz,
       resident: resident,
       data: data,
       user: email,
@@ -464,9 +468,9 @@ const createFlat = async (data, email, res) => {
       block: block,
       floorId: floorId,
       flatId: flatId,
-      owner: ownerr[0],
-      ownerName: ownerr[1],
-      numberOfPeople: ["null"],
+      owner: "none",
+      ownerName: "none",
+      numberOfPeople: ["none"],
       date: Date.now(),
       status: false,
     });
@@ -480,13 +484,14 @@ const createFlat = async (data, email, res) => {
       flatId: flatId,
       owner: ownerr[0],
       ownerName: ownerr[1],
-      numberOfPeople: [null],
+      numberOfPeople: ["none"],
       date: Date.now(),
       status: true,
     });
     await newFlat.save();
     return res.redirect("back");
   }
+
   const newFlat = new Flat({
     block: block,
     floorId: floorId,
@@ -499,6 +504,60 @@ const createFlat = async (data, email, res) => {
   });
   await newFlat.save();
   return res.redirect("back");
+};
+
+/**
+ * !------------------------------------- !
+ * @description Flat Update
+ * !------------------------------------- !
+ */
+
+const updateFlat = async (data, res) => {
+  const { id, ownerEdit, numberEdit } = data;
+  const ownerr = ownerEdit.split("|");
+  const people = [];
+
+  return res.send(numberEdit);
+  // if (owner === "none") {
+  //   const update = {
+  //     owner: "none",
+  //     ownerName: "none",
+  //     numberOfPeople: ["none"],
+  //   };
+  //   const upFlat = await Flat.findOneAndUpdate({ _id: id }, update, {
+  //     new: true,
+  //   });
+  //   return res.redirect("back");
+  // }
+  // if (number === "none") {
+  //   const update = {
+  //     owner: ownerr[0],
+  //     ownerName: ownerr[1],
+  //     numberOfPeople: ["none"],
+  //   };
+  //   const upFlat = await Flat.findByIdAndUpdate({ _id: id }, update, {
+  //     new: true,
+  //   });
+  //   return res.redirect("back");
+  // }
+  // if (number.length <= 1) {
+  //   const x = number.split("|");
+  //   people.push({ id: x[0], name: x[1] });
+  // } else {
+  //   number.forEach((num) => {
+  //     const x = num.split("|");
+  //     people.push({ id: x[0], name: x[1] });
+  //   });
+  // }
+  // const update = {
+  //   owner: ownerr[0],
+  //   ownerName: ownerr[1],
+  //   numberOfPeople: people,
+  // };
+  // const upFlat = await Flat.findByIdAndUpdate({ _id: id }, update, {
+  //   new: true,
+  // });
+  // return res.redirect("back");
 };
 
 /**
@@ -516,6 +575,9 @@ const validateEmail = async (email) => {
 const verifyEmail = (email, mailToken) => {
   const transport = nodemailer.createTransport({
     service: "gmail",
+    port: 456,
+    secure: true,
+    transportMethod: "SMTP",
     auth: {
       user: EMAIL,
       pass: PASSWORD,
@@ -556,4 +618,5 @@ module.exports = {
   deleteResident,
   accountResident,
   createFlat,
+  updateFlat,
 };

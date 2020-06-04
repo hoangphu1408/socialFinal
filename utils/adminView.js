@@ -92,7 +92,7 @@ const accountResidentView = async (req, res) => {
 
 const flatView = async (req, res) => {
   const resident = await Resident.find();
-  const flat = await Flat.find({});
+  const flat = await Flat.find();
 
   if (req.role == "admin") {
     return res.render("adminViews/flat", {

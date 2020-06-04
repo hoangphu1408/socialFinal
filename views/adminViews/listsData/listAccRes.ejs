@@ -1,0 +1,267 @@
+<div class="container-fluid">
+  <div class="card mb-4">
+    <div class="card-header"><i class="fas fa-table mr-1"></i>List Admins</div>
+    <div class="card-body">
+      <div class="table-responsive">
+        <table
+          class="table table-bordered"
+          id="dataTable"
+          width="100%"
+          cellspacing="0"
+        >
+          <thead>
+            <tr>
+              <th>STT</th>
+              <th>Email</th>
+              <th>Username</th>
+              <th>Activation</th>
+              <th>Phone Number</th>
+              <th>Day create</th>
+              <th>Options</th>
+              <th>Delete</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% var i = 1 %> <% account.forEach(ad =>{ %>
+            <tr>
+              <td><%= i++%></td>
+              <td><%=ad.email%></td>
+              <td><%=ad.username%></td>
+              <td><%=ad.email_verify %></td>
+              <% if(ad.phoneNumber == null) {%>
+              <td>none</td>
+              <% }else {%>
+              <td><%=ad.phoneNumber%></td>
+              <% } %> <% var date = parseInt(ad.date); var time = new Date(date)
+              %>
+              <td>
+                <%= time.toLocaleTimeString()+ " " + time.toDateString() %>
+              </td>
+              <td style="text-align: center;">
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  data-toggle="modal"
+                  data-target="#modalOptions<%= ad.username%>"
+                >
+                  <i class="fas fa-cog"></i>
+                </button>
+              </td>
+              <!-- Modal-->
+              <div
+                class="modal fade"
+                id="modalOptions<%= ad.username%>"
+                tabindex="-1"
+                role="dialog"
+                aria-labelledby="modalOptionsLabel"
+                aria-hidden="true"
+              >
+                <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="modalOptionsLabel">
+                        Edit
+                      </h5>
+                      <button
+                        type="button"
+                        class="close"
+                        data-dismiss="modal"
+                        aria-label="Close"
+                      >
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                      <ul class="nav nav-tabs">
+                        <li class="nav-item">
+                          <a
+                            class="nav-link active"
+                            data-toggle="tab"
+                            href="#edit<%= ad._id%>"
+                            >Edit</a
+                          >
+                        </li>
+                        <li class="nav-item">
+                          <a
+                            class="nav-link"
+                            data-toggle="tab"
+                            href="#changepassword<%= ad._id%>"
+                            >Update Password</a
+                          >
+                        </li>
+                        <li class="na-item">
+                          <a
+                            class="nav-link"
+                            data-toggle="tab"
+                            href="#activation<%= ad._id %>"
+                          >
+                            Activation
+                          </a>
+                        </li>
+                      </ul>
+                      <div id="myTabContent" class="tab-content">
+                        <!--Edit-->
+                        <div
+                          class="tab-pane fade show active"
+                          id="edit<%= ad._id%>"
+                        >
+                          <form
+                            action="/admin/update/<%= ad._id%>"
+                            method="POST"
+                          >
+                            <input
+                              type="hidden"
+                              name="id"
+                              id="id"
+                              value="<%= ad._id %>"
+                            />
+                            <div class="form-group">
+                              <label for="email">
+                                <h6>Email:</h6>
+                              </label>
+                              <input
+                                class="form-control"
+                                name="email"
+                                id="email"
+                                value="<%=ad.email%>"
+                                disabled
+                              />
+                            </div>
+                            <div class="form-group">
+                              <label for="username">
+                                <h6>Username:</h6>
+                              </label>
+                              <input
+                                class="form-control"
+                                type="text"
+                                name="username"
+                                id="username"
+                                value="<%=ad.username%>"
+                                disabled
+                              />
+                            </div>
+                            <div class="form-group">
+                              <label for="phone">
+                                <h6>Phone Number:</h6>
+                              </label>
+                              <input
+                                class="form-control"
+                                type="text"
+                                name="phone"
+                                id="phone"
+                                value="<%= ad.phoneNumber%>"
+                              />
+                            </div>
+                            <div class="form-group">
+                              <label for="role">
+                                <h6>Role:</h6>
+                              </label>
+                              <select
+                                class="form-control"
+                                name="role"
+                                id="role"
+                              >
+                                <option value="admin"><%= ad.role%></option>
+                                <option value="user">user</option>
+                              </select>
+                            </div>
+                            <button
+                              type="submit"
+                              class="btn btn-primary float-right"
+                            >
+                              Update
+                            </button>
+                          </form>
+                        </div>
+                        <!--Change Password-->
+                        <div
+                          class="tab-pane fade"
+                          id="changepassword<%= ad._id%>"
+                        >
+                          <form
+                            action="/admin/update_password/<%=ad._id%>"
+                            method="POST"
+                          >
+                            <input
+                              type="hidden"
+                              name="id"
+                              id="id"
+                              value="<%= ad._id%>"
+                            />
+                            <div class="form-group">
+                              <label for="newPass">
+                                <h6>New Password:</h6>
+                              </label>
+                              <input
+                                type="password"
+                                name="newPass"
+                                id="newPass"
+                                class="form-control"
+                              />
+                            </div>
+                            <button class="btn btn-primary float-right">
+                              Update
+                            </button>
+                          </form>
+                        </div>
+                        <!--Activation-->
+                        <div class="tab-pane fade" id="activation<%= ad._id %>">
+                          <form
+                            action="/admin/active/<%= ad._id%>"
+                            method="POST"
+                          >
+                            <input
+                              type="hidden"
+                              name="id"
+                              id="id"
+                              value="<%= ad._id%>"
+                            />
+                            <div class="form-group">
+                              <label for="active">Activation</label>
+                              <select
+                                class="form-control"
+                                name="active"
+                                id="active"
+                              >
+                                <option value="true">Kích hoạt</option>
+                                <option value="false">Chưa xác thực</option>
+                              </select>
+                              <button
+                                type="submit"
+                                class="btn btn-primary float-right"
+                              >
+                                Update
+                              </button>
+                            </div>
+                          </form>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="modal-footer">
+                      <button
+                        type="button"
+                        class="btn btn-secondary"
+                        data-dismiss="modal"
+                      >
+                        Close
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!---->
+              <td style="text-align: center;">
+                <button class="btn btn-secondary">
+                  <a style="color: #fff;" href="/admin/delete/<%=ad._id%>"
+                    ><i class="far fa-trash-alt"></i
+                  ></a>
+                </button>
+              </td>
+            </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
