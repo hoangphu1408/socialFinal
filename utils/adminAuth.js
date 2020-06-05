@@ -2,6 +2,7 @@
 const Account = require("../models/account");
 const Resident = require("../models/resident");
 const Flat = require("../models/flat");
+const Post = require("../models/post");
 
 // require module
 const bcrypt = require("bcryptjs");
@@ -584,7 +585,19 @@ const updateFlat = async (data, res) => {
  * !------------------------------------- !
  */
 
-const announceManage = async (data, res) => {};
+const announceManage = async (data, res) => {
+  const { id, uname, type, announce } = data;
+  const newPost = await Post({
+    id_acc: id,
+    username: uname,
+    type: type,
+    content: announce,
+    status: true,
+    date: Date.now(),
+  });
+  await newPost.save();
+  return res.redirect("back");
+};
 
 /**
  * !------------------------------------- !
@@ -668,4 +681,5 @@ module.exports = {
   accountResident,
   createFlat,
   updateFlat,
+  announceManage,
 };

@@ -18,6 +18,7 @@ const {
   accountResident,
   createFlat,
   updateFlat,
+  announceManage,
 } = require("../utils/adminAuth");
 // Require View
 const {
@@ -146,7 +147,7 @@ router.post("/flat-update", verify, async (req, res) => {
 
 // Announce
 router.post("/announce-manage", verify, async (req, res) => {
-  res.send(req.body);
+  await announceManage(req.body, res);
 });
 
 module.exports = router;
