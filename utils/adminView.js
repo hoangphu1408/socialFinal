@@ -43,7 +43,7 @@ const registerView = async (req, res) => {
   return res.render("adminViews/register", {
     layout: "bossLayout",
     admin: admin,
-    user: req.email,
+    user: req,
   });
 };
 
@@ -57,13 +57,13 @@ const registerResidentView = async (req, res) => {
     return res.render("adminViews/registerResident", {
       layout: "adminLayout",
       resident: resident,
-      user: req.email,
+      user: req,
     });
   }
   return res.render("adminViews/registerResident", {
     layout: "bossLayout",
     resident: resident,
-    user: req.email,
+    user: req,
   });
 };
 
@@ -75,19 +75,21 @@ const accountResidentView = async (req, res) => {
       layout: "adminLayout",
       resident: resident,
       account: account,
-      user: req.email,
+      user: req,
     });
   }
   return res.render("adminViews/residentAccount", {
     layout: "bossLayout",
     resident: resident,
     account: account,
-    user: req.email,
+    user: req,
   });
 };
 
 /**
+ *  !-----------------------!
  * @description Flat view
+ *  !-----------------------!
  */
 
 const flatView = async (req, res) => {
@@ -99,14 +101,33 @@ const flatView = async (req, res) => {
       layout: "adminLayout",
       flat: flat,
       resident: resident,
-      user: req.email,
+      user: req,
     });
   }
   return res.render("adminViews/flat", {
     layout: "bossLayout",
     flat: flat,
     resident: resident,
-    user: req.email,
+    user: req,
+  });
+};
+
+/**
+ *  !-----------------------------!
+ * @description  Announce view
+ *  !-----------------------------!
+ */
+
+const announceView = async (req, res) => {
+  if (req.role == "admin") {
+    return res.render("adminViews/announce", {
+      layout: "adminLayout",
+      user: req,
+    });
+  }
+  return res.render("adminViews/announce", {
+    layout: "bossLayout",
+    user: req,
   });
 };
 
@@ -116,4 +137,5 @@ module.exports = {
   registerResidentView,
   flatView,
   accountResidentView,
+  announceView,
 };

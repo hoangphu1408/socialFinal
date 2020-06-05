@@ -112,6 +112,10 @@ const loginAdmin = async (data, res) => {
     });
   }
   const mail = await Account.findOne({ email: email });
+  // is Admin or Boss
+  if (mail.role != "admin" && mail.role != "boss") {
+    return res.send("???");
+  }
 
   // compare password
   const isMatch = await bcrypt.compare(password, mail.password);
@@ -131,7 +135,7 @@ const loginAdmin = async (data, res) => {
     expiresIn: "1 days",
   });
   res.cookie("auth", signToken, {
-    maxAge: 900000,
+    maxAge: 50000000,
     httpOnly: true,
   });
   return res.redirect("/admin/dashboard");
@@ -164,6 +168,7 @@ const verifyEmailToken = async (token, res, next) => {
 
 const resendMail = async (email, res) => {
   // Create mail token
+  res.send(email);
   const payload = { email: email };
   const mailToken = jwt.sign(payload, MAIL, {
     expiresIn: "1 days",
@@ -370,6 +375,7 @@ const accountResident = async (data, zemail, res) => {
     status: true,
   });
   await newAccount.save();
+  await sendEmail(email, password);
   return res.redirect("back");
 };
 
@@ -446,12 +452,25 @@ const createFlat = async (data, email, res) => {
   const flatz = await Flat.find();
   const ownerr = owner.split("|");
   const people = [];
-
+  const isArray = Array.isArray(number);
+  if (isArray) {
+    number.forEach((num) => {
+      var peo = num.split("|");
+      people.push({ id: peo[0], name: peo[1] });
+    });
+  } else {
+    var numberr = [number];
+    numberr.forEach((num) => {
+      var peo = num.split("|");
+      people.push({ id: peo[0], name: peo[1] });
+    });
+  }
   const flat = await Flat.findOne({
     block: block,
     floorId: floorId,
     flatId: flatId,
   });
+
   if (flat) {
     errors.push({ msg: "This flat is already created" });
     return res.render("adminViews/flat", {
@@ -515,50 +534,57 @@ const createFlat = async (data, email, res) => {
 const updateFlat = async (data, res) => {
   const { id, ownerEdit, numberEdit } = data;
   const ownerr = ownerEdit.split("|");
+  const numberrEdit = [numberEdit];
   const people = [];
 
-  return res.send(numberEdit);
-  // if (owner === "none") {
-  //   const update = {
-  //     owner: "none",
-  //     ownerName: "none",
-  //     numberOfPeople: ["none"],
-  //   };
-  //   const upFlat = await Flat.findOneAndUpdate({ _id: id }, update, {
-  //     new: true,
-  //   });
-  //   return res.redirect("back");
-  // }
-  // if (number === "none") {
-  //   const update = {
-  //     owner: ownerr[0],
-  //     ownerName: ownerr[1],
-  //     numberOfPeople: ["none"],
-  //   };
-  //   const upFlat = await Flat.findByIdAndUpdate({ _id: id }, update, {
-  //     new: true,
-  //   });
-  //   return res.redirect("back");
-  // }
-  // if (number.length <= 1) {
-  //   const x = number.split("|");
-  //   people.push({ id: x[0], name: x[1] });
-  // } else {
-  //   number.forEach((num) => {
-  //     const x = num.split("|");
-  //     people.push({ id: x[0], name: x[1] });
-  //   });
-  // }
-  // const update = {
-  //   owner: ownerr[0],
-  //   ownerName: ownerr[1],
-  //   numberOfPeople: people,
-  // };
-  // const upFlat = await Flat.findByIdAndUpdate({ _id: id }, update, {
-  //   new: true,
-  // });
-  // return res.redirect("back");
+  if (ownerEdit === "none") {
+    const update = {
+      owner: "none",
+      ownerName: "none",
+      numberOfPeople: ["none"],
+      status: false,
+    };
+    const upFlat = await Flat.findOneAndUpdate({ _id: id }, update, {
+      new: true,
+    });
+    return res.redirect("back");
+  }
+
+  if (numberrEdit === "none") {
+    const update = {
+      owner: ownerr[0],
+      ownerName: ownerr[1],
+      numberOfPeople: ["none"],
+      status: true,
+    };
+    const upFlat = await Flat.findByIdAndUpdate({ _id: id }, update, {
+      new: true,
+    });
+    return res.redirect("back");
+  }
+  numberrEdit.forEach((num) => {
+    var peo = num.split("|");
+    people.push({ id: peo[0], name: peo[1] });
+  });
+  const update = {
+    owner: ownerr[0],
+    ownerName: ownerr[1],
+    numberOfPeople: people,
+    status: true,
+  };
+  const upFlat = await Flat.findByIdAndUpdate({ _id: id }, update, {
+    new: true,
+  });
+  return res.redirect("back");
 };
+
+/**
+ * !------------------------------------- !
+ * @description Announce Manage
+ * !------------------------------------- !
+ */
+
+const announceManage = async (data, res) => {};
 
 /**
  * !------------------------------------- !
@@ -575,9 +601,6 @@ const validateEmail = async (email) => {
 const verifyEmail = (email, mailToken) => {
   const transport = nodemailer.createTransport({
     service: "gmail",
-    port: 456,
-    secure: true,
-    transportMethod: "SMTP",
     auth: {
       user: EMAIL,
       pass: PASSWORD,
@@ -598,10 +621,36 @@ const verifyEmail = (email, mailToken) => {
       return console.log(error);
     } else {
       console.log("Success");
+      transport.close();
     }
   });
 };
-
+const sendEmail = (email, password) => {
+  const transport = nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+      user: EMAIL,
+      pass: PASSWORD,
+    },
+  });
+  const mailOptions = {
+    from: "SocialNetWork<hoangphu1428@gmail.com>",
+    to: email,
+    subject: "Here is your account",
+    html: `
+         <p> <h5>Email:</h5> ${email}</p>
+          <p><h5>Password:</h5> ${password}</p>
+        `,
+  };
+  transport.sendMail(mailOptions, (error, res) => {
+    if (error) {
+      return console.log(error);
+    } else {
+      console.log("Success");
+      transport.close();
+    }
+  });
+};
 module.exports = {
   registrationAdmin,
   verifyEmailToken,

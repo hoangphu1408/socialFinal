@@ -1,4 +1,5 @@
 const router = require("express").Router();
+const bodyParser = require("body-parser");
 // Require Handle
 const {
   registrationAdmin,
@@ -25,6 +26,7 @@ const {
   flatView,
   registerResidentView,
   accountResidentView,
+  announceView,
 } = require("../utils/adminView");
 
 const verify = require("../config/verifyToken");
@@ -38,9 +40,13 @@ router.get("/login", isLogin, (req, res) => {
 });
 // Mail Activation
 router.get("/verify-mail", getData, (req, res) => {
-  return res.render("adminViews/verifyMail", {
-    email: req.user.email,
-  });
+  try {
+    return res.render("adminViews/verifyMail", {
+      email: req.user.email,
+    });
+  } catch (err) {
+    return res.status(400);
+  }
 });
 
 router.get("/back-to-dashboard", (req, res) => {
@@ -69,6 +75,10 @@ router.get("/resident-account", verify, (req, res) => {
 
 router.get("/manage", verify, (req, res) => {
   return registerView(req.user, res);
+});
+
+router.get("/announce-manage", verify, (req, res) => {
+  return announceView(req.user, res);
 });
 
 router.get("/logout", (req, res) => {
@@ -127,12 +137,16 @@ router.post("/resident-account", verify, async (req, res) => {
 
 // Edit Flat
 router.post("/flat-manage", verify, async (req, res) => {
-  // await createFlat(req.body, req.user.email, res);
-  res.send(req.body);
+  await createFlat(req.body, req.user.email, res);
 });
 
 router.post("/flat-update", verify, async (req, res) => {
-  // await updateFlat(req.body, res);
+  await updateFlat(req.body, res);
+});
+
+// Announce
+router.post("/announce-manage", verify, async (req, res) => {
   res.send(req.body);
 });
+
 module.exports = router;

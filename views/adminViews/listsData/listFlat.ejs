@@ -24,8 +24,189 @@
             </tr>
           </thead>
           <tbody>
-            <% var i = 1; %><% flat.forEach(fl=>{ %>
-            <tr>
+            <% var i = 1; %><% flat.forEach(fl=>{ %> <% if(fl.status == true){
+            %>
+            <tr class="table-success">
+              <td><%=i++; %></td>
+              <td><%=fl.block%></td>
+              <td><%=fl.floorId%></td>
+              <td><%=fl.flatId%></td>
+              <td><%=fl.ownerName%></td>
+              <% if(fl.numberOfPeople == 'none'){ %>
+              <td>none</td>
+              <%}else { %>
+              <td>hehe</td>
+              <%} %> <% var date = parseInt(fl.date); var time = new Date(date)
+              %>
+              <td>
+                <%= time.toLocaleTimeString()+ " " + time.toDateString() %>
+              </td>
+              <% if(fl.status == true){ %>
+              <td>Đã sở hữu</td>
+              <%}else{ %>
+              <td>Chưa sở hữu</td>
+              <% } %>
+              <td style="text-align: center;">
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  data-toggle="modal"
+                  data-target="#modalOptions<%= fl._id %>"
+                >
+                  <i class="fas fa-cog"></i>
+                </button>
+              </td>
+              <!-- Modal-->
+              <div
+                class="modal fade"
+                id="modalOptions<%= fl._id%>"
+                tabindex="-1"
+                role="dialog"
+                aria-labelledby="modalOptionsLabel"
+                aria-hidden="true"
+              >
+                <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="modalOptionsLabel">
+                        Edit
+                      </h5>
+                      <button
+                        type="button"
+                        class="close"
+                        data-dismiss="modal"
+                        aria-label="Close"
+                      >
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                      <ul class="nav nav-tabs">
+                        <li class="nav-item">
+                          <a
+                            class="nav-link active"
+                            data-toggle="tab"
+                            href="#edit<%= fl._id%>"
+                            >Edit</a
+                          >
+                        </li>
+                      </ul>
+                      <div id="myTabContent" class="tab-content">
+                        <!--Edit-->
+
+                        <!--Form-->
+                        <div class="form">
+                          <form action="/admin/flat-update" method="POST">
+                            <input
+                              type="hidden"
+                              name="id"
+                              value="<%= fl._id %>"
+                            />
+                            <hr />
+                            <h5 style="text-align: center;">Chủ sở hữu</h5>
+                            <div class="form-group">
+                              <select
+                                class="form-control number"
+                                name="ownerEdit"
+                                id="ownerEdit"
+                              >
+                                <option value="none">Trống</option>
+                                <% resident.forEach(res => { %>
+                                <option
+                                  value="<%= res._id%>|<%= res.full_name%>"
+                                  ><%= res.full_name%></option
+                                >
+                                <% }) %>
+                              </select>
+                            </div>
+                            <hr />
+                            <h5 style="text-align: center;">Số nhân khẩu</h5>
+                            <div class="form-group">
+                              <div
+                                class="input-group control-group1 after-add-more1"
+                              >
+                                <select
+                                  class="form-control number"
+                                  name="numberEdit"
+                                  id="numberEdit"
+                                >
+                                  <option value="none">Trống</option>
+                                  <% resident.forEach(res => { %>
+                                  <option
+                                    value="<%= res._id%>|<%= res.full_name%>"
+                                    ><%= res.full_name%></option
+                                  >
+                                  <% }) %>
+                                </select>
+                                <div class="input-group-btn">
+                                  <button
+                                    class="btn btn-success add-more1"
+                                    type="button"
+                                  >
+                                    Add
+                                  </button>
+                                </div>
+                              </div>
+                            </div>
+                            <button class="btn btn-primary">Update</button>
+                          </form>
+                        </div>
+                        <!---->
+                        <!-- Copy Fields -->
+                        <div class="copy1" style="display: none;">
+                          <div
+                            class="control-group1 input-group"
+                            style="margin-top: 10px;"
+                          >
+                            <select
+                              class="form-control number"
+                              name="number"
+                              id="number"
+                            >
+                              <option value="none">Trống</option>
+                              <% resident.forEach(res => { %>
+                              <option value="<%= res._id%>|<%= res.full_name%>"
+                                ><%= res.full_name%></option
+                              >
+                              <% }) %>
+                            </select>
+                            <div class="input-group-btn">
+                              <button
+                                class="btn btn-danger remove1"
+                                type="button"
+                              >
+                                Remove
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                        <!---->
+                        <!--Form-->
+                      </div>
+                    </div>
+                    <div class="modal-footer">
+                      <button
+                        type="button"
+                        class="btn btn-secondary"
+                        data-dismiss="modal"
+                      >
+                        Close
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!---->
+              <td style="text-align: center;">
+                <button class="btn btn-secondary">
+                  <a style="color: #fff;" href="/admin/flat-delete/<%=fl._id%>"
+                    ><i class="far fa-trash-alt"></i
+                  ></a>
+                </button>
+              </td>
+            </tr>
+            <% }else{ %>
+            <tr class="table-active">
               <td><%=i++; %></td>
               <td><%=fl.block%></td>
               <td><%=fl.floorId%></td>
@@ -91,12 +272,91 @@
 
                         <!--Form-->
                         <div class="form">
-                          <form action="/admin/flat-manage" method="POST">
-                            <button>Update</button>
+                          <form action="/admin/flat-update" method="POST">
+                            <input
+                              type="hidden"
+                              name="id"
+                              value="<%= fl._id %>"
+                            />
+                            <hr />
+                            <h5 style="text-align: center;">Chủ sở hữu</h5>
+                            <div class="form-group">
+                              <select
+                                class="form-control number"
+                                name="ownerEdit"
+                                id="ownerEdit"
+                              >
+                                <option value="none">Trống</option>
+                                <% resident.forEach(res => { %>
+                                <option
+                                  value="<%= res._id%>|<%= res.full_name%>"
+                                  ><%= res.full_name%></option
+                                >
+                                <% }) %>
+                              </select>
+                            </div>
+                            <hr />
+                            <h5 style="text-align: center;">Số nhân khẩu</h5>
+                            <div class="form-group">
+                              <div
+                                class="input-group control-group1 after-add-more1"
+                              >
+                                <select
+                                  class="form-control number"
+                                  name="numberEdit"
+                                  id="numberEdit"
+                                >
+                                  <option value="none">Trống</option>
+                                  <% resident.forEach(res => { %>
+                                  <option
+                                    value="<%= res._id%>|<%= res.full_name%>"
+                                    ><%= res.full_name%></option
+                                  >
+                                  <% }) %>
+                                </select>
+                                <div class="input-group-btn">
+                                  <button
+                                    class="btn btn-success add-more1"
+                                    type="button"
+                                  >
+                                    Add
+                                  </button>
+                                </div>
+                              </div>
+                            </div>
+                            <button class="btn btn-primary">Update</button>
                           </form>
                         </div>
                         <!---->
-
+                        <!-- Copy Fields -->
+                        <div class="copy1" style="display: none;">
+                          <div
+                            class="control-group1 input-group"
+                            style="margin-top: 10px;"
+                          >
+                            <select
+                              class="form-control number"
+                              name="number"
+                              id="number"
+                            >
+                              <option value="none">Trống</option>
+                              <% resident.forEach(res => { %>
+                              <option value="<%= res._id%>|<%= res.full_name%>"
+                                ><%= res.full_name%></option
+                              >
+                              <% }) %>
+                            </select>
+                            <div class="input-group-btn">
+                              <button
+                                class="btn btn-danger remove1"
+                                type="button"
+                              >
+                                Remove
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                        <!---->
                         <!--Form-->
                       </div>
                     </div>
@@ -121,7 +381,8 @@
                 </button>
               </td>
             </tr>
-
+            <% } %>
+            <!---->
             <% })%>
           </tbody>
         </table>
