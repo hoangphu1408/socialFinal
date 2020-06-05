@@ -27,7 +27,7 @@
             <% var i = 1; %><% flat.forEach(fl=>{ %> <% if(fl.status == true){
             %>
             <tr class="table-success">
-              <td><%=i++; %></td>
+              <td><b><%=i++; %></b></td>
               <td><%=fl.block%></td>
               <td><%=fl.floorId%></td>
               <td><%=fl.flatId%></td>
@@ -35,16 +35,27 @@
               <% if(fl.numberOfPeople == 'none'){ %>
               <td>none</td>
               <%}else { %>
-              <td>hehe</td>
+              <!---->
+              <% var number = fl.numberOfPeople %>
+              <td>
+                <ol>
+                  <% number.forEach(num => { %>
+                  <li><%= num.name %></li>
+                  <% }) %>
+                </ol>
+              </td>
+
+              <!---->
+
               <%} %> <% var date = parseInt(fl.date); var time = new Date(date)
               %>
               <td>
                 <%= time.toLocaleTimeString()+ " " + time.toDateString() %>
               </td>
               <% if(fl.status == true){ %>
-              <td>Đã sở hữu</td>
+              <td>Đã có chủ</td>
               <%}else{ %>
-              <td>Chưa sở hữu</td>
+              <td>Chưa có chủ</td>
               <% } %>
               <td style="text-align: center;">
                 <button
@@ -207,7 +218,7 @@
             </tr>
             <% }else{ %>
             <tr class="table-active">
-              <td><%=i++; %></td>
+              <td><b><%=i++; %></b></td>
               <td><%=fl.block%></td>
               <td><%=fl.floorId%></td>
               <td><%=fl.flatId%></td>

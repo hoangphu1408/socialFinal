@@ -18,7 +18,10 @@ const {
   accountResident,
   createFlat,
   updateFlat,
+  deleteFlat,
   announceManage,
+  announceUpdate,
+  announceDelete,
 } = require("../utils/adminAuth");
 // Require View
 const {
@@ -28,6 +31,8 @@ const {
   registerResidentView,
   accountResidentView,
   announceView,
+  postView,
+  test,
 } = require("../utils/adminView");
 
 const verify = require("../config/verifyToken");
@@ -35,6 +40,10 @@ const isLogin = require("../config/isLogin");
 const getData = require("../config/getData");
 
 // Display Views
+
+router.get("/test", (req, res) => {
+  return test(req, res);
+});
 
 router.get("/login", isLogin, (req, res) => {
   return res.render("adminViews/login");
@@ -80,6 +89,10 @@ router.get("/manage", verify, (req, res) => {
 
 router.get("/announce-manage", verify, (req, res) => {
   return announceView(req.user, res);
+});
+
+router.get("/post-manage", verify, (req, res) => {
+  return postView(req.user, res);
 });
 
 router.get("/logout", (req, res) => {
@@ -145,8 +158,26 @@ router.post("/flat-update", verify, async (req, res) => {
   await updateFlat(req.body, res);
 });
 
+router.get("/flat-delete/:id", verify, async (req, res) => {
+  await deleteFlat(req.params.id, res);
+});
+
 // Announce
 router.post("/announce-manage", verify, async (req, res) => {
+  await announceManage(req.body, res);
+});
+
+router.post("/announce-update", verify, async (req, res) => {
+  await announceUpdate(req.body, res);
+});
+
+router.get("/announce-delete/:id", verify, async (req, res) => {
+  await announceDelete(req.params.id, res);
+});
+
+// Post
+
+router.post("/announce-manage1", async (req, res) => {
   await announceManage(req.body, res);
 });
 

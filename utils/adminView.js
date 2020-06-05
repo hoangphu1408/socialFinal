@@ -2,6 +2,7 @@
 const Account = require("../models/account");
 const Flat = require("../models/flat");
 const Resident = require("../models/resident");
+const Post = require("../models/post");
 // Require Handle
 const { isAdmin, listFlat } = require("../utils/adminAuth");
 const moment = require("moment");
@@ -119,15 +120,63 @@ const flatView = async (req, res) => {
  */
 
 const announceView = async (req, res) => {
+  const post = await Post.find({ type: "announce" });
   if (req.role == "admin") {
     return res.render("adminViews/announce", {
       layout: "adminLayout",
       user: req,
+      post: post,
     });
   }
   return res.render("adminViews/announce", {
     layout: "bossLayout",
     user: req,
+    post: post,
+  });
+};
+
+/**
+ *  !-----------------------------!
+ * @description  Post view
+ *  !-----------------------------!
+ */
+
+const postView = async (req, res) => {
+  const post1 = await Post.find({ type: "public" });
+  const post2 = await Post.find({ type: "sell" });
+  const post = post1.concat(post2);
+  if (req.role == "admin") {
+    return res.render("adminViews/post", {
+      layout: "adminLayout",
+      user: req,
+      post: post,
+    });
+  }
+  return res.render("adminViews/post", {
+    layout: "bossLayout",
+    user: req,
+    post: post,
+  });
+};
+
+const test = async (req, res) => {
+  const post = await Post.find({ status: true });
+  const listPost = [];
+  post.forEach((po) => {
+    var date = parseInt(po.date);
+    var formNow = moment(date).fromNow();
+    listPost.push({
+      _id: po._id,
+      type: po.type,
+      id_acc: po.id_acc,
+      username: po.username,
+      content: po.content,
+      date: formNow,
+    });
+  });
+
+  return res.render("test", {
+    post: listPost.reverse(),
   });
 };
 
@@ -138,4 +187,6 @@ module.exports = {
   flatView,
   accountResidentView,
   announceView,
+  postView,
+  test,
 };

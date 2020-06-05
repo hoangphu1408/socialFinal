@@ -10659,3 +10659,11 @@ body {
 .an-form {
   width: 850px !important;
 }
+
+
+.contentPost {
+   white-space: nowrap; 
+  width: 300px; 
+  overflow: hidden;
+  text-overflow: ellipsis; 
+}

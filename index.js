@@ -18,7 +18,7 @@ app.use(expressLayouts);
 app.set("view engine", "ejs");
 
 // Bodyparser
-
+app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ limit: "50mb", extended: true }));
 app.use(cookieparser());
 

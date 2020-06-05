@@ -581,6 +581,23 @@ const updateFlat = async (data, res) => {
 
 /**
  * !------------------------------------- !
+ * @description Flat Delete
+ * !------------------------------------- !
+ */
+
+const deleteFlat = async (id, res) => {
+  const flat = await Flat.findByIdAndDelete({ _id: id }, (error, data) => {
+    if (error) {
+      alert("Cant delete now");
+      throw error;
+    } else {
+      return res.redirect("back");
+    }
+  });
+};
+
+/**
+ * !------------------------------------- !
  * @description Announce Manage
  * !------------------------------------- !
  */
@@ -597,6 +614,26 @@ const announceManage = async (data, res) => {
   });
   await newPost.save();
   return res.redirect("back");
+};
+
+const announceUpdate = async (data, res) => {
+  const { idEdit, editAn, status } = data;
+  const update = { content: editAn, status: status };
+  const updatePost = await Post.findByIdAndUpdate({ _id: idEdit }, update, {
+    new: true,
+  });
+  return res.redirect("back");
+};
+
+const announceDelete = async (id, res) => {
+  const post = await Post.findByIdAndDelete({ _id: id }, (error, data) => {
+    if (error) {
+      alert("Cant delete now");
+      throw error;
+    } else {
+      return res.redirect("back");
+    }
+  });
 };
 
 /**
@@ -681,5 +718,8 @@ module.exports = {
   accountResident,
   createFlat,
   updateFlat,
+  deleteFlat,
   announceManage,
+  announceUpdate,
+  announceDelete,
 };

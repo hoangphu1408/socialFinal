@@ -1,0 +1,201 @@
+<div class="container-fluid">
+  <div class="card mb-4">
+    <div class="card-header">
+      <i class="fas fa-table mr-1"></i>List Announces
+    </div>
+    <div class="card-body">
+      <div class="table-responsive">
+        <table
+          class="table table-bordered"
+          id="dataTable"
+          width="100%"
+          cellspacing="0"
+        >
+          <thead>
+            <tr>
+              <th>STT</th>
+              <th>Loại</th>
+              <th>Người đăng</th>
+              <th>Nội dung</th>
+              <th>Ảnh</th>
+              <th>Trạng thái</th>
+              <th>Ngày tạo</th>
+              <th>Tùy chọn</th>
+              <th>Xóa</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% var i = 1 %> <% post.forEach(pos =>{ %> <% if(pos.status ==
+            true){ %>
+            <tr class="table-success">
+              <td><%= i++ %></td>
+              <% if(pos.type == "public" ) {%>
+              <td>Bình thường</td>
+              <% }else { %>
+              <td>Buôn bán</td>
+              <% } %>
+              <td><%=pos.username %></td>
+              <td>
+                <div class="contentPost"><%=pos.content %></div>
+              </td>
+              <td><%=pos.image %></td>
+              <td>Hiện</td>
+              <% var date = parseInt(pos.date); var time = new Date(date) %>
+              <td>
+                <%= time.toLocaleTimeString()+ " " + time.toDateString() %>
+              </td>
+              <td style="text-align: center;">
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  data-toggle="modal"
+                  data-target="#modalOptions"
+                  id="<%=pos._id%>"
+                  onclick="test(this.id)"
+                >
+                  <i class="fas fa-cog"></i>
+                </button>
+              </td>
+              <td style="text-align: center;">
+                <button class="btn btn-secondary">
+                  <a
+                    style="color: #fff;"
+                    href="/admin/announce-delete/<%=pos._id%>"
+                    ><i class="far fa-trash-alt"></i
+                  ></a>
+                </button>
+              </td>
+            </tr>
+            <textarea id="<%=pos._id%>test" style="visibility: hidden;">
+<%-pos.content%></textarea
+            >
+            <%}else{%>
+            <tr class="table-active">
+              <td><%= i++ %></td>
+              <% if(pos.type == "public" ) {%>
+              <td>Bình thường</td>
+              <% }else { %>
+              <td>Buôn bán</td>
+              <% } %>
+              <td><%=pos.username %></td>
+              <td>
+                <div class="contentPost"><%=pos.content %></div>
+              </td>
+              <td><%=pos.image %></td>
+              <td>Ẩn</td>
+              <% var date = parseInt(pos.date); var time = new Date(date) %>
+              <td>
+                <%= time.toLocaleTimeString()+ " " + time.toDateString() %>
+              </td>
+              <td style="text-align: center;">
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  data-toggle="modal"
+                  data-target="#modalOptions"
+                  id="<%=pos._id%>"
+                  onclick="test(this.id)"
+                >
+                  <i class="fas fa-cog"></i>
+                </button>
+              </td>
+              <td style="text-align: center;">
+                <button class="btn btn-secondary">
+                  <a
+                    style="color: #fff;"
+                    href="/admin/announce-delete/<%=pos._id%>"
+                    ><i class="far fa-trash-alt"></i
+                  ></a>
+                </button>
+              </td>
+            </tr>
+            <textarea id="<%=pos._id%>test" style="visibility: hidden;">
+<%-pos.content%></textarea
+            >
+            <%}%> <% }) %>
+          </tbody>
+        </table>
+        <!-- Modal-->
+        <div
+          class="modal fade"
+          id="modalOptions"
+          tabindex="-1"
+          role="dialog"
+          aria-labelledby="modalOptionsLabel"
+          aria-hidden="true"
+        >
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="modalOptionsLabel">
+                  See post
+                </h5>
+                <button
+                  type="button"
+                  class="close"
+                  data-dismiss="modal"
+                  aria-label="Close"
+                >
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <ul class="nav nav-tabs">
+                  <li class="nav-item">
+                    <a class="nav-link active" data-toggle="tab" href="#edit"
+                      >See post</a
+                    >
+                  </li>
+                </ul>
+                <div id="myTabContent" class="tab-content">
+                  <!--Edit-->
+                  <div class="tab-pane fade show active" id="edit">
+                    <form action="/admin/announce-update" method="POST">
+                      <input type="hidden" name="idEdit" id="idEdit" />
+                      <div class="form-group">
+                        <textarea
+                          name="editPost"
+                          id="editPost"
+                          cols="30"
+                          rows="10"
+                          class="form-control"
+                          disabled
+                        ></textarea>
+                      </div>
+                      <div class="form-group">
+                        <select class="form-control" name="status" id="status">
+                          <option value="true">Hiện</option>
+                          <option value="false">Ẩn</option>
+                        </select>
+                      </div>
+                      <button type="submit" class="btn btn-primary float-right">
+                        Update
+                      </button>
+                    </form>
+                  </div>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  data-dismiss="modal"
+                >
+                  Close
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!---->
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  function test(id) {
+    var str = document.getElementById(id + "test").value;
+    $("#idEdit").val(id);
+    $("#editPost").val(str);
+  }
+</script>
