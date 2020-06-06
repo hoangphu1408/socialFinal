@@ -13,6 +13,7 @@ const {
   loginValidation,
   regResidentValidation,
   regAccountResident,
+  changeNewPWD,
 } = require("../config/validation");
 const moment = require("moment");
 const nodemailer = require("nodemailer");
@@ -144,11 +145,43 @@ const loginAdmin = async (data, res) => {
 
 /**
  * !------------------------------------- !
+ * @description ChangePassword
+ * !------------------------------------- !
+ */
+const changePWDAD = async (id, data, res) => {
+  const { password, password2 } = data;
+  const errors = [];
+  const { error } = await changeNewPWD(data);
+  if (error) {
+    if (error.details[0].type === "any.only") {
+      errors.push({ msg: "Password do not match" });
+      return res.status(400).render("adminViews/changePassword", {
+        errors: errors,
+        data: data,
+      });
+    }
+    errors.push({ msg: error.details[0].message });
+    return res.status(400).render("adminViews/changePassword", {
+      errors: errors,
+      data: data,
+    });
+  }
+  const hashedPassword = await bcrypt.hash(password, 12);
+  const update = { password: hashedPassword };
+  const updatePassword = await Account.findOneAndUpdate({ _id: id }, update, {
+    new: true,
+  });
+  res.clearCookie("auth");
+  return res.redirect("/admin/login");
+};
+
+/**
+ * !------------------------------------- !
  * @description Verify Email
  * !------------------------------------- !
  */
 
-const verifyEmailToken = async (token, res, next) => {
+const verifyEmailToken = async (token, res) => {
   try {
     const verified = jwt.verify(token, MAIL);
     const isTrue = { email_verify: true };
@@ -163,13 +196,31 @@ const verifyEmailToken = async (token, res, next) => {
 
 /**
  * !------------------------------------- !
+ * @description Verify Email ChangePassword
+ * !------------------------------------- !
+ */
+
+const changePasswordAd = async (token, res) => {
+  try {
+    const verified = jwt.verify(token, MAIL);
+    if (verified) {
+      return res.render("adminViews/changePassword");
+    } else {
+      return res.redirect("/admin/dashboard");
+    }
+  } catch (err) {
+    return res.send("Verify error");
+  }
+};
+
+/**
+ * !------------------------------------- !
  * @description Resend mail
  * !------------------------------------- !
  */
 
 const resendMail = async (email, res) => {
   // Create mail token
-  res.send(email);
   const payload = { email: email };
   const mailToken = jwt.sign(payload, MAIL, {
     expiresIn: "1 days",
@@ -182,6 +233,20 @@ const isAdmin = async function (role, res) {
   if (role != "admin" && role != "boss") {
     return res.status(403).redirect("/");
   }
+};
+
+/**
+ * !------------------------------------- !
+ * @description Send mail pw
+ * !------------------------------------- !
+ */
+
+const sendEmailPassword = async (email, res) => {
+  const payload = { email: email };
+  const mailToken = jwt.sign(payload, MAIL, {
+    expiresIn: "1 days",
+  });
+  await sendEmailPW(email, mailToken);
 };
 
 /**
@@ -675,6 +740,35 @@ const verifyEmail = (email, mailToken) => {
     }
   });
 };
+
+const sendEmailPW = (email, mailToken) => {
+  const transport = nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+      user: EMAIL,
+      pass: PASSWORD,
+    },
+  });
+  const url = `http://localhost:5000/admin/change-password/${mailToken}`;
+  const mailOptions = {
+    from: "SocialNetWork<hoangphu1428@gmail.com>",
+    to: email,
+    subject: "Mail change password",
+    html: `
+           <p>Please click the link below if you want change your password</p>
+           <a href="${url}">Click here to do that ! </a>
+        `,
+  };
+  transport.sendMail(mailOptions, (error, res) => {
+    if (error) {
+      return console.log(error);
+    } else {
+      console.log("Success");
+      transport.close();
+    }
+  });
+};
+
 const sendEmail = (email, password) => {
   const transport = nodemailer.createTransport({
     service: "gmail",
@@ -704,11 +798,14 @@ const sendEmail = (email, password) => {
 module.exports = {
   registrationAdmin,
   verifyEmailToken,
+  sendEmailPassword,
+  changePWDAD,
   resendMail,
   loginAdmin,
   isAdmin,
   createLimit,
   updateAdmin,
+  changePasswordAd,
   updatePasswordAd,
   updateActivation,
   deleteAdmin,

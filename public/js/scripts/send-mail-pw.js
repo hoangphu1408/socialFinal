@@ -3,7 +3,7 @@ $(document).ready(function () {
     var timeleft = 61;
     event.preventDefault();
     var email = document.getElementById("email").value;
-    $.post("/admin/verify-mail", { email: email }, function (data) {
+    $.post("/admin/send-mail-pw", { email: email }, function (data) {
       var submit = document.getElementById("submit");
       submit.disabled = true;
       var downloadTimer = setInterval(function () {
@@ -11,7 +11,7 @@ $(document).ready(function () {
         document.getElementById("submit").value = timeleft;
         if (timeleft <= 0) {
           clearInterval(downloadTimer);
-          document.getElementById("submit").value = "Send";
+          document.getElementById("submit").value = "Submit";
           submit.disabled = false;
         }
       }, 1000);

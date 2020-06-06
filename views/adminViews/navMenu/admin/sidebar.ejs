@@ -3,13 +3,42 @@
     <div class="sb-sidenav-menu">
       <div class="nav">
         <div class="sb-sidenav-menu-heading">Main</div>
-        <a class="nav-link" href="index.html">
+        <a class="nav-link" href="/admin/Dashboard">
           <div class="sb-nav-link-icon">
             <i class="fas fa-tachometer-alt"></i>
           </div>
           Dashboard
         </a>
         <div class="sb-sidenav-menu-heading">Interface</div>
+        <!---------->
+        <a
+          class="nav-link collapsed"
+          href="#"
+          data-toggle="collapse"
+          data-target="#collapseFlat"
+          aria-expanded="false"
+          aria-controls="collapseFlat"
+        >
+          <div class="sb-nav-link-icon">
+            <i class="fas fa-columns"></i>
+          </div>
+          Flat
+          <div class="sb-sidenav-collapse-arrow">
+            <i class="fas fa-angle-down"></i>
+          </div>
+        </a>
+        <div
+          class="collapse"
+          id="collapseFlat"
+          aria-labelledby="headingOne"
+          data-parent="#sidenavAccordion"
+        >
+          <nav class="sb-sidenav-menu-nested nav">
+            <a class="nav-link" href="/admin/flat-manage">Manage</a>
+          </nav>
+        </div>
+
+        <!---------->
         <a
           class="nav-link collapsed"
           href="#"
@@ -33,9 +62,57 @@
           data-parent="#sidenavAccordion"
         >
           <nav class="sb-sidenav-menu-nested nav">
-            <a class="nav-link" href="layout-static.html">Manage</a>
+            <a class="nav-link" href="/admin/resident-manage">Manage</a>
           </nav>
         </div>
+        <div
+          class="collapse"
+          id="collapseResident"
+          aria-labelledby="headingOne"
+          data-parent="#sidenavAccordion"
+        >
+          <nav class="sb-sidenav-menu-nested nav">
+            <a class="nav-link" href="/admin/resident-account">Account</a>
+          </nav>
+        </div>
+
+        <a
+          class="nav-link collapsed"
+          href="#"
+          data-toggle="collapse"
+          data-target="#collapseAnnounce"
+          aria-expanded="false"
+          aria-controls="collapseAnnounce"
+        >
+          <div class="sb-nav-link-icon">
+            <i class="fas fa-book-open"></i>
+          </div>
+          Announce
+          <div class="sb-sidenav-collapse-arrow">
+            <i class="fas fa-angle-down"></i>
+          </div>
+        </a>
+        <div
+          class="collapse"
+          id="collapseAnnounce"
+          aria-labelledby="headingOne"
+          data-parent="#sidenavAccordion"
+        >
+          <nav class="sb-sidenav-menu-nested nav">
+            <a class="nav-link" href="/admin/announce-manage">Manage</a>
+          </nav>
+        </div>
+        <div
+          class="collapse"
+          id="collapseAnnounce"
+          aria-labelledby="headingOne"
+          data-parent="#sidenavAccordion"
+        >
+          <nav class="sb-sidenav-menu-nested nav">
+            <a class="nav-link" href="/admin/post-manage">List Posts</a>
+          </nav>
+        </div>
+        <!---------->
       </div>
     </div>
     <div class="sb-sidenav-footer">

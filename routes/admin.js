@@ -8,6 +8,7 @@ const {
   loginAdmin,
   isAdmin,
   updateAdmin,
+  changePasswordAd,
   updatePasswordAd,
   updateActivation,
   deleteAdmin,
@@ -22,10 +23,13 @@ const {
   announceManage,
   announceUpdate,
   announceDelete,
+  sendEmailPassword,
+  changePWDAD,
 } = require("../utils/adminAuth");
 // Require View
 const {
   dashboardView,
+  changePasswordView,
   registerView,
   flatView,
   registerResidentView,
@@ -63,12 +67,20 @@ router.get("/back-to-dashboard", (req, res) => {
   return res.render("adminViews/backtoDashboard");
 });
 
-router.get("/verify-mail/:token", async (req, res, next) => {
-  await verifyEmailToken(req.params.token, res, next);
+router.get("/verify-mail/:token", async (req, res) => {
+  await verifyEmailToken(req.params.token, res);
 });
 // Interface
 router.get("/dashboard", verify, (req, res) => {
   dashboardView(req.user, res);
+});
+
+router.get("/send-mail-pw", verify, (req, res) => {
+  changePasswordView(req.user, res);
+});
+
+router.get("/change-password/:token", async (req, res) => {
+  await changePasswordAd(req.params.token, res);
 });
 
 router.get("/flat-manage", verify, (req, res) => {
@@ -110,6 +122,11 @@ router.post("/login", async (req, res) => {
   await loginAdmin(req.body, res);
 });
 
+router.post("/send-mail-pw", createLimit, verify, async (req, res) => {
+  await sendEmailPassword(req.body.email, res);
+  return res.json(req.body);
+});
+
 router.post("/verify-mail", createLimit, async (req, res) => {
   await resendMail(req.body.email, res);
   return res.json(req.body);
@@ -119,6 +136,11 @@ router.post("/resident-manage", verify, async (req, res) => {
   await registrationResident(req.body, req.user, res);
 });
 // Edit Admin
+
+router.post("/change-password", verify, async (req, res) => {
+  await changePWDAD(req.user._id, req.body, res);
+});
+
 router.post("/update/:id", verify, async (req, res) => {
   await updateAdmin(req.body, res);
 });
