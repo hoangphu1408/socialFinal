@@ -18,12 +18,13 @@ app.use(expressLayouts);
 app.set("view engine", "ejs");
 
 // Bodyparser
-app.use(bodyParser.json());
+app.use(bodyParser.json({ limit: "50mb" }));
 app.use(bodyParser.urlencoded({ limit: "50mb", extended: true }));
 app.use(cookieparser());
 
 // Import router
 app.use("/admin", require("./routes/admin"));
+app.use("/", require("./routes/user"));
 
 app.listen(PORT, connectDB, () => {
   console.log(`Server running at ${PORT}`);

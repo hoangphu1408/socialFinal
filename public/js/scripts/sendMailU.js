@@ -3,7 +3,7 @@ $(document).ready(function () {
     var timeleft = 61;
     event.preventDefault();
     var email = document.getElementById("email").value;
-    $.post("/admin/send-mail-pw", { email: email }, function (data) {
+    $.post("/send-mail", { email: email }, function (data) {
       var submit = document.getElementById("submit1");
       submit.disabled = true;
       var downloadTimer = setInterval(function () {

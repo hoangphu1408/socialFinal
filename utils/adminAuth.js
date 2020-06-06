@@ -247,6 +247,7 @@ const sendEmailPassword = async (email, res) => {
     expiresIn: "1 days",
   });
   await sendEmailPW(email, mailToken);
+  return res.redirect("back");
 };
 
 /**
@@ -433,8 +434,9 @@ const accountResident = async (data, zemail, res) => {
     id_resident: re[0],
     residentName: re[1],
     role: "user",
+    avatar: "avatar.jpg",
     email: email,
-    username: "none",
+    username: "Cư dân",
     phoneNumber: "none",
     password: hashedPassword,
     date: Date.now(),

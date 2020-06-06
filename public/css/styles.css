@@ -10642,6 +10642,10 @@ body {
   width: 500px !important;
 }
 
+.con-form1 {
+  width: 800px !important;
+}
+
 .card {
   margin-left: auto;
   margin-right: auto;
@@ -10666,4 +10670,19 @@ body {
   width: 300px; 
   overflow: hidden;
   text-overflow: ellipsis; 
+}
+
+.circular--landscape {
+  display: inline-block;
+  position: relative;
+  width: 200px;
+  height: 200px;
+  overflow: hidden;
+  border-radius: 50%;
+}
+
+.circular--landscape img {
+  width: auto;
+  height: 100%;
+  margin-left: -50px;
 }

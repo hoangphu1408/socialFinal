@@ -42,7 +42,7 @@
                   type="button"
                   class="btn btn-secondary"
                   data-toggle="modal"
-                  data-target="#modalOptions<%= ad.username%>"
+                  data-target="#modalOptions<%= ad._id%>"
                 >
                   <i class="fas fa-cog"></i>
                 </button>
@@ -50,7 +50,7 @@
               <!-- Modal-->
               <div
                 class="modal fade"
-                id="modalOptions<%= ad.username%>"
+                id="modalOptions<%= ad._id%>"
                 tabindex="-1"
                 role="dialog"
                 aria-labelledby="modalOptionsLabel"

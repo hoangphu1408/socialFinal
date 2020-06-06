@@ -100,10 +100,20 @@ const changeNewPWD = (data) => {
   return schema.validate(data);
 };
 
+const validatePost = (data) => {
+  const schema = Joi.object({
+    content: Joi.string().pattern(new RegExp("^[a-zA-Z0-9]{6,30}$")).messages({
+      "string.pattern.base": `Content should be clean`,
+    }),
+  });
+  return schema.validate(data);
+};
+
 module.exports = {
   regAdminValidation,
   loginValidation,
   regResidentValidation,
   regAccountResident,
   changeNewPWD,
+  validatePost,
 };

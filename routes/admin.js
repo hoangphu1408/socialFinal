@@ -1,5 +1,4 @@
 const router = require("express").Router();
-const bodyParser = require("body-parser");
 // Require Handle
 const {
   registrationAdmin,
@@ -124,7 +123,6 @@ router.post("/login", async (req, res) => {
 
 router.post("/send-mail-pw", createLimit, verify, async (req, res) => {
   await sendEmailPassword(req.body.email, res);
-  return res.json(req.body);
 });
 
 router.post("/verify-mail", createLimit, async (req, res) => {

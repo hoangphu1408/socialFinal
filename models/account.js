@@ -16,7 +16,7 @@ const accountSchema = new Schema({
     type: String,
     trim: true,
   },
-
+  avatar: {},
   email: {
     type: String,
     default: null,

@@ -1,0 +1,39 @@
+<% public.forEach(pu => { %>
+<div class="d-flex justify-content-center h-100 w-100">
+  <div class="card shadow" style="width: 100%;">
+    <div class="card-header">
+      <div class="d-flex justify-content-between align-items-center">
+        <div class="d-flex justify-content-between align-items-center">
+          <div class="mr-2">
+            <img
+              class="rounded-circle"
+              width="45"
+              src="/avatar/<%= pu.avatar %>"
+              alt=""
+            />
+          </div>
+          <div class="ml-2">
+            <div class="h5 m-0">@<%= pu.username %></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="text-muted h7 mb-2">
+        <i class="fa fa-clock-o"></i> <%= pu.date%>
+      </div>
+      <p class="card-text">
+        <%= pu.content %>
+      </p>
+      <% if(pu.image != 'none') {%>
+      <p><img src="/uploads/<%= pu.image %>" width="100%" /></p>
+      <% } %>
+    </div>
+    <div class="card-footer">
+      <a href="#" class="card-link"><i class="fa fa-gittip"></i> Like</a>
+      <a href="#" class="card-link"><i class="fa fa-comment"></i> Comment</a>
+      <a href="#" class="card-link"><i class="fa fa-mail-forward"></i> Share</a>
+    </div>
+  </div>
+</div>
+<% }) %>

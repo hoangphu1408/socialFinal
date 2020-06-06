@@ -6,9 +6,9 @@ const postSchema = new Schema({
     required: true,
   },
   username: {},
+  email: {},
   content: {
     type: String,
-    required: true,
   },
   image: {},
   type: {
