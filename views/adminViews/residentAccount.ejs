@@ -10,9 +10,7 @@
           <div class="form-group">
             <select class="form-control" name="resident" id="resident">
               <% resident.forEach(res => { %>
-              <option value="<%= res._id%>|<%= res.full_name%>"
-                ><%= res.full_name%></option
-              >
+              <option value="<%= res._id%>"><%= res.full_name%></option>
               <% }) %>
             </select>
           </div>

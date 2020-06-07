@@ -2,11 +2,9 @@ const { Schema, model } = require("mongoose");
 
 const postSchema = new Schema({
   id_acc: {
-    type: String,
+    type: Schema.Types.ObjectId,
     required: true,
   },
-  username: {},
-  email: {},
   content: {
     type: String,
   },

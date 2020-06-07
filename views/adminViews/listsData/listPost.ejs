@@ -28,8 +28,8 @@
             true){ %>
             <tr class="table-success">
               <td><%= i++ %></td>
-              <td><%=pos.type %></td>
-              <td><%=pos.username %></td>
+              <td>Thông báo</td>
+              <td><%=pos.owner[0].email %></td>
               <td><div class="contentPost"><%=pos.content %></div></td>
               <td>Hiện</td>
               <% var date = parseInt(pos.date); var time = new Date(date) %>
@@ -65,7 +65,7 @@
             <tr class="table-active">
               <td><%= i++ %></td>
               <td><%=pos.type %></td>
-              <td><%=pos.username %></td>
+              <td><%=pos.owner[0].email %></td>
               <td>
                 <div class="contentPost"><%=pos.content %></div>
               </td>

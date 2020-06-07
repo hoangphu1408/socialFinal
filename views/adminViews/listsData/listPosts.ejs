@@ -15,7 +15,7 @@
               <th>Loại</th>
               <th>Người đăng</th>
               <th>Nội dung</th>
-              <th>Ảnh</th>
+              <th style="width: 300px;">Ảnh</th>
               <th>Trạng thái</th>
               <th>Ngày tạo</th>
               <th>Tùy chọn</th>
@@ -36,7 +36,9 @@
               <td>
                 <div class="contentPost"><%=pos.content %></div>
               </td>
-              <td><%=pos.image %></td>
+              <td>
+                <image src="/uploads/<%=pos.image %>" width="100%"></image>
+              </td>
               <td>Hiện</td>
               <% var date = parseInt(pos.date); var time = new Date(date) %>
               <td>

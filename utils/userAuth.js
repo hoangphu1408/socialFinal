@@ -70,7 +70,7 @@ const loginUser = async (data, res) => {
 
 const postCreate = async (user, data, image, res) => {
   const errors = [];
-  const { id, email, username, content } = data;
+  const { id, content } = data;
   if (content === "" && image === "none") {
     errors.push({ msg: "Please add content" });
     return res.render("userViews/homepage", {
@@ -82,26 +82,23 @@ const postCreate = async (user, data, image, res) => {
   if (content == "") {
     const newPost = new Post({
       id_acc: id,
-      username: username,
-      email: email,
       content: "none",
       image: image,
       status: true,
       date: Date.now(),
     });
+    res.send(newPost);
     await newPost.save();
     return res.redirect("back");
   }
   const newPost = new Post({
     id_acc: id,
-    username: username,
-    email: email,
     content: content,
     image: image,
     status: true,
     date: Date.now(),
   });
-
+  res.send(newPost);
   await newPost.save();
   return res.redirect("back");
 };

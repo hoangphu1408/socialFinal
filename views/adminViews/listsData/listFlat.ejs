@@ -31,24 +31,16 @@
               <td><%=fl.block%></td>
               <td><%=fl.floorId%></td>
               <td><%=fl.flatId%></td>
-              <td><%=fl.ownerName%></td>
-              <% if(fl.numberOfPeople == 'none'){ %>
-              <td>none</td>
-              <%}else { %>
               <!---->
-              <% var number = fl.numberOfPeople %>
+              <td><%=fl.Owner[0].full_name %></td>
+              <!---->
               <td>
-                <ol>
-                  <% number.forEach(num => { %>
-                  <li><%= num.name %></li>
-                  <% }) %>
-                </ol>
+                <% var people = fl.people %> <% people.forEach(peo=>{ %>
+                <p><%=peo.full_name%></p>
+                <%})%>
               </td>
-
               <!---->
-
-              <%} %> <% var date = parseInt(fl.date); var time = new Date(date)
-              %>
+              <% var date = parseInt(fl.date); var time = new Date(date) %>
               <td>
                 <%= time.toLocaleTimeString()+ " " + time.toDateString() %>
               </td>
@@ -123,8 +115,7 @@
                               >
                                 <option value="none">Trống</option>
                                 <% resident.forEach(res => { %>
-                                <option
-                                  value="<%= res._id%>|<%= res.full_name%>"
+                                <option value="<%= res._id%>"
                                   ><%= res.full_name%></option
                                 >
                                 <% }) %>
@@ -143,8 +134,7 @@
                                 >
                                   <option value="none">Trống</option>
                                   <% resident.forEach(res => { %>
-                                  <option
-                                    value="<%= res._id%>|<%= res.full_name%>"
+                                  <option value="<%= res._id%>"
                                     ><%= res.full_name%></option
                                   >
                                   <% }) %>
@@ -176,7 +166,7 @@
                             >
                               <option value="none">Trống</option>
                               <% resident.forEach(res => { %>
-                              <option value="<%= res._id%>|<%= res.full_name%>"
+                              <option value="<%= res._id%>"
                                 ><%= res.full_name%></option
                               >
                               <% }) %>
@@ -222,8 +212,8 @@
               <td><%=fl.block%></td>
               <td><%=fl.floorId%></td>
               <td><%=fl.flatId%></td>
-              <td><%=fl.ownerName%></td>
-              <td><%=fl.numberOfPeople%></td>
+              <td>Trống</td>
+              <td>Trống</td>
               <% var date = parseInt(fl.date); var time = new Date(date) %>
               <td>
                 <%= time.toLocaleTimeString()+ " " + time.toDateString() %>
@@ -299,8 +289,7 @@
                               >
                                 <option value="none">Trống</option>
                                 <% resident.forEach(res => { %>
-                                <option
-                                  value="<%= res._id%>|<%= res.full_name%>"
+                                <option value="<%= res._id%>"
                                   ><%= res.full_name%></option
                                 >
                                 <% }) %>
@@ -319,8 +308,7 @@
                                 >
                                   <option value="none">Trống</option>
                                   <% resident.forEach(res => { %>
-                                  <option
-                                    value="<%= res._id%>|<%= res.full_name%>"
+                                  <option value="<%= res._id%>"
                                     ><%= res.full_name%></option
                                   >
                                   <% }) %>
@@ -352,7 +340,7 @@
                             >
                               <option value="none">Trống</option>
                               <% resident.forEach(res => { %>
-                              <option value="<%= res._id%>|<%= res.full_name%>"
+                              <option value="<%= res._id%>"
                                 ><%= res.full_name%></option
                               >
                               <% }) %>

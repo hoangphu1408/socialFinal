@@ -138,7 +138,39 @@ const accountResidentView = async (req, res) => {
 const flatView = async (req, res) => {
   try {
     const resident = await Resident.find();
-    const flat = await Flat.find();
+    const flat = await Flat.aggregate([
+      {
+        $lookup: {
+          from: "residents",
+          localField: "owner",
+          foreignField: "_id",
+          as: "Owner",
+        },
+      },
+      {
+        $lookup: {
+          from: "residents",
+          localField: "numberOfPeople",
+          foreignField: "_id",
+          as: "people",
+        },
+      },
+      {
+        $project: {
+          block: 1,
+          flatId: 1,
+          floorId: 1,
+          date: 1,
+          status: 1,
+          people: {
+            full_name: 1,
+          },
+          Owner: {
+            full_name: 1,
+          },
+        },
+      },
+    ]);
 
     if (req.role == "admin") {
       return res.render("adminViews/flat", {
@@ -167,7 +199,34 @@ const flatView = async (req, res) => {
 
 const announceView = async (req, res) => {
   try {
-    const post = await Post.find({ type: "announce" });
+    const post = await Post.aggregate([
+      {
+        $match: {
+          type: "announce",
+        },
+      },
+      {
+        $lookup: {
+          from: "accounts",
+          localField: "id_acc",
+          foreignField: "_id",
+          as: "owner",
+        },
+      },
+      {
+        $project: {
+          type: 1,
+          content: 1,
+          status: 1,
+          date: 1,
+          owner: {
+            username: 1,
+            email: 1,
+            avatar: 1,
+          },
+        },
+      },
+    ]);
     if (req.role == "admin") {
       return res.render("adminViews/announce", {
         layout: "adminLayout",
@@ -215,26 +274,37 @@ const postView = async (req, res) => {
 
 const test = async (req, res) => {
   try {
-    const post = await Post.find({ status: true });
-    const listPost = [];
-    post.forEach((po) => {
-      var date = parseInt(po.date);
-      var formNow = moment(date).fromNow();
-      listPost.push({
-        _id: po._id,
-        type: po.type,
-        id_acc: po.id_acc,
-        username: po.username,
-        content: po.content,
-        date: formNow,
-      });
-    });
-
-    return res.render("test", {
-      post: listPost.reverse(),
-    });
+    const post = await Post.aggregate([
+      {
+        $match: {
+          type: "announce",
+        },
+      },
+      {
+        $lookup: {
+          from: "accounts",
+          localField: "id_acc",
+          foreignField: "_id",
+          as: "owner",
+        },
+      },
+      {
+        $project: {
+          type: 1,
+          content: 1,
+          status: 1,
+          date: 1,
+          owner: {
+            username: 1,
+            email: 1,
+            avatar: 1,
+          },
+        },
+      },
+    ]);
+    res.send(post);
   } catch (err) {
-    return res.status(403).redirect("/");
+    console.log(err);
   }
 };
 

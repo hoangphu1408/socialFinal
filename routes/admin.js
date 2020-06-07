@@ -184,7 +184,7 @@ router.get("/flat-delete/:id", verify, async (req, res) => {
 
 // Announce
 router.post("/announce-manage", verify, async (req, res) => {
-  await announceManage(req.body, res);
+  await announceManage(req.user, req.body, res);
 });
 
 router.post("/announce-update", verify, async (req, res) => {

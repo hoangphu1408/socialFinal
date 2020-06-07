@@ -55,9 +55,7 @@
             <select class="form-control number" name="owner" id="owner">
               <option value="none">Trống</option>
               <% resident.forEach(res => { %>
-              <option value="<%= res._id%>|<%= res.full_name%>"
-                ><%= res.full_name%></option
-              >
+              <option value="<%= res._id%>"><%= res.full_name%></option>
               <% }) %>
             </select>
           </div>
@@ -69,9 +67,7 @@
               <select class="form-control number" name="number" id="number">
                 <option value="none">Trống</option>
                 <% resident.forEach(res => { %>
-                <option value="<%= res._id%>|<%= res.full_name%>"
-                  ><%= res.full_name%></option
-                >
+                <option value="<%= res._id%>"><%= res.full_name%></option>
                 <% }) %>
               </select>
               <div class="input-group-btn">
@@ -91,9 +87,7 @@
           <select class="form-control number" name="number" id="number">
             <option value="none">Trống</option>
             <% resident.forEach(res => { %>
-            <option value="<%= res._id%>|<%= res.full_name%>"
-              ><%= res.full_name%></option
-            >
+            <option value="<%= res._id%>"><%= res.full_name%></option>
             <% }) %>
           </select>
           <div class="input-group-btn">

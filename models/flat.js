@@ -14,9 +14,8 @@ const flatSchema = new Schema({
     type: String,
     required: true,
   },
-  owner: {},
-  ownerName: {},
-  numberOfPeople: {},
+  owner: { type: Schema.Types.ObjectId },
+  numberOfPeople: [Schema.Types.ObjectId],
   date: {
     type: String,
     required: true,

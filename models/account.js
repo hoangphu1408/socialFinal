@@ -3,9 +3,8 @@ const Schema = require("mongoose").Schema;
 
 const accountSchema = new Schema({
   id_resident: {
-    type: String,
+    type: Schema.Types.ObjectId,
   },
-  residentName: {},
   role: {
     type: String,
     required: true,

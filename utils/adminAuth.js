@@ -280,7 +280,6 @@ const registrationResident = async (data, user, res) => {
     household,
   } = data;
   const private_information = [];
-  const household_registration = [];
   const validate = { full_name: full_name };
   const { error } = await regResidentValidation(validate);
   if (error) {
@@ -309,18 +308,11 @@ const registrationResident = async (data, user, res) => {
       mother_name: mother_name,
     });
   }
-  if (household == "temporary_resident") {
-    household_registration.push({ type: "Tạm trú" });
-  } else if (household == "permanent_resident") {
-    household_registration.push({ type: "Thường trú" });
-  } else {
-    household_registration.push({ type: "Chưa cập nhật " });
-  }
   const newResident = new Resident({
     full_name: full_name,
     year_of_birth: yearOfBirth,
     private_information: private_information,
-    household_registration: household_registration,
+    household_registration: household,
     date: Date.now(),
     status: true,
   });
@@ -383,7 +375,6 @@ const accountResident = async (data, zemail, res) => {
   const { resident, email, password, password2 } = data;
   const accounts = await Account.find({ role: "user" });
   const residents = await Resident.find();
-  const re = resident.split("|");
   const errors = [];
   const validate = { email: email, password: password, password2: password2 };
   const { error } = await regAccountResident(validate);
@@ -407,7 +398,7 @@ const accountResident = async (data, zemail, res) => {
       user: zemail,
     });
   }
-  const account = await Account.findOne({ id_resident: re[0] });
+  const account = await Account.findOne({ id_resident: resident });
   if (account) {
     errors.push({ msg: "This resident is already have an account" });
     return res.status(400).render("adminViews/residentAccount", {
@@ -431,8 +422,7 @@ const accountResident = async (data, zemail, res) => {
   }
   const hashedPassword = await bcrypt.hash(password, 12);
   const newAccount = new Account({
-    id_resident: re[0],
-    residentName: re[1],
+    id_resident: resident,
     role: "user",
     avatar: "avatar.jpg",
     email: email,
@@ -474,18 +464,11 @@ const updateResident = async (data, res) => {
       mother_name: mother_name,
     });
   }
-  if (household == "temporary_resident") {
-    household_registration.push({ type: "Tạm trú" });
-  } else if (household == "permanent_resident") {
-    household_registration.push({ type: "Thường trú" });
-  } else {
-    household_registration.push({ type: "Chưa cập nhật " });
-  }
   const update = {
     full_name: full_name,
     year_of_birth: yearOfBirth,
     private_information: private_information,
-    household_registration: household_registration,
+    household_registration: household,
   };
   const resident = await Resident.findByIdAndUpdate({ _id: id }, update, {
     new: true,
@@ -496,11 +479,20 @@ const updateResident = async (data, res) => {
 const deleteResident = async (id, res) => {
   const resident = await Resident.findByIdAndDelete(
     { _id: id },
-    (error, data) => {
+    async (error, data) => {
       if (error) {
         alert("Cant delete now");
         throw error;
       } else {
+        const owner = await Flat.find({ owner: id });
+        if (owner) {
+          const updateOwner = {
+            owner: null,
+            numberOfPeople: [],
+            status: false,
+          };
+          const ownerUP = await Flat.updateMany({ owner: id }, updateOwner);
+        }
         return res.redirect("back");
       }
     }
@@ -517,22 +509,39 @@ const createFlat = async (data, email, res) => {
   const errors = [];
   const { block, floorId, flatId, owner, number } = data;
   const resident = await Resident.find();
-  const flatz = await Flat.find();
-  const ownerr = owner.split("|");
-  const people = [];
-  const isArray = Array.isArray(number);
-  if (isArray) {
-    number.forEach((num) => {
-      var peo = num.split("|");
-      people.push({ id: peo[0], name: peo[1] });
-    });
-  } else {
-    var numberr = [number];
-    numberr.forEach((num) => {
-      var peo = num.split("|");
-      people.push({ id: peo[0], name: peo[1] });
-    });
-  }
+  const flatz = await Flat.aggregate([
+    {
+      $lookup: {
+        from: "residents",
+        localField: "owner",
+        foreignField: "_id",
+        as: "Owner",
+      },
+    },
+    {
+      $lookup: {
+        from: "residents",
+        localField: "numberOfPeople",
+        foreignField: "_id",
+        as: "people",
+      },
+    },
+    {
+      $project: {
+        block: 1,
+        flatId: 1,
+        floorId: 1,
+        date: 1,
+        status: 1,
+        people: {
+          full_name: 1,
+        },
+        Owner: {
+          full_name: 1,
+        },
+      },
+    },
+  ]);
   const flat = await Flat.findOne({
     block: block,
     floorId: floorId,
@@ -555,9 +564,8 @@ const createFlat = async (data, email, res) => {
       block: block,
       floorId: floorId,
       flatId: flatId,
-      owner: "none",
-      ownerName: "none",
-      numberOfPeople: ["none"],
+      owner: null,
+      numberOfPeople: [],
       date: Date.now(),
       status: false,
     });
@@ -569,9 +577,8 @@ const createFlat = async (data, email, res) => {
       block: block,
       floorId: floorId,
       flatId: flatId,
-      owner: ownerr[0],
-      ownerName: ownerr[1],
-      numberOfPeople: ["none"],
+      owner: owner,
+      numberOfPeople: [],
       date: Date.now(),
       status: true,
     });
@@ -583,9 +590,8 @@ const createFlat = async (data, email, res) => {
     block: block,
     floorId: floorId,
     flatId: flatId,
-    owner: ownerr[0],
-    ownerName: ownerr[1],
-    numberOfPeople: people,
+    owner: owner,
+    numberOfPeople: number,
     date: Date.now(),
     status: true,
   });
@@ -601,15 +607,11 @@ const createFlat = async (data, email, res) => {
 
 const updateFlat = async (data, res) => {
   const { id, ownerEdit, numberEdit } = data;
-  const ownerr = ownerEdit.split("|");
-  const numberrEdit = [numberEdit];
-  const people = [];
 
   if (ownerEdit === "none") {
     const update = {
-      owner: "none",
-      ownerName: "none",
-      numberOfPeople: ["none"],
+      owner: null,
+      numberOfPeople: [],
       status: false,
     };
     const upFlat = await Flat.findOneAndUpdate({ _id: id }, update, {
@@ -618,11 +620,10 @@ const updateFlat = async (data, res) => {
     return res.redirect("back");
   }
 
-  if (numberrEdit === "none") {
+  if (numberEdit === "none") {
     const update = {
-      owner: ownerr[0],
-      ownerName: ownerr[1],
-      numberOfPeople: ["none"],
+      owner: ownerEdit,
+      numberOfPeople: [],
       status: true,
     };
     const upFlat = await Flat.findByIdAndUpdate({ _id: id }, update, {
@@ -630,14 +631,10 @@ const updateFlat = async (data, res) => {
     });
     return res.redirect("back");
   }
-  numberrEdit.forEach((num) => {
-    var peo = num.split("|");
-    people.push({ id: peo[0], name: peo[1] });
-  });
+
   const update = {
-    owner: ownerr[0],
-    ownerName: ownerr[1],
-    numberOfPeople: people,
+    owner: ownerEdit,
+    numberOfPeople: numberEdit,
     status: true,
   };
   const upFlat = await Flat.findByIdAndUpdate({ _id: id }, update, {
@@ -669,11 +666,58 @@ const deleteFlat = async (id, res) => {
  * !------------------------------------- !
  */
 
-const announceManage = async (data, res) => {
-  const { id, uname, type, announce } = data;
+const announceManage = async (user, data, res) => {
+  const errors = [];
+  const { id, type, announce } = data;
+  //-----------------------
+  if (announce == "") {
+    errors.push({ msg: "Please add content" });
+    const post = await Post.aggregate([
+      {
+        $match: {
+          type: "announce",
+        },
+      },
+      {
+        $lookup: {
+          from: "accounts",
+          localField: "id_acc",
+          foreignField: "_id",
+          as: "owner",
+        },
+      },
+      {
+        $project: {
+          type: 1,
+          content: 1,
+          status: 1,
+          date: 1,
+          owner: {
+            username: 1,
+            email: 1,
+            avatar: 1,
+          },
+        },
+      },
+    ]);
+    if (user.role == "admin") {
+      return res.render("adminViews/announce", {
+        layout: "adminLayout",
+        user: user,
+        post: post,
+        errors: errors,
+      });
+    }
+    return res.render("adminViews/announce", {
+      layout: "bossLayout",
+      user: user,
+      post: post,
+      errors: errors,
+    });
+  }
+  //-----------------------
   const newPost = await Post({
     id_acc: id,
-    username: uname,
     type: type,
     content: announce,
     status: true,

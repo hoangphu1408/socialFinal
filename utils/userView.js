@@ -8,50 +8,87 @@ const mongoose = require("mongoose");
 
 const homePageView = async (req, res) => {
   const user = await Account.findById({ _id: req._id });
+  const announce = await Post.aggregate([
+    {
+      $match: {
+        type: "announce",
+      },
+    },
+    {
+      $lookup: {
+        from: "accounts",
+        localField: "id_acc",
+        foreignField: "_id",
+        as: "owner",
+      },
+    },
+    {
+      $project: {
+        type: 1,
+        content: 1,
+        status: 1,
+        date: 1,
+        owner: {
+          username: 1,
+          email: 1,
+          avatar: 1,
+        },
+      },
+    },
+  ]);
+  const announces = announce.map((an) => ({
+    _id: an._id,
+    type: an.type,
+    content: an.content,
+    status: an.status,
+    date: moment(parseInt(an.date)).fromNow(),
+    owner: an.owner,
+  }));
 
-  const announce = await Post.find({ type: "announce" });
-  const public = await Post.find({ type: "public" });
-  const listAn = [];
-  const listPu = [];
-  announce.forEach((an) => {
-    if (an.status == true) {
-      const date = parseInt(an.date);
-      const now = moment(date).fromNow();
-      listAn.push({
-        _id: an._id,
-        type: an.type,
-        id_acc: an.id_acc,
-        content: an.content,
-        status: an.status,
-        date: now,
-      });
-    }
-  });
-
-  public.forEach((an) => {
-    if (an.status == true) {
-      const date = parseInt(an.date);
-      const now = moment(date).fromNow();
-      listPu.push({
-        _id: an._id,
-        type: an.type,
-        id_acc: an.id_acc,
-        username: an.username,
-        email: an.email,
-        content: an.content,
-        image: an.image,
-        status: an.status,
-        date: now,
-      });
-    }
-  });
-
+  const public = await Post.aggregate([
+    {
+      $match: {
+        type: "public",
+      },
+    },
+    {
+      $lookup: {
+        from: "accounts",
+        localField: "id_acc",
+        foreignField: "_id",
+        as: "owner",
+      },
+    },
+    {
+      $project: {
+        type: 1,
+        content: 1,
+        status: 1,
+        image: 1,
+        date: 1,
+        owner: {
+          username: 1,
+          email: 1,
+          avatar: 1,
+        },
+      },
+    },
+  ]);
+  const publicz = public.map((pub) => ({
+    _id: pub._id,
+    type: pub.type,
+    content: pub.content,
+    status: pub.status,
+    image: pub.image,
+    date: moment(parseInt(pub.date)).fromNow(),
+    owner: pub.owner,
+  }));
   return res.render("userViews/homepage", {
     layout: "userLayout",
     user: req,
-    account: user,
-    announce: listAn.reverse(),
-    public: listPu.reverse(),
+    announce: announces,
+    public: publicz,
+    avatar: user.avatar,
   });
 };
 
@@ -61,6 +98,7 @@ const profileView = async (user, id, res) => {
     return res.render("userViews/profile", {
       layout: "userLayout",
       account: account,
+      avatar: account.avatar,
       user: user,
     });
   } catch (error) {
