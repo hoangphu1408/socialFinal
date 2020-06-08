@@ -8,9 +8,6 @@ module.exports = function (req, res, next) {
   try {
     const verified = jwt.verify(token, KEYU);
     req.user = verified;
-    if (verified.active === false) {
-      return res.redirect("/verify-mail");
-    }
     return next();
   } catch (err) {
     res.clearCookie("auth");

@@ -25,9 +25,13 @@
       <p class="card-text">
         <%= pu.content %>
       </p>
-      <% if(pu.image != 'none') {%>
-      <p><img src="/uploads/<%= pu.image %>" width="100%" /></p>
-      <% } %>
+      <!---->
+      <% if(pu.image != 'none') {%> <% var image = pu.image; %> <% for (var ima
+      of image){ %>
+
+      <p><img src="/uploads/<%= ima %>" width="100%" /></p>
+      <% } %> <% } %>
+      <!---->
     </div>
     <div class="card-footer">
       <a href="#" class="card-link"><i class="fa fa-gittip"></i> Like</a>

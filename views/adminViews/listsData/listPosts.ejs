@@ -36,9 +36,19 @@
               <td>
                 <div class="contentPost"><%=pos.content %></div>
               </td>
+              <!---->
+              <% if(pos.image == "none"){ %>
               <td>
-                <image src="/uploads/<%=pos.image %>" width="100%"></image>
+                Không có
               </td>
+              <%}else{ %>
+              <td>
+                <% var image = pos.image %> <% for (var ima of image) { %>
+                <image src="/uploads/<%=ima %>" width="100%"></image>
+                <% } %>
+              </td>
+              <% } %>
+              <!---->
               <td>Hiện</td>
               <% var date = parseInt(pos.date); var time = new Date(date) %>
               <td>
@@ -81,7 +91,19 @@
               <td>
                 <div class="contentPost"><%=pos.content %></div>
               </td>
-              <td><%=pos.image %></td>
+              <!---->
+              <% if(pos.image == "none"){ %>
+              <td>
+                Không có
+              </td>
+              <%}else{ %>
+              <td>
+                <% var image = pos.image %> <% for (var ima of image) { %>
+                <image src="/uploads/<%=ima %>" width="100%"></image>
+                <% } %>
+              </td>
+              <% } %>
+              <!---->
               <td>Ẩn</td>
               <% var date = parseInt(pos.date); var time = new Date(date) %>
               <td>

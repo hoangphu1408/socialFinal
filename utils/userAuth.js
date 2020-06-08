@@ -71,23 +71,103 @@ const loginUser = async (data, res) => {
 const postCreate = async (user, data, image, res) => {
   const errors = [];
   const { id, content } = data;
+  //
+  const announce = await Post.aggregate([
+    {
+      $match: {
+        type: "announce",
+      },
+    },
+    {
+      $lookup: {
+        from: "accounts",
+        localField: "id_acc",
+        foreignField: "_id",
+        as: "owner",
+      },
+    },
+    {
+      $project: {
+        type: 1,
+        content: 1,
+        status: 1,
+        date: 1,
+        owner: {
+          username: 1,
+          email: 1,
+          avatar: 1,
+        },
+      },
+    },
+  ]);
+  const announces = announce.map((an) => ({
+    _id: an._id,
+    type: an.type,
+    content: an.content,
+    status: an.status,
+    date: moment(parseInt(an.date)).fromNow(),
+    owner: an.owner,
+  }));
+
+  const public = await Post.aggregate([
+    {
+      $match: {
+        type: "public",
+      },
+    },
+    {
+      $lookup: {
+        from: "accounts",
+        localField: "id_acc",
+        foreignField: "_id",
+        as: "owner",
+      },
+    },
+    {
+      $project: {
+        type: 1,
+        content: 1,
+        status: 1,
+        image: 1,
+        date: 1,
+        owner: {
+          username: 1,
+          email: 1,
+          avatar: 1,
+        },
+      },
+    },
+  ]);
+  const publicz = public.map((pub) => ({
+    _id: pub._id,
+    type: pub.type,
+    content: pub.content,
+    status: pub.status,
+    image: pub.image,
+    date: moment(parseInt(pub.date)).fromNow(),
+    owner: pub.owner,
+  }));
+  //
+
   if (content === "" && image === "none") {
     errors.push({ msg: "Please add content" });
     return res.render("userViews/homepage", {
       layout: "userLayout",
       user: user,
       errors: errors,
+      announce: announces,
+      public: publicz,
+      avatar: user.avatar,
     });
   }
   if (content == "") {
     const newPost = new Post({
       id_acc: id,
-      content: "none",
+      content: null,
       image: image,
       status: true,
       date: Date.now(),
     });
-    res.send(newPost);
     await newPost.save();
     return res.redirect("back");
   }
@@ -98,7 +178,6 @@ const postCreate = async (user, data, image, res) => {
     status: true,
     date: Date.now(),
   });
-  res.send(newPost);
   await newPost.save();
   return res.redirect("back");
 };

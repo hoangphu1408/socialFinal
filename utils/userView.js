@@ -92,6 +92,21 @@ const homePageView = async (req, res) => {
   });
 };
 
+const sellPageView = async (req, res) => {
+  const user = await Account.findById({ _id: req._id });
+  return res.render("userViews/sellpage", {
+    layout: "userLayout",
+    user: req,
+    avatar: user.avatar,
+  });
+};
+
+const verifyMail = async (email, res) => {
+  return res.render("userViews/verifyMail", {
+    email: email,
+  });
+};
+
 const profileView = async (user, id, res) => {
   try {
     const account = await Account.findById({ _id: id });
@@ -112,6 +127,7 @@ const sendMailView = async (user, res) => {
     layout: "userLayout",
     account: account,
     user: user,
+    avatar: account.avatar,
   });
 };
 
@@ -119,4 +135,6 @@ module.exports = {
   homePageView,
   profileView,
   sendMailView,
+  verifyMail,
+  sellPageView,
 };

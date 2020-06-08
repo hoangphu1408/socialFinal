@@ -14,6 +14,7 @@ const {
   homePageView,
   profileView,
   sendMailView,
+  sellPageView,
 } = require("../utils/userView");
 const isLogin = require("../config/isLoginU");
 const verify = require("../config/verifyTokenU");
@@ -29,10 +30,23 @@ const storage = multer.diskStorage({
   },
 });
 
+const storagePost = multer.diskStorage({
+  destination: "public/uploads",
+  filename: function (req, file, cb) {
+    cb(
+      null,
+      file.fieldname + "-" + Date.now() + path.extname(file.originalname)
+    );
+  },
+});
+const uploadPost = multer({
+  storage: storagePost,
+});
 const upload = multer({
   storage: storage,
 });
 
+//
 router.get("/login", isLogin, (req, res) => {
   return res.render("userViews/login");
 });
@@ -47,19 +61,35 @@ router.get("/profile/:id", verify, (req, res) => {
 router.get("/send-mail", verify, (req, res) => {
   return sendMailView(req.user, res);
 });
+router.get("/sellpage", verify, (req, res) => {
+  return sellPageView(req.user, res);
+});
 //Handle
 
 router.post(
   "/homepage",
   verify,
-  createLimit,
-  upload.single("image"),
+
+  uploadPost.array("image", 6),
   async (req, res) => {
-    if (req.file === undefined) {
+    if (req.files === undefined) {
       await postCreate(req.user, req.body, "none", res);
     } else {
-      await postCreate(req.user, req.body, req.file.filename, res);
+      const image = [];
+      req.files.forEach((ima) => {
+        image.push(ima.filename);
+      });
+      await postCreate(req.user, req.body, image, res);
     }
+  }
+);
+
+router.post(
+  "/sellpage",
+  verify,
+  uploadPost.array("sell", 6),
+  async (req, res) => {
+    res.send(req.files);
   }
 );
 

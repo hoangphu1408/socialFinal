@@ -274,30 +274,30 @@ const postView = async (req, res) => {
 
 const test = async (req, res) => {
   try {
-    const post = await Post.aggregate([
+    const post = await Flat.aggregate([
       {
-        $match: {
-          type: "announce",
+        $lookup: {
+          from: "residents",
+          localField: "owner",
+          foreignField: "_id",
+          as: "Owner",
         },
       },
       {
         $lookup: {
-          from: "accounts",
-          localField: "id_acc",
+          from: "residents",
+          localField: "numberOfPeople",
           foreignField: "_id",
-          as: "owner",
+          as: "people",
         },
       },
       {
         $project: {
-          type: 1,
-          content: 1,
-          status: 1,
-          date: 1,
-          owner: {
-            username: 1,
-            email: 1,
-            avatar: 1,
+          people: {
+            full_name: 1,
+          },
+          Owner: {
+            full_name: 1,
           },
         },
       },
