@@ -1,6 +1,8 @@
 <div class="container-fluid">
   <div class="card mb-4">
-    <div class="card-header"><i class="fas fa-table mr-1"></i>List Admins</div>
+    <div class="card-header">
+      <i class="fas fa-table mr-1"></i>Danh sách tài khoản quản trị
+    </div>
     <div class="card-body">
       <div class="table-responsive">
         <table
@@ -13,12 +15,12 @@
             <tr>
               <th>STT</th>
               <th>Email</th>
-              <th>Username</th>
-              <th>Activation</th>
-              <th>Phone Number</th>
-              <th>Day create</th>
-              <th>Options</th>
-              <th>Delete</th>
+              <th>Tên tài khoản</th>
+              <th>Kích hoạt</th>
+              <th>Số điện thoại</th>
+              <th>Ngày tạo</th>
+              <th>Tùy chọn</th>
+              <th>Xóa</th>
             </tr>
           </thead>
           <tbody>
@@ -62,9 +64,6 @@
                 <div class="modal-dialog" role="document">
                   <div class="modal-content">
                     <div class="modal-header">
-                      <h5 class="modal-title" id="modalOptionsLabel">
-                        Edit
-                      </h5>
                       <button
                         type="button"
                         class="close"
@@ -81,7 +80,7 @@
                             class="nav-link active"
                             data-toggle="tab"
                             href="#edit<%= ad._id%>"
-                            >Edit</a
+                            >Chỉnh sửa</a
                           >
                         </li>
                         <li class="nav-item">
@@ -89,7 +88,7 @@
                             class="nav-link"
                             data-toggle="tab"
                             href="#changepassword<%= ad._id%>"
-                            >Update Password</a
+                            >Cập nhật mật khẩu</a
                           >
                         </li>
                         <li class="na-item">
@@ -98,7 +97,7 @@
                             data-toggle="tab"
                             href="#activation<%= ad._id %>"
                           >
-                            Activation
+                            Kích hoạt
                           </a>
                         </li>
                       </ul>
@@ -129,7 +128,9 @@
                               />
                             </div>
                             <div class="form-group">
-                              <label for="username"><h6>Username:</h6></label>
+                              <label for="username"
+                                ><h6>Tên tài khoản:</h6></label
+                              >
                               <input
                                 class="form-control"
                                 type="text"
@@ -140,7 +141,7 @@
                               />
                             </div>
                             <div class="form-group">
-                              <label for="phone"><h6>Phone Number:</h6></label>
+                              <label for="phone"><h6>Số điện thoại:</h6></label>
                               <input
                                 class="form-control"
                                 type="text"
@@ -150,21 +151,24 @@
                               />
                             </div>
                             <div class="form-group">
-                              <label for="role"><h6>Role:</h6></label>
+                              <label for="role"
+                                >Vai trò
+                                <h6>:</h6></label
+                              >
                               <select
                                 class="form-control"
                                 name="role"
                                 id="role"
                               >
                                 <option value="admin"><%= ad.role%></option>
-                                <option value="user">user</option>
+                                <option value="user">Người dùng</option>
                               </select>
                             </div>
                             <button
                               type="submit"
-                              class="btn btn-primary float-right"
+                              class="btn btn-success float-right"
                             >
-                              Update
+                              Cập nhật
                             </button>
                           </form>
                         </div>
@@ -185,7 +189,7 @@
                             />
                             <div class="form-group">
                               <label for="newPass"
-                                ><h6>New Password:</h6></label
+                                ><h6>Mật khẩu mới:</h6></label
                               >
                               <input
                                 type="password"
@@ -194,8 +198,8 @@
                                 class="form-control"
                               />
                             </div>
-                            <button class="btn btn-primary float-right">
-                              Update
+                            <button class="btn btn-success float-right">
+                              Cập nhật
                             </button>
                           </form>
                         </div>
@@ -212,7 +216,6 @@
                               value="<%= ad._id%>"
                             />
                             <div class="form-group">
-                              <label for="active">Activation</label>
                               <select
                                 class="form-control"
                                 name="active"
@@ -223,9 +226,9 @@
                               </select>
                               <button
                                 type="submit"
-                                class="btn btn-primary float-right"
+                                class="btn btn-success float-right"
                               >
-                                Update
+                                Cập nhật
                               </button>
                             </div>
                           </form>
@@ -238,7 +241,7 @@
                         class="btn btn-secondary"
                         data-dismiss="modal"
                       >
-                        Close
+                        Đóng
                       </button>
                     </div>
                   </div>
@@ -254,7 +257,7 @@
               </td>
             </tr>
             <% }else { %>
-            <tr class="table-success">
+            <tr class="table-active">
               <td><%= i++%></td>
               <td><%=ad.email%></td>
               <td><%=ad.username%></td>
@@ -292,9 +295,6 @@
                 <div class="modal-dialog" role="document">
                   <div class="modal-content">
                     <div class="modal-header">
-                      <h5 class="modal-title" id="modalOptionsLabel">
-                        Edit
-                      </h5>
                       <button
                         type="button"
                         class="close"
@@ -311,7 +311,7 @@
                             class="nav-link active"
                             data-toggle="tab"
                             href="#edit<%= ad._id%>"
-                            >Edit</a
+                            >Chỉnh sửa</a
                           >
                         </li>
                         <li class="nav-item">
@@ -319,7 +319,7 @@
                             class="nav-link"
                             data-toggle="tab"
                             href="#changepassword<%= ad._id%>"
-                            >Update Password</a
+                            >Cập nhật mật khẩu</a
                           >
                         </li>
                         <li class="na-item">
@@ -328,7 +328,7 @@
                             data-toggle="tab"
                             href="#activation<%= ad._id %>"
                           >
-                            Activation
+                            Kích hoạt
                           </a>
                         </li>
                       </ul>
@@ -362,7 +362,7 @@
                             </div>
                             <div class="form-group">
                               <label for="username">
-                                <h6>Username:</h6>
+                                <h6>Tên tài khoản:</h6>
                               </label>
                               <input
                                 class="form-control"
@@ -375,7 +375,7 @@
                             </div>
                             <div class="form-group">
                               <label for="phone">
-                                <h6>Phone Number:</h6>
+                                <h6>Số điên thoại:</h6>
                               </label>
                               <input
                                 class="form-control"
@@ -387,7 +387,7 @@
                             </div>
                             <div class="form-group">
                               <label for="role">
-                                <h6>Role:</h6>
+                                <h6>Vai trò:</h6>
                               </label>
                               <select
                                 class="form-control"
@@ -395,14 +395,14 @@
                                 id="role"
                               >
                                 <option value="admin"><%= ad.role%></option>
-                                <option value="user">user</option>
+                                <option value="user">Người dùng</option>
                               </select>
                             </div>
                             <button
                               type="submit"
-                              class="btn btn-primary float-right"
+                              class="btn btn-success float-right"
                             >
-                              Update
+                              Cập nhật
                             </button>
                           </form>
                         </div>
@@ -423,7 +423,7 @@
                             />
                             <div class="form-group">
                               <label for="newPass">
-                                <h6>New Password:</h6>
+                                <h6>Mật khẩu mới:</h6>
                               </label>
                               <input
                                 type="password"
@@ -432,8 +432,8 @@
                                 class="form-control"
                               />
                             </div>
-                            <button class="btn btn-primary float-right">
-                              Update
+                            <button class="btn btn-success float-right">
+                              Cập nhật
                             </button>
                           </form>
                         </div>
@@ -450,7 +450,6 @@
                               value="<%= ad._id%>"
                             />
                             <div class="form-group">
-                              <label for="active">Activation</label>
                               <select
                                 class="form-control"
                                 name="active"
@@ -461,7 +460,7 @@
                               </select>
                               <button
                                 type="submit"
-                                class="btn btn-primary float-right"
+                                class="btn btn-success float-right"
                               >
                                 Update
                               </button>
@@ -476,7 +475,7 @@
                         class="btn btn-secondary"
                         data-dismiss="modal"
                       >
-                        Close
+                        Đóng
                       </button>
                     </div>
                   </div>

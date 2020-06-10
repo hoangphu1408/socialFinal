@@ -1,6 +1,8 @@
 <div class="container-fluid">
   <div class="card mb-4">
-    <div class="card-header"><i class="fas fa-table mr-1"></i>List Flats</div>
+    <div class="card-header">
+      <i class="fas fa-table mr-1"></i>Danh sách căn hộ
+    </div>
     <div class="card-body">
       <div class="table-responsive">
         <table
@@ -19,8 +21,8 @@
               <th>Nhân khẩu</th>
               <th>Ngày tạo</th>
               <th>Tình trạng</th>
-              <th>Options</th>
-              <th>Delete</th>
+              <th>Tùy chọn</th>
+              <th>Xóa</th>
             </tr>
           </thead>
           <tbody>
@@ -71,9 +73,6 @@
                 <div class="modal-dialog" role="document">
                   <div class="modal-content">
                     <div class="modal-header">
-                      <h5 class="modal-title" id="modalOptionsLabel">
-                        Edit
-                      </h5>
                       <button
                         type="button"
                         class="close"
@@ -90,7 +89,7 @@
                             class="nav-link active"
                             data-toggle="tab"
                             href="#edit<%= fl._id%>"
-                            >Edit</a
+                            >Chỉnh sửa</a
                           >
                         </li>
                       </ul>
@@ -144,12 +143,14 @@
                                     class="btn btn-success add-more1"
                                     type="button"
                                   >
-                                    Add
+                                    Thêm
                                   </button>
                                 </div>
                               </div>
                             </div>
-                            <button class="btn btn-primary">Update</button>
+                            <button class="btn btn-success float-right">
+                              Cập nhật
+                            </button>
                           </form>
                         </div>
                         <!---->
@@ -176,7 +177,7 @@
                                 class="btn btn-danger remove1"
                                 type="button"
                               >
-                                Remove
+                                Xóa
                               </button>
                             </div>
                           </div>
@@ -191,7 +192,7 @@
                         class="btn btn-secondary"
                         data-dismiss="modal"
                       >
-                        Close
+                        Đóng
                       </button>
                     </div>
                   </div>
@@ -245,9 +246,6 @@
                 <div class="modal-dialog" role="document">
                   <div class="modal-content">
                     <div class="modal-header">
-                      <h5 class="modal-title" id="modalOptionsLabel">
-                        Edit
-                      </h5>
                       <button
                         type="button"
                         class="close"
@@ -264,7 +262,7 @@
                             class="nav-link active"
                             data-toggle="tab"
                             href="#edit<%= fl._id%>"
-                            >Edit</a
+                            >Chỉnh sửa</a
                           >
                         </li>
                       </ul>
@@ -318,12 +316,14 @@
                                     class="btn btn-success add-more1"
                                     type="button"
                                   >
-                                    Add
+                                    Thêm
                                   </button>
                                 </div>
                               </div>
                             </div>
-                            <button class="btn btn-primary">Update</button>
+                            <button class="btn btn-success float-right">
+                              Cập nhật
+                            </button>
                           </form>
                         </div>
                         <!---->
@@ -350,7 +350,7 @@
                                 class="btn btn-danger remove1"
                                 type="button"
                               >
-                                Remove
+                                Xóa
                               </button>
                             </div>
                           </div>
@@ -365,7 +365,7 @@
                         class="btn btn-secondary"
                         data-dismiss="modal"
                       >
-                        Close
+                        Đóng
                       </button>
                     </div>
                   </div>

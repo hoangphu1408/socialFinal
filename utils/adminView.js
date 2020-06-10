@@ -109,7 +109,6 @@ const registerResidentView = async (req, res) => {
 const accountResidentView = async (req, res) => {
   try {
     const resident = await Resident.find({});
-    const ownerAcc = await Account.find({ id_resident });
     const account = await Account.find({ role: "user" });
     if (req.role == "admin") {
       return res.render("adminViews/residentAccount", {
@@ -126,7 +125,7 @@ const accountResidentView = async (req, res) => {
       user: req,
     });
   } catch (err) {
-    return res.status(403).redirect("/");
+    return res.send(err);
   }
 };
 

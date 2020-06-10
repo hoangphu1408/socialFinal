@@ -1,14 +1,14 @@
 <div class="container con-form">
   <div class="d-flex justify-content-center h-100">
-    <div class="card card-body shadow card-bg">
+    <div class="card card-body shadow card-bg text-white">
       <div class="head">
-        <h1><i class="fas fa-user-shield"></i> Register</h1>
+        <h1><i class="fas fa-user-shield"></i> Tài khoản quản lý</h1>
       </div>
       <%- include("../partials/messages") %>
       <div class="form">
         <form action="/admin/manage" method="POST">
           <div class="form-group">
-            <label for="username">Username</label>
+            <label for="username">Tên tài khoản</label>
             <input
               class="form-control"
               type="text"
@@ -21,7 +21,7 @@
             <input class="form-control" type="email" name="email" id="email" />
           </div>
           <div class="form-group">
-            <label for="passsword">passsword</label>
+            <label for="passsword">Mật khẩu</label>
             <input
               class="form-control"
               type="password"
@@ -30,7 +30,7 @@
             />
           </div>
           <div class="form-group">
-            <label for="password2">Re-Password</label>
+            <label for="password2">Nhập lại mất khẩu</label>
             <input
               class="form-control"
               type="password"
@@ -39,11 +39,11 @@
             />
           </div>
           <button
-            class="btn btn-primary btn-block"
+            class="btn btn-success btn-block"
             data-toggle="modal"
             data-target="#myModal"
           >
-            Register
+            Tạo
           </button>
         </form>
       </div>

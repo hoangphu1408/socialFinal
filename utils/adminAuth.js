@@ -26,22 +26,13 @@ const rateLimit = require("express-rate-limit");
  */
 
 const registrationAdmin = async (data, zemail, role, res) => {
-  try {
-    const errors = [];
-    const admin = await Account.find({ role: "admin" });
-    const { username, email, password, password2 } = data;
-    const { error } = await regAdminValidation(data);
-    if (error) {
-      if (error.details[0].type === "any.only") {
-        errors.push({ msg: "Password do not match" });
-        return res.status(400).render("adminViews/register", {
-          layout: "bossLayout",
-          admin: admin,
-          errors: errors,
-          user: zemail,
-        });
-      }
-      errors.push({ msg: error.details[0].message });
+  const errors = [];
+  const admin = await Account.find({ role: "admin" });
+  const { username, email, password, password2 } = data;
+  const { error } = await regAdminValidation(data);
+  if (error) {
+    if (error.details[0].type === "any.only") {
+      errors.push({ msg: "Password do not match" });
       return res.status(400).render("adminViews/register", {
         layout: "bossLayout",
         admin: admin,
@@ -49,45 +40,50 @@ const registrationAdmin = async (data, zemail, role, res) => {
         user: zemail,
       });
     }
-
-    // Check User + Email exist
-
-    const isUser = await validateUsername(username);
-    if (isUser) {
-      errors.push({ msg: "Username is already registered" });
-      return res.status(400).send(errors);
-    }
-    const isEmail = await validateEmail(email);
-    if (isEmail) {
-      errors.push({ msg: "Email is already registered" });
-      return res.status(400).send(errors);
-    }
-
-    // Create mail token
-    const payload = { email: email };
-    const mailToken = jwt.sign(payload, MAIL, {
-      expiresIn: "1 days",
+    errors.push({ msg: error.details[0].message });
+    return res.status(400).render("adminViews/register", {
+      layout: "bossLayout",
+      admin: admin,
+      errors: errors,
+      user: zemail,
     });
-
-    //  Email verify
-    await verifyEmail(email, mailToken);
-    // Hash password
-    const hashedPassword = await bcrypt.hash(password, 12);
-
-    const newAccount = new Account({
-      role: role,
-      username: username,
-      email: email,
-      password: hashedPassword,
-      date: Date.now(),
-      status: true,
-    });
-
-    await newAccount.save();
-    return res.redirect("back");
-  } catch (err) {
-    return res.send(err);
   }
+
+  // Check User + Email exist
+
+  const isUser = await validateUsername(username);
+  if (isUser) {
+    errors.push({ msg: "Username is already registered" });
+    return res.status(400).send(errors);
+  }
+  const isEmail = await validateEmail(email);
+  if (isEmail) {
+    errors.push({ msg: "Email is already registered" });
+    return res.status(400).send(errors);
+  }
+
+  // Create mail token
+  const payload = { email: email };
+  const mailToken = jwt.sign(payload, MAIL, {
+    expiresIn: "1 days",
+  });
+
+  //  Email verify
+  await verifyEmail(email, mailToken);
+  // Hash password
+  const hashedPassword = await bcrypt.hash(password, 12);
+
+  const newAccount = new Account({
+    role: role,
+    username: username,
+    email: email,
+    password: hashedPassword,
+    date: Date.now(),
+    status: true,
+  });
+
+  await newAccount.save();
+  return res.redirect("back");
 };
 
 /**
@@ -148,8 +144,8 @@ const loginAdmin = async (data, res) => {
  * @description ChangePassword
  * !------------------------------------- !
  */
-const changePWDAD = async (id, data, res) => {
-  const { password, password2 } = data;
+const changePWDAD = async (data, res) => {
+  const { email, password, password2 } = data;
   const errors = [];
   const { error } = await changeNewPWD(data);
   if (error) {
@@ -158,19 +154,25 @@ const changePWDAD = async (id, data, res) => {
       return res.status(400).render("adminViews/changePassword", {
         errors: errors,
         data: data,
+        email: email,
       });
     }
     errors.push({ msg: error.details[0].message });
     return res.status(400).render("adminViews/changePassword", {
       errors: errors,
       data: data,
+      email: email,
     });
   }
   const hashedPassword = await bcrypt.hash(password, 12);
   const update = { password: hashedPassword };
-  const updatePassword = await Account.findOneAndUpdate({ _id: id }, update, {
-    new: true,
-  });
+  const updatePassword = await Account.findOneAndUpdate(
+    { email: email },
+    update,
+    {
+      new: true,
+    }
+  );
   res.clearCookie("auth");
   return res.redirect("/admin/login");
 };
@@ -204,7 +206,9 @@ const changePasswordAd = async (token, res) => {
   try {
     const verified = jwt.verify(token, MAIL);
     if (verified) {
-      return res.render("adminViews/changePassword");
+      return res.render("adminViews/changePassword", {
+        email: verified.email,
+      });
     } else {
       return res.redirect("/admin/dashboard");
     }
@@ -492,6 +496,12 @@ const deleteResident = async (id, res) => {
             status: false,
           };
           const ownerUP = await Flat.updateMany({ owner: id }, updateOwner);
+        }
+        const account = await Account.findOne({ id_resident: id });
+        if (account) {
+          const delAccount = await Account.findByIdAndDelete({
+            _id: account._id,
+          });
         }
         return res.redirect("back");
       }

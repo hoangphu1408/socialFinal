@@ -135,8 +135,8 @@ router.post("/resident-manage", verify, async (req, res) => {
 });
 // Edit Admin
 
-router.post("/change-password", verify, async (req, res) => {
-  await changePWDAD(req.user._id, req.body, res);
+router.post("/change-password", async (req, res) => {
+  await changePWDAD(req.body, res);
 });
 
 router.post("/update/:id", verify, async (req, res) => {

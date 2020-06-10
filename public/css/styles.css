@@ -10653,7 +10653,7 @@ body {
 }
 
 .card-bg {
-  background-image: url("../bg-img/bg-01.jpg") !important;
+  background-color: rgba(0, 0, 0, 0.53);
 }
 
 .head {
@@ -10690,11 +10690,14 @@ body {
   margin-left: -50px;
 }
 
-.sidebar-bg {
-  background-image: url("../bg-img/bg-01.jpg") !important;
-  color: black;
+.layoutSidenav_content {
+  background-image: url(../bg-img/bg-01.jpg) !important;
 }
 
-.sidebar-bg a {
-  color: white;
+.panel-heading {
+  background: white;
+}
+
+.note-editing-area {
+  border: 1px solid white;
 }
