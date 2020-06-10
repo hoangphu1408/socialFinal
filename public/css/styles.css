@@ -10652,6 +10652,10 @@ body {
   margin-top: 20px;
 }
 
+.card-bg {
+  background-image: url("../bg-img/bg-01.jpg") !important;
+}
+
 .head {
   text-align: center;
 }
@@ -10664,12 +10668,11 @@ body {
   width: 850px !important;
 }
 
-
 .contentPost {
-   white-space: nowrap; 
-  width: 300px; 
+  white-space: nowrap;
+  width: 300px;
   overflow: hidden;
-  text-overflow: ellipsis; 
+  text-overflow: ellipsis;
 }
 
 .circular--landscape {
@@ -10685,4 +10688,13 @@ body {
   width: auto;
   height: 100%;
   margin-left: -50px;
+}
+
+.sidebar-bg {
+  background-image: url("../bg-img/bg-01.jpg") !important;
+  color: black;
+}
+
+.sidebar-bg a {
+  color: white;
 }

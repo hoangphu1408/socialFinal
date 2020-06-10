@@ -1,0 +1,42 @@
+<div class="main">
+  <div class="container-fluid">
+    <form action="/admin/login" method="POST" class="login">
+      <h1><strong>Login</strong></h1>
+      <div class="label-login">
+        <label for="email"><span class="label">Email</span></label>
+        <input
+          type="text"
+          id="email"
+          name="email"
+          placeholder="Enter email"
+          required=""
+        />
+      </div>
+      <div class="label-login">
+        <label for="password"><span class="label">Password</span></label>
+        <input
+          type="password"
+          id="password"
+          name="password"
+          placeholder="Enter password"
+          required=""
+        />
+      </div>
+
+      <div class="label-login">
+        <label class="form-check-label" style="padding-top: 20px;">
+          <input class="form-check-input" type="checkbox" name="remember" />
+          Remember me
+        </label>
+      </div>
+      <div
+        class="btn-login"
+        style="text-align: center; padding-top: 30px; padding-bottom: 50px;"
+      >
+        <button class="button" style="vertical-align: middle;">
+          <span>LOGIN</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

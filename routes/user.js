@@ -46,6 +46,10 @@ const upload = multer({
   storage: storage,
 });
 
+router.get("/test", (req, res) => {
+  return res.render("test");
+});
+
 //
 router.get("/login", isLogin, (req, res) => {
   return res.render("userViews/login");

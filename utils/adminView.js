@@ -109,6 +109,7 @@ const registerResidentView = async (req, res) => {
 const accountResidentView = async (req, res) => {
   try {
     const resident = await Resident.find({});
+    const ownerAcc = await Account.find({ id_resident });
     const account = await Account.find({ role: "user" });
     if (req.role == "admin") {
       return res.render("adminViews/residentAccount", {
@@ -274,35 +275,30 @@ const postView = async (req, res) => {
 
 const test = async (req, res) => {
   try {
-    const post = await Flat.aggregate([
+    const flat = await Account.aggregate([
+      {
+        $match: { role: "user" },
+      },
       {
         $lookup: {
           from: "residents",
-          localField: "owner",
+          localField: "id_resident",
           foreignField: "_id",
           as: "Owner",
         },
       },
       {
-        $lookup: {
-          from: "residents",
-          localField: "numberOfPeople",
-          foreignField: "_id",
-          as: "people",
-        },
-      },
-      {
         $project: {
-          people: {
-            full_name: 1,
-          },
+          _id: 0,
           Owner: {
-            full_name: 1,
+            _id: 1,
           },
         },
       },
     ]);
-    res.send(post);
+    flat.forEach((f) => {
+      res.send(f.Owner[0]);
+    });
   } catch (err) {
     console.log(err);
   }
