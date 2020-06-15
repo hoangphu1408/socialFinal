@@ -1,0 +1,17 @@
+<div id="mess" class="container-fluid">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h2>Messages</h2>
+        </div>
+    </div>
+    </br></br></br>
+    <% bills.forEach(bill => { %>
+        <% bill.flat.forEach(bi => { %> <% if(bi.status == false){ %>
+            <% var date = parseInt(bi.last_date); var time = new Date(date); %>
+            <% if(bi.type =="electric"){ %>
+    <p> <strong>Tiền điện <%=time.toLocaleDateString()%>  là <%=bi.total_cost.toLocaleString(); %> vnđ </p></strong>
+            <% }else{ %>
+    <hr color="black">
+    <p><strong> Tiền nước <%=time.toLocaleDateString()%> là <%=bi.total_cost %> </p></strong>
+           <% } } %> <%})  }) %>
+</div>

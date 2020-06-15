@@ -1,4 +1,4 @@
-<% announce.forEach(pu => { %>
+<% announce.forEach(pu => { if(pu.status == true){ %>
 <div class="d-flex justify-content-center h-100 w-100">
   <div class="card shadow" style="width: 100%;">
     <div class="card-header bg-info">
@@ -33,4 +33,4 @@
     </div>
   </div>
 </div>
-<% }) %>
+<%} }) %>

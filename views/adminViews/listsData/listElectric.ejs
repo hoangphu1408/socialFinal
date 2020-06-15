@@ -1,0 +1,306 @@
+<div class="container-fluid">
+  <div class="card mb-4">
+    <div class="card-header">
+      <i class="fas fa-table mr-1"></i>Danh sách tiền điện
+    </div>
+    <div class="card-body">
+      <div class="table-responsive">
+        <table
+          class="table table-bordered"
+          id="dataTable"
+          width="100%"
+          cellspacing="0"
+        >
+          <thead>
+            <tr>
+              <th>STT</th>
+              <th>Căn hộ</th>
+              <th>Chỉ số cũ</th>
+              <th>Chỉ số mới</th>
+              <th>Chỉ số hiện tại</th>
+              <th>Đã dùng</th>
+              <th>Tổng tiền</th>
+              <th>Tiền của tháng</th>
+              <th>Ngày tạo</th>
+              <th>Ngày hết hạn</th>
+              <th>Tình trạng</th>
+              <th>Tùy chọn</th>
+              <th>Xóa</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% var i = 1; %><% bills.forEach(bill=>{ %> <% if(bill.status ==
+            false){ %>
+            <tr class="table-active">
+              <td><b><%=i++; %></b></td>
+              <td>
+                <%=bill.flat[0].block%>-<%=bill.flat[0].floorId%>-<%=bill.flat[0].flatId%>
+              </td>
+              <td><%=bill.last_read.toLocaleString();%></td>
+              <td><%=bill.current_read.toLocaleString();%></td>
+              <td><%=bill.current.toLocaleString();%></td>
+              <td><%=bill.usage.toLocaleString();%></td>
+              <td><%=bill.total_cost.toLocaleString();%> vnđ</td>
+              <!---->
+              <% var date3 = parseInt(bill.last_date); var time = new
+              Date(date3); %>
+              <td>
+                <%= time.toLocaleTimeString()+ " " + time.toDateString() %>
+              </td>
+              <!---->
+              <% var date = parseInt(bill.date); var time = new Date(date); %>
+              <td>
+                <%= time.toLocaleTimeString()+ " " + time.toDateString() %>
+              </td>
+              <!---->
+              <% var date2 = parseInt(bill.expiration_date); var time2 = new
+              Date(date2); %>
+              <td>
+                <%= time2.toLocaleTimeString()+ " " + time2.toDateString() %>
+              </td>
+              <!---->
+              <td>Chưa thanh toán</td>
+              <td style="text-align: center;">
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  data-toggle="modal"
+                  data-target="#modalOptions<%= bill._id%>"
+                >
+                  <i class="fas fa-cog"></i>
+                </button>
+              </td>
+              <!--Modal-->
+              <div
+                class="modal fade"
+                id="modalOptions<%=bill._id%>"
+                tabindex="-1"
+                role="dialog"
+                aria-labelledby="modalOptionsLabel"
+                aria-hidden="true"
+              >
+                <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <button
+                        type="button"
+                        class="close"
+                        data-dismiss="modal"
+                        aria-label="Close"
+                      >
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                      <ul class="nav nav-tabs">
+                        <li class="nav-item">
+                          <a
+                            class="nav-link active"
+                            data-toggle="tab"
+                            href="#edit"
+                            >Chỉnh sửa</a
+                          >
+                        </li>
+                      </ul>
+                      <div id="myTabContent" class="tab-content">
+                        <!--Edit-->
+                        <div class="tab-pane fade show active" id="edit">
+                          <form
+                            action="/admin/electric-bill-update"
+                            method="POST"
+                          >
+                            <div class="form-group">
+                              <input
+                                type="hidden"
+                                name="idBill"
+                                value="<%=bill._id%>"
+                              />
+                              <input
+                                type="hidden"
+                                name="idFlat"
+                                value="<%=bill.id_flat%>"
+                              />
+                              <label for="status">Tình trạng</label>
+                              <select
+                                class="form-control"
+                                name="status"
+                                id="status"
+                              >
+                                <option value="true">Đã thanh toán</option>
+                                <option value="false">Chưa thanh toán</option>
+                              </select>
+                            </div>
+                            <button
+                              type="submit"
+                              class="btn btn-success float-right"
+                            >
+                              Cập nhật
+                            </button>
+                          </form>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="modal-footer">
+                      <button
+                        type="button"
+                        class="btn btn-secondary"
+                        data-dismiss="modal"
+                      >
+                        Đóng
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!---->
+              <td style="text-align: center;">
+                <button class="btn btn-secondary">
+                  <a
+                    style="color: #fff;"
+                    href="/admin/electric-bill-delete/<%=bill._id%>"
+                    ><i class="far fa-trash-alt"></i
+                  ></a>
+                </button>
+              </td>
+            </tr>
+            <% }else{ %>
+            <tr class="table-success">
+              <td><b><%=i++; %></b></td>
+              <td>
+                <%=bill.flat[0].block%>-<%=bill.flat[0].floorId%>-<%=bill.flat[0].flatId%>
+              </td>
+              <td><%=bill.last_read.toLocaleString();%></td>
+              <td><%=bill.current_read.toLocaleString();%></td>
+              <td><%=bill.current.toLocaleString();%></td>
+              <td><%=bill.usage.toLocaleString();%></td>
+              <td><%=bill.total_cost.toLocaleString();%> vnđ</td>
+              <!---->
+              <% var date3 = parseInt(bill.last_date); var time = new
+              Date(date3); %>
+              <td>
+                <%= time.toLocaleTimeString()+ " " + time.toDateString() %>
+              </td>
+              <!---->
+              <% var date = parseInt(bill.date); var time = new Date(date); %>
+              <td>
+                <%= time.toLocaleTimeString()+ " " + time.toDateString() %>
+              </td>
+              <!---->
+              <% var date2 = parseInt(bill.expiration_date); var time2 = new
+              Date(date2); %>
+              <td>
+                <%= time2.toLocaleTimeString()+ " " + time2.toDateString() %>
+              </td>
+              <!---->
+              <td>Đã thanh toán</td>
+              <td style="text-align: center;">
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  data-toggle="modal"
+                  data-target="#modalOptions<%= bill._id%>"
+                >
+                  <i class="fas fa-cog"></i>
+                </button>
+              </td>
+              <!--Modal-->
+              <div
+                class="modal fade"
+                id="modalOptions<%=bill._id%>"
+                tabindex="-1"
+                role="dialog"
+                aria-labelledby="modalOptionsLabel"
+                aria-hidden="true"
+              >
+                <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <button
+                        type="button"
+                        class="close"
+                        data-dismiss="modal"
+                        aria-label="Close"
+                      >
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                      <ul class="nav nav-tabs">
+                        <li class="nav-item">
+                          <a
+                            class="nav-link active"
+                            data-toggle="tab"
+                            href="#edit"
+                            >Chỉnh sửa</a
+                          >
+                        </li>
+                      </ul>
+                      <div id="myTabContent" class="tab-content">
+                        <!--Edit-->
+                        <div class="tab-pane fade show active" id="edit">
+                          <form
+                            action="/admin/electric-bill-update"
+                            method="POST"
+                          >
+                            <input
+                              type="hidden"
+                              name="idBill"
+                              value="<%=bill._id%>"
+                            />
+                            <input
+                              type="hidden"
+                              name="idFlat"
+                              value="<%=bill.id_flat%>"
+                            />
+                            <div class="form-group">
+                              <label for="status">Tình trạng</label>
+                              <select
+                                class="form-control"
+                                name="status"
+                                id="status"
+                                ><option value="true">Đã thanh toán</option>
+                                <option value="false"
+                                  >Chưa thanh toán</option
+                                ></select
+                              >
+                            </div>
+                            <button
+                              type="submit"
+                              class="btn btn-success float-right"
+                            >
+                              Cập nhật
+                            </button>
+                          </form>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="modal-footer">
+                      <button
+                        type="button"
+                        class="btn btn-secondary"
+                        data-dismiss="modal"
+                      >
+                        Đóng
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!---->
+              <td style="text-align: center;">
+                <button class="btn btn-secondary">
+                  <a
+                    style="color: #fff;"
+                    href="/admin/electric-bill-delete/<%=bill._id%>"
+                    ><i class="far fa-trash-alt"></i
+                  ></a>
+                </button>
+              </td>
+            </tr>
+            <% } %> <% })%>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,32 +1,324 @@
-<div class="container con-form1">
-  <div class="d-flex justify-content-center h-100">
-    <div class="card card-body shadow">
-      <div class="float-left">
-        <h1></i> Post</h1>
+
+<!-- Container (Services Section) -->
+<div id="services" class="container-fluid text-center">
+  <h2>SERVICES</h2>
+  <h4>What we offer</h4>
+  <br>
+  <div class="row slideanim">
+    <div class="col-sm-4">
+      <a href="write1.html">
+        <span class="glyphicon glyphicon-share logo-small"></span> </br> </h4>WRITING</h4></a>
+      <p>Sharing your news or creating a new one</p>
+    </div>
+    <div class="col-sm-4">
+      <a href="/messages">
+        <span class="glyphicon glyphicon-send logo-small"></span> </br> </h4>MESSAGES</h4></a>
+      <p>Checking your messages to keep contact</p>
+    </div>
+    <div class="col-sm-4">
+      <a href="/communicate">
+        <span class="glyphicon glyphicon-earphone logo-small"></span> </br> </h4>CONMUNICATE</h4></a>
+      <p>Conmunicating with the management department of the building</p>
+    </div>
+  </div>
+  <br><br>
+  <div class="row slideanim">
+    <div class="col-sm-4">
+      <a href="/onlpay">
+        <span class="glyphicon glyphicon-credit-card logo-small"></span> </br> </h4>ONLINE PAYMENTS</h4></a>
+      <p>Just sit there and pay for your bills with only your smartphone</p>
+    </div>
+    <div class="col-sm-4">
+      <a href="/about-customer">
+        <span class="glyphicon glyphicon-book logo-small"></span> </br> </h4>ABOUT CUSTOMERS</h4></a>
+      <p>Getting to know about your benefits and our regulations</p>
+    </div>
+    <div class="col-sm-4">
+      <a href="/management">
+        <span class="glyphicon glyphicon-list logo-small"></span> </br> </h4>MANAGEMENT INFORMATIONS</h4></a>
+      <p>Getting to know about our leaders</p>
+    </div>
+    <div class="col-sm-4">
+      <a href="/profile/<%=user._id %>">
+        <span class="glyphicon glyphicon-wrench logo-small"></span> </br> </h4>SETTING</h4></a>
+      <p>Chosing what will notify you in your website</p>
+    </div>
+  </div>
+</div>
+
+<!-- Container (Attentions Section) -->
+<div id="attentions" class="container-fluid text-center bg-grey">
+
+  <h2>What our customers say</h2>
+  <div id="myCarousel" class="carousel slide text-center" data-ride="carousel">
+    <!-- Indicators -->
+    <ol class="carousel-indicators">
+      <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+      <li data-target="#myCarousel" data-slide-to="1"></li>
+      <li data-target="#myCarousel" data-slide-to="2"></li>
+      <li data-target="#myCarousel" data-slide-to="3"></li>
+      <li data-target="#myCarousel" data-slide-to="4"></li>
+      <li data-target="#myCarousel" data-slide-to="5"></li>
+    </ol>
+
+    <!-- Wrapper for slides -->
+    <div class="carousel-inner" role="listbox">
+      <div class="item active">
+        <div class="imgtext">
+          <h3><span>Wonderful view from our park</span></h3>
+        </div>
+        <center><img src="Images/background.jpg" style="width:70%"></center>
       </div>
-        <%- include("../partials/messages") %>
-      <div class="form">
-        <form action="/homepage" method="POST" enctype="multipart/form-data">
-          <input type="hidden" name="id" value="<%=user._id %>" />     
-          <div class="form-group">
-            <textarea
-              class="form-control"
-              name="content"
-              id="content"
-              cols="10"
-              rows="10"
-            ></textarea>
-          </div>
-          <div class="form-group">
-              <input type="file" name="image" id="image" multiple>
-          </div>
-          <button class="btn btn-primary btn-block">
-            Post
-          </button>
-        </form>
+      <div class="item">
+        <div class="imgtext">
+          <h3><strong>The main lobby</strong></h3>
+        </div>
+        <center><img src="Images/lobby.png" style="width:70%"></center>
+      </div>
+      <div class="item">
+        <div class="imgtext">
+          <h3><strong>Your finest living room</strong></h3>
+        </div>
+        <center><img src="Images/room.png" style="width:70%"></center>
+      </div>
+      <div class="item">
+        <div class="imgtext">
+          <h3><strong>This is the best place for your family</strong></h3>
+        </div>
+        <center><img src="Images/dining.png" style="width:70%"></center>
+      </div>
+      <div class="item">
+        <div class="imgtext">
+          <h3><strong>After all the hard works</strong></h3>
+        </div>
+        <center><img src="Images/bedroom.png" style="width:70%"></center>
+      </div>
+      <div class="item">
+        <div class="imgtext">
+          <h3><strong>Greatest place to relax and repair yourself</strong></h3>
+        </div>
+        <center><img src="Images/bathroom.png" style="width:70%"></center>
+      </div>
+    </div>
+
+    <!-- Left and right controls -->
+    <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
+      <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+      <span class="sr-only">Previous</span>
+    </a>
+    <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
+      <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+      <span class="sr-only">Next</span>
+    </a>
+  </div>
+</div>
+
+<!-- Container (Pricing Section) -->
+<div id="pricing" class="container-fluid">
+  <div class="text-center">
+    <h2>Pricing</h2>
+    <h4>Choose an apartment for yourself</h4>
+  </div>
+  <div class="row slideanim">
+    <div class="col-sm-4 col-xs-12">
+      <div class="panel panel-default text-center">
+        <div class="panel-heading">
+          <h1>Basic</h1>
+        </div>
+        <div class="panel-body">
+          <p><strong>50m2</strong> Acreage </p>
+          <p><strong>2</strong> Bedroom </p>
+          <p><strong>2</strong> Bathroom </p>
+          <p><strong>1</strong> Dining room </p>
+          <p><strong>1</strong> Living room </p>
+          <p><strong> From 1st floor to 10th floor </strong></p>
+        </div>
+        <div class="panel-footer">
+          <img src="Images/ap2.png" style="width:80%;">
+          <h3>$300</h3>
+          <h4>per month</h4>
+          <h3>Sale off 15% - $1530</h3>
+          <h4>for 6 months</h4>
+          <h3>$150.000</h3>
+          <h4>PRICE</h4>
+          <button class="btn btn-lg">Sign Up</button>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-4 col-xs-12">
+      <div class="panel panel-default text-center">
+        <div class="panel-heading">
+          <h1>Pro</h1>
+        </div>
+        <div class="panel-body">
+          <p><strong>80m2</strong> Acreage </p>
+          <p><strong>3</strong> Bedroom </p>
+          <p><strong>3</strong> Bathroom </p>
+          <p><strong>1</strong> Dining room </p>
+          <p><strong>1</strong> Living room </p>
+          <p><strong> From 11th floor to 19th floor </strong></p>
+        </div>
+        <div class="panel-footer">
+          <img src="Images/ap3.png" style="width:80%;">
+          <h3>$400</h3>
+          <h4>per month</h4>
+          <h3>Sale off 15% - $2040</h3>
+          <h4>for 6 months</h4>
+          <h3>$170.000</h3>
+          <h4>PRICE</h4>
+          <button class="btn btn-lg">Sign Up</button>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-4 col-xs-12">
+      <div class="panel panel-default text-center">
+        <div class="panel-heading">
+          <h1>Premium</h1>
+        </div>
+        <div class="panel-body">
+          <p><strong>100m2</strong> Acreage </p>
+          <p><strong>4</strong> Bedroom </p>
+          <p><strong>4</strong> Bathroom </p>
+          <p><strong>1</strong> Dining room </p>
+          <p><strong>1</strong> Living room </p>
+          <p><strong> From 20th floor to 30th floor </strong></p>
+        </div>
+        <div class="panel-footer">
+          <img src="Images/ap1.png" style="width:80%;">
+          <h3>$500</h3>
+          <h4>per month</h4>
+          <h3>Sale off 15% - $2550</h3>
+          <h4>for 6 months</h4>
+          <h3>$200.000</h3>
+          <h4>PRICE</h4>
+          <button class="btn btn-lg">Sign Up</button>
+        </div>
       </div>
     </div>
   </div>
-  <%-include("./listPosts/listAn") %>
-  <%-include("./listPosts/listPost") %>
 </div>
+
+<!-- Container (Contact Section) -->
+<div id="contact" class="container-fluid bg-grey">
+  <h2 class="text-center">CONTACT</h2>
+  <div class="row">
+    <div class="col-sm-5">
+      <p>Contact us to find your answer:</p>
+      <p><span class="glyphicon glyphicon-map-marker"></span> 475A Điện Biên Phủ, P25, Q.Bình Thạnh, TPHCM</p>
+      <p><span class="glyphicon glyphicon-phone"></span> (028) 5445 777</p>
+      <p><span class="glyphicon glyphicon-envelope"></span> hutech@hutech.edu.vn</p>
+      <p> Folow: <a href="https://www.facebook.com/"><img src="Images/fb.png"> <a href="https://www.instagram.com/"><img
+              src="Images/ins.jpg"> </a></p>
+    </div>
+    <div class="col-sm-7 slideanim">
+      <div class="row">
+        <div class="col-sm-6 form-group">
+          <input class="form-control" id="name" name="name" placeholder="Name" type="text" required>
+        </div>
+        <div class="col-sm-6 form-group">
+          <input class="form-control" id="email" name="email" placeholder="Email" type="email" required>
+        </div>
+      </div>
+      <textarea class="form-control" id="comments" name="comments" placeholder="Comment" rows="5"></textarea><br>
+      <div class="row">
+        <div class="col-sm-12 form-group">
+          <button class="btn btn-default pull-right" type="submit">Send</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Image of location/map -->
+<iframe width="100%" height="500px"
+  src="http://maps.google.com/maps?f=q&amp;source=s_q&amp;hl=en&amp;geocode=&amp;q=+HCM,+Viet+Nam&amp;aq=0&amp;sll=@15.6072674,96.8678642,5z/data=!3m1!4b1&amp;sspn=@15.6072674,96.8678642,5z/data=!3m1!4b1&amp;ie=UTF8&amp;hq=&amp;hnear=Brooklyn,+Kings,+New+York&amp;ll=@15.6072674,96.8678642,5z/data=!3m1!4b1&amp;spn=@15.6072674,96.8678642,5z/data=!3m1!4b1&amp;z=14&amp;iwloc=A&amp;output=embed"></iframe>
+
+<footer class="container-fluid2 text-center">
+  <a href="#myPage" title="To Top">
+    <span class="glyphicon glyphicon-chevron-up"></span>
+  </a>
+</footer>
+
+<script>
+  $(document).ready(function () {
+    // Add smooth scrolling to all links in navbar + footer link
+    $(".navbar a, footer a[href='#myPage']").on('click', function (event) {
+      // Make sure this.hash has a value before overriding default behavior
+      if (this.hash !== "") {
+        // Prevent default anchor click behavior
+        event.preventDefault();
+
+        // Store hash
+        var hash = this.hash;
+
+        // Using jQuery's animate() method to add smooth page scroll
+        // The optional number (900) specifies the number of milliseconds it takes to scroll to the specified area
+        $('html, body').animate({
+          scrollTop: $(hash).offset().top
+        }, 900, function () {
+
+          // Add hash (#) to URL when done scrolling (default click behavior)
+          window.location.hash = hash;
+        });
+      } // End if
+    });
+
+    $(window).scroll(function () {
+      $(".slideanim").each(function () {
+        var pos = $(this).offset().top;
+
+        var winTop = $(window).scrollTop();
+        if (pos < winTop + 600) {
+          $(this).addClass("slide");
+        }
+      });
+    });
+  })
+</script>
+<script>
+  var slideIndex = 1;
+  showSlides(slideIndex);
+
+  // Next/previous controls
+  function plusSlides(n) {
+    showSlides(slideIndex += n);
+  }
+
+  // Thumbnail image controls
+  function currentSlide(n) {
+    showSlides(slideIndex = n);
+  }
+
+  function showSlides(n) {
+    var i;
+    var slides = document.getElementsByClassName("mySlides");
+    var dots = document.getElementsByClassName("dot");
+    if (n > slides.length) { slideIndex = 1 }
+    if (n < 1) { slideIndex = slides.length }
+    for (i = 0; i < slides.length; i++) {
+      slides[i].style.display = "none";
+    }
+    for (i = 0; i < dots.length; i++) {
+      dots[i].className = dots[i].className.replace("active", "");
+    }
+    slides[slideIndex - 1].style.display = "block";
+    dots[slideIndex - 1].className += "active";
+  }
+  /* ---------- Map ---------- */
+  $(function () {
+    $('#map').vectorMap({
+      map: 'world_mill_en',
+      series: {
+        regions: [{
+          values: gdpData,
+          scale: ['#000', '#000'],
+          normalizeFunction: 'polynomial'
+        }]
+      },
+      backgroundColor: '#eef3f7',
+      onLabelShow: function (e, el, code) {
+        el.html(el.html() + ' (GDP - ' + gdpData[code] + ')');
+      }
+    });
+  });
+</script>

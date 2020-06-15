@@ -1,4 +1,4 @@
-<% public.forEach(pu => { %>
+<% public.forEach(pu => { if(pu.status == true){ %>
 <div class="d-flex justify-content-center h-100 w-100">
   <div class="card shadow" style="width: 100%;">
     <div class="card-header">
@@ -29,7 +29,7 @@
       <% if(pu.image != 'none') {%> <% var image = pu.image; %> <% for (var ima
       of image){ %>
 
-      <p><img src="/uploads/<%= ima %>" width="100%" /></p>
+      <p><img src="/uploads/<%= ima %>" width="50%" /></p>
       <% } %> <% } %>
       <!---->
     </div>
@@ -40,4 +40,4 @@
     </div>
   </div>
 </div>
-<% }) %>
+<%} }) %>

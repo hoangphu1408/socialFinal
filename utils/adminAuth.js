@@ -3,6 +3,7 @@ const Account = require("../models/account");
 const Resident = require("../models/resident");
 const Flat = require("../models/flat");
 const Post = require("../models/post");
+const Bill = require("../models/billpayment");
 
 // require module
 const bcrypt = require("bcryptjs");
@@ -18,6 +19,7 @@ const {
 const moment = require("moment");
 const nodemailer = require("nodemailer");
 const rateLimit = require("express-rate-limit");
+const e = require("express");
 
 /**
  * !------------------------------------- !
@@ -318,7 +320,7 @@ const registrationResident = async (data, user, res) => {
     private_information: private_information,
     household_registration: household,
     date: Date.now(),
-    status: true,
+    status: false,
   });
   await newResident.save();
   return res.redirect("back");
@@ -378,7 +380,7 @@ const deleteAdmin = async (id, res) => {
 const accountResident = async (data, zemail, res) => {
   const { resident, email, password, password2 } = data;
   const accounts = await Account.find({ role: "user" });
-  const residents = await Resident.find();
+  const residents = await Resident.find({ status: false });
   const errors = [];
   const validate = { email: email, password: password, password2: password2 };
   const { error } = await regAccountResident(validate);
@@ -419,7 +421,7 @@ const accountResident = async (data, zemail, res) => {
     return res.status(400).render("adminViews/residentAccount", {
       layout: "bossLayout",
       resident: residents,
-      account: account,
+      account: accounts,
       errors: errors,
       user: zemail,
     });
@@ -436,6 +438,12 @@ const accountResident = async (data, zemail, res) => {
     date: Date.now(),
     status: true,
   });
+  const updateResidentStatus = { status: true };
+  const update = await Resident.findOneAndUpdate(
+    { _id: resident },
+    updateResidentStatus,
+    { new: true }
+  );
   await newAccount.save();
   await sendEmail(email, password);
   return res.redirect("back");
@@ -578,6 +586,7 @@ const createFlat = async (data, email, res) => {
       numberOfPeople: [],
       date: Date.now(),
       status: false,
+      isPayment: false,
     });
     await newFlat.save();
     return res.redirect("back");
@@ -591,6 +600,7 @@ const createFlat = async (data, email, res) => {
       numberOfPeople: [],
       date: Date.now(),
       status: true,
+      isPayment: false,
     });
     await newFlat.save();
     return res.redirect("back");
@@ -604,6 +614,7 @@ const createFlat = async (data, email, res) => {
     numberOfPeople: number,
     date: Date.now(),
     status: true,
+    isPayment: false,
   });
   await newFlat.save();
   return res.redirect("back");
@@ -756,6 +767,174 @@ const announceDelete = async (id, res) => {
     }
   });
 };
+/**
+ * !------------------------------------- !
+ * @description Electric bill
+ * !------------------------------------- !
+ */
+
+const electricManage = async (user, data, res) => {
+  const { idFlat, last_read, current_read } = data;
+  const bill = await Bill.find({ type: "electric" });
+  const flats = await Flat.aggregate([
+    {
+      $match: {
+        status: true,
+        isPayment: false,
+      },
+    },
+  ]);
+  const errors = [];
+  if (last_read > current_read) {
+    errors.push({ msg: "Số mới không được bé hơn số cũ " });
+    if (user.role == "admin") {
+      return res.render("adminViews/electric", {
+        layout: "adminLayout",
+        flat: flats,
+        user: user,
+        bill: bill,
+        errors: errors,
+      });
+    }
+    return res.render("adminViews/electric", {
+      layout: "bossLayout",
+      flat: flats,
+      user: user,
+      bill: bill,
+      errors: errors,
+    });
+  }
+  const usage = current_read - last_read;
+  const total_cost = usage * 2000;
+
+  const date = Date.now();
+  const expiration_date = moment(date).add(5, "d").toDate();
+  const last_date = moment(date).subtract(1, "months").toDate();
+  const newElectricBill = new Bill({
+    id_flat: idFlat,
+    last_read: last_read,
+    current_read: current_read,
+    current: current_read,
+    usage: usage,
+    total_cost: total_cost,
+    type: "electric",
+    last_date: last_date.getTime(),
+    date: date,
+    expiration_date: expiration_date.getTime(),
+    status: false,
+  });
+  res.send(newElectricBill);
+  await newElectricBill.save();
+  return res.redirect("back");
+};
+
+const electricBillUpdate = async (data, res) => {
+  const { idBill, idFlat, status } = data;
+  const update = { status: status };
+  const updateBill = await Bill.findOneAndUpdate({ _id: idBill }, update, {
+    new: true,
+  });
+  return res.redirect("back");
+};
+
+const electricBillDelete = async (id, res) => {
+  const bill = await Bill.findByIdAndDelete({ _id: id }, (error, data) => {
+    if (error) {
+      alert("Cant delete now");
+      throw error;
+    } else {
+      return res.redirect("back");
+    }
+  });
+};
+
+/**
+ * !------------------------------------- !
+ * @description Water bill
+ * !------------------------------------- !
+ */
+
+const waterManage = async (user, data, res) => {
+  const { idFlat, last_read, current_read } = data;
+  const bill = await Bill.find({ type: "water" });
+  const flats = await Flat.aggregate([
+    {
+      $match: {
+        status: true,
+        isPayment: false,
+      },
+    },
+  ]);
+  const errors = [];
+  if (last_read > current_read) {
+    errors.push({ msg: "Số mới không được bé hơn số cũ " });
+    if (user.role == "admin") {
+      return res.render("adminViews/water", {
+        layout: "adminLayout",
+        flat: flats,
+        user: user,
+        bill: bill,
+        errors: errors,
+      });
+    }
+    return res.render("adminViews/water", {
+      layout: "bossLayout",
+      flat: flats,
+      user: user,
+      bill: bill,
+      errors: errors,
+    });
+  }
+  const free = 10;
+  const usage = current_read - last_read;
+  const total = usage - free;
+  var total_cost;
+  if (total < 0) {
+    total_cost = 0;
+  } else {
+    total_cost = total * 6700;
+  }
+
+  const date = Date.now();
+  const expiration_date = moment(date).add(5, "d").toDate();
+  const last_date = moment(date).subtract(1, "months").toDate();
+  const newWaterBill = new Bill({
+    id_flat: idFlat,
+    last_read: last_read,
+    current_read: current_read,
+    current: current_read,
+    free: free,
+    usage: usage,
+    total_cost: total_cost,
+    type: "water",
+    last_date: last_date.getTime(),
+    date: date,
+    expiration_date: expiration_date.getTime(),
+    status: false,
+  });
+  await newWaterBill.save();
+  return res.redirect("back");
+};
+
+const waterBillUpdate = async (data, res) => {
+  const { idBill, idFlat, status } = data;
+  const update = { status: status };
+  const updateBill = await Bill.findOneAndUpdate({ _id: idBill }, update, {
+    new: true,
+  });
+  return res.redirect("back");
+};
+
+const waterBillDelete = async (id, res) => {
+  const bill = await Bill.findByIdAndDelete({ _id: id }, (error, data) => {
+    if (error) {
+      alert("Cant delete now");
+      throw error;
+    } else {
+      return res.redirect("back");
+    }
+  });
+};
 
 /**
  * !------------------------------------- !
@@ -875,4 +1054,10 @@ module.exports = {
   announceManage,
   announceUpdate,
   announceDelete,
+  electricManage,
+  electricBillUpdate,
+  electricBillDelete,
+  waterManage,
+  waterBillUpdate,
+  waterBillDelete,
 };

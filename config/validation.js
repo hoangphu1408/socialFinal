@@ -41,20 +41,12 @@ const loginValidation = (data) => {
       "string.email": `Email is invalid`,
       "any.required": `Email is required`,
     }),
-    password: Joi.string()
-      .min(6)
-      .pattern(
-        new RegExp(
-          "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$"
-        )
-      )
-      .messages({
-        "string.empty": `password cannot be an empty field`,
-        "string.min": `password should have a minimum length of 6`,
-        "string.max": `password should have a maximum length of 30`,
-        "any.required": `password is a required field`,
-        "string.pattern.base": `Mật khẩu cần ít nhất 1 ký tự đặt biệt,1 chữ viết hoa và 1 chữ số`,
-      }),
+    password: Joi.string().min(6).messages({
+      "string.empty": `password cannot be an empty field`,
+      "string.min": `password should have a minimum length of 6`,
+      "string.max": `password should have a maximum length of 30`,
+      "any.required": `password is a required field`,
+    }),
   });
   return schema.validate(data);
 };

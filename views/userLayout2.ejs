@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>LOG IN</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="CSS/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+</head>
+
+<body id="myPage" data-spy="scroll" data-target=".navbar" data-offset="60">
+
+    <nav class="navbar navbar-default navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="index1.html"><strong> HOME </strong></a>
+            </div>
+            <div class="collapse navbar-collapse" id="myNavbar">
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="#login">LOGIN</a></li>
+                    <li><a href="#contact">CONTACT</a></li>
+                    <li>
+                        <div class="input-group">
+                            <input type="search" class="form-control" size="50" placeholder="searching for ...">
+                            <div class="input-group-btn">
+                                <button type="button" class="btn btn-primary">Search</button>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="jumbotron text-center">
+        <h1>YOUR CHOICE, YOUR LIFE</h1>
+    </div>
+
+    <!-- Container -->
+    <div id="login" class="container" style="max-width: 500px;">
+        <div class="panel panel-default text-center">
+            <div class="panel-heading">
+                <h1>Log In Now</h1>
+            </div>
+            <form action="/login" method="POST">
+                <%-include("./partials/messages.ejs") %>
+            <div class="panel-footer" style="max-width: 500px;">
+                <i class="design"></i>
+                <label for="txtname"> Username: </label>
+                <input class="form-control text-center" id="email" name="email" type="text" required autofocus>
+                </br>
+                <label for="txtpass"> Password: </label>
+                <input class="form-control text-center" id="password" name="password" type="password" required></br>
+                <input type="checkbox" name="remember"> Remember login
+                </br>
+                <button class="btn btn-primary btn-lg btn-block" type="submit"> Login </button>
+                </br>
+                <label id="forgot">
+                    <center> Forget your password ? </a> </center> <br /> Contact: (08)901374426 (Customer Room)
+                </label>
+            </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Container (Contact Section) -->
+    <div id="contact" class="container-fluid bg-grey">
+        <h2 class="text-center">CONTACT</h2>
+        <div class="row">
+            <div class="col-sm-5">
+                <p>Contact us to find your answer:</p>
+                <p><span class="glyphicon glyphicon-map-marker"></span> 475A Điện Biên Phủ, P25, Q.Bình Thạnh, TPHCM</p>
+                <p><span class="glyphicon glyphicon-phone"></span> (028) 5445 777</p>
+                <p><span class="glyphicon glyphicon-envelope"></span> hutech@hutech.edu.vn</p>
+                <p> Folow: <a href="https://www.facebook.com/"><img src="Images/fb.png"> <a
+                            href="https://www.instagram.com/"><img src="Images/ins.jpg"> </a></p>
+            </div>
+            <div class="col-sm-7 slideanim">
+                <div class="row">
+                    <div class="col-sm-6 form-group">
+                        <input class="form-control" id="name" name="name" placeholder="Name" type="text" required>
+                    </div>
+                    <div class="col-sm-6 form-group">
+                        <input class="form-control" id="email" name="email" placeholder="Email" type="email" required>
+                    </div>
+                </div>
+                <textarea class="form-control" id="comments" name="comments" placeholder="Comment"
+                    rows="5"></textarea><br>
+                <div class="row">
+                    <div class="col-sm-12 form-group">
+                        <button class="btn btn-default pull-right" type="submit">Send</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Image of location/map -->
+    <iframe width="100%" height="500px"
+        src="http://maps.google.com/maps?f=q&amp;source=s_q&amp;hl=en&amp;geocode=&amp;q=+HCM,+Viet+Nam&amp;aq=0&amp;sll=@15.6072674,96.8678642,5z/data=!3m1!4b1&amp;sspn=@15.6072674,96.8678642,5z/data=!3m1!4b1&amp;ie=UTF8&amp;hq=&amp;hnear=Brooklyn,+Kings,+New+York&amp;ll=@15.6072674,96.8678642,5z/data=!3m1!4b1&amp;spn=@15.6072674,96.8678642,5z/data=!3m1!4b1&amp;z=14&amp;iwloc=A&amp;output=embed"></iframe>
+
+    <footer class="container-fluid2 text-center">
+        <a href="#myPage" title="To Top">
+            <span class="glyphicon glyphicon-chevron-up"></span>
+        </a>
+    </footer>
+
+    <script>
+        $(document).ready(function () {
+            // Add smooth scrolling to all links in navbar + footer link
+            $(".navbar a, footer a[href='#myPage']").on('click', function (event) {
+                // Make sure this.hash has a value before overriding default behavior
+                if (this.hash !== "") {
+                    // Prevent default anchor click behavior
+                    event.preventDefault();
+
+                    // Store hash
+                    var hash = this.hash;
+
+                    // Using jQuery's animate() method to add smooth page scroll
+                    // The optional number (900) specifies the number of milliseconds it takes to scroll to the specified area
+                    $('html, body').animate({
+                        scrollTop: $(hash).offset().top
+                    }, 900, function () {
+
+                        // Add hash (#) to URL when done scrolling (default click behavior)
+                        window.location.hash = hash;
+                    });
+                } // End if
+            });
+
+            $(window).scroll(function () {
+                $(".slideanim").each(function () {
+                    var pos = $(this).offset().top;
+
+                    var winTop = $(window).scrollTop();
+                    if (pos < winTop + 600) {
+                        $(this).addClass("slide");
+                    }
+                });
+            });
+        })
+    </script>
+    <script>
+        /* ---------- Map ---------- */
+        $(function () {
+            $('#map').vectorMap({
+                map: 'world_mill_en',
+                series: {
+                    regions: [{
+                        values: gdpData,
+                        scale: ['#000', '#000'],
+                        normalizeFunction: 'polynomial'
+                    }]
+                },
+                backgroundColor: '#eef3f7',
+                onLabelShow: function (e, el, code) {
+                    el.html(el.html() + ' (GDP - ' + gdpData[code] + ')');
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>

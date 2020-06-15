@@ -15,6 +15,9 @@ const {
   profileView,
   sendMailView,
   sellPageView,
+  writingView,
+  aboutUser,
+  message,
 } = require("../utils/userView");
 const isLogin = require("../config/isLoginU");
 const verify = require("../config/verifyTokenU");
@@ -47,16 +50,32 @@ const upload = multer({
 });
 
 router.get("/test", (req, res) => {
-  return res.render("test");
+  return res.render("test", {
+    layout: "userLayout",
+  });
 });
 
 //
 router.get("/login", isLogin, (req, res) => {
-  return res.render("userViews/login");
+  return res.render("userViews/login", {
+    layout: "userLayout2",
+  });
 });
 
 router.get("/homepage", verify, (req, res) => {
   return homePageView(req.user, res);
+});
+
+router.get("/writing", verify, (req, res) => {
+  return writingView(req.user, res);
+});
+
+router.get("/about-customer", verify, (req, res) => {
+  return aboutUser(req.user, res);
+});
+
+router.get("/messages", verify, (req, res) => {
+  return message(req.user, res);
 });
 
 router.get("/profile/:id", verify, (req, res) => {
@@ -71,7 +90,7 @@ router.get("/sellpage", verify, (req, res) => {
 //Handle
 
 router.post(
-  "/homepage",
+  "/writing",
   verify,
 
   uploadPost.array("image", 6),
@@ -117,7 +136,6 @@ router.post("/profile-update", verify, createLimit, async (req, res) => {
 
 router.post("/send-mail", verify, async (req, res) => {
   await sendEmailPassword(req.body.email, res);
-  res.json(req.body);
 });
 
 router.get("/change-password/:token", async (req, res) => {

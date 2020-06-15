@@ -24,6 +24,12 @@ const {
   announceDelete,
   sendEmailPassword,
   changePWDAD,
+  electricManage,
+  electricBillUpdate,
+  electricBillDelete,
+  waterManage,
+  waterBillUpdate,
+  waterBillDelete,
 } = require("../utils/adminAuth");
 // Require View
 const {
@@ -35,6 +41,9 @@ const {
   accountResidentView,
   announceView,
   postView,
+  electricView,
+  waterView,
+
   test,
 } = require("../utils/adminView");
 
@@ -104,6 +113,14 @@ router.get("/announce-manage", verify, (req, res) => {
 
 router.get("/post-manage", verify, (req, res) => {
   return postView(req.user, res);
+});
+
+router.get("/electric-bill-manage", verify, (req, res) => {
+  return electricView(req.user, res);
+});
+
+router.get("/water-bill-manage", verify, (req, res) => {
+  return waterView(req.user, res);
 });
 
 router.get("/logout", (req, res) => {
@@ -194,11 +211,26 @@ router.post("/announce-update", verify, async (req, res) => {
 router.get("/announce-delete/:id", verify, async (req, res) => {
   await announceDelete(req.params.id, res);
 });
+// Payment
+router.post("/electric-bill-manage", verify, async (req, res) => {
+  await electricManage(req.user, req.body, res);
+});
+router.post("/electric-bill-update", verify, async (req, res) => {
+  await electricBillUpdate(req.body, res);
+});
+router.get("/electric-bill-delete/:id", verify, async (req, res) => {
+  await electricBillDelete(req.params.id, res);
+});
 
-// Post
-
-router.post("/announce-manage1", async (req, res) => {
-  await announceManage(req.body, res);
+/*           !            */
+router.post("/water-bill-manage", verify, async (req, res) => {
+  await waterManage(req.user, req.body, res);
+});
+router.post("/water-bill-update", verify, async (req, res) => {
+  await waterBillUpdate(req.body, res);
+});
+router.get("/water-bill-delete/:id", verify, async (req, res) => {
+  await waterBillDelete(req.params.id, res);
 });
 
 module.exports = router;

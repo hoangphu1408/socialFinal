@@ -12,6 +12,8 @@ module.exports = function (req, res, next) {
     }
   } catch {
     res.clearCookie("auth");
-    return res.render("userViews/login");
+    return res.render("userViews/login", {
+      layout: "userLayout2",
+    });
   }
 };

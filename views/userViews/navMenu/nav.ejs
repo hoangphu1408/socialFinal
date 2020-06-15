@@ -1,58 +1,48 @@
-<nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark shadow">
-  <a class="navbar-brand" href="/homepage">Social Networking</a
-  ><button
-    class="btn btn-link btn-sm order-1 order-lg-0"
-    id="sidebarToggle"
-    href="#"
-  >
-    <i class="fas fa-bars"></i></button
-  ><!-- Navbar Search-->
-  <form
-    class="d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0"
-    style="visibility: hidden;"
-  >
-    <div class="input-group">
-      <input
-        class="form-control"
-        type="text"
-        placeholder="Search for..."
-        aria-label="Search"
-        aria-describedby="basic-addon2"
-      />
-      <div class="input-group-append">
-        <button class="btn btn-primary" type="button">
-          <i class="fas fa-search"></i>
-        </button>
-      </div>
-    </div>
-  </form>
-  <!-- Navbar-->
-  <ul class="navbar-nav ml-auto ml-md-0">
-    <li class="nav-item dropdown">
-      <a
-        class="nav-link dropdown-toggle"
-        id="userDropdown"
-        href="#"
-        role="button"
-        data-toggle="dropdown"
-        aria-haspopup="true"
-        aria-expanded="false"
-        ><img src="/avatar/<%=avatar%>" class="avatar"
-      /></a>
-      <div
-        class="dropdown-menu dropdown-menu-right"
-        aria-labelledby="userDropdown"
+<nav class="navbar navbar-default navbar-fixed-top">
+  <div class="container">
+    <div class="navbar-header">
+      <button
+        type="button"
+        class="navbar-toggle"
+        data-toggle="collapse"
+        data-target="#myNavbar"
       >
-        <a class="dropdown-item" href="/profile/<%=user._id %>">Profile</a>
-        <div class="dropdown-divider"></div>
-        <a class="dropdown-item" href="/send-mail">ChangePassword</a>
-        <div class="dropdown-divider"></div>
-
-        <a class="dropdown-item" href="/homepage">Home</a>
-        <a class="dropdown-item" href="/sellpage">Sell</a>
-        <div class="dropdown-divider"></div>
-        <a class="dropdown-item" href="/logout">Logout</a>
-      </div>
-    </li>
-  </ul>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/homepage"><strong> HOME </strong></a>
+    </div>
+    <div style="margin-left: 1000px;">
+      <img src="/avatar/<%=avatar%>" class="avatar" />
+      <a href="/logout" class="btn btn-primary">Logout</a>
+    </div>
+    <div class="collapse navbar-collapse" id="myNavbar">
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="#feeds">NEWS</a></li>
+        <li><a href="#services">SERVICES</a></li>
+        <li><a href="#attentions">ATTENTIONS</a></li>
+        <li><a href="#pricing">PRICING</a></li>
+        <li><a href="#contact">CONTACT</a></li>
+        <li><a href="index1.html"> ENGLISH ></a></li>
+        <li><a href="index2.html"> VIETNAMESE ></a></li>
+        <li>
+          <div class="input-group">
+            <input
+              type="search"
+              class="form-control"
+              size="50"
+              placeholder="searching for ..."
+            />
+            <div class="input-group-btn">
+              <button type="button" class="btn btn-primary">Search</button>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
 </nav>
+<div class="jumbotron text-center">
+  <h1>YOUR CHOICE, YOUR LIFE</h1>
+</div>

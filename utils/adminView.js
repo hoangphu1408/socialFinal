@@ -3,12 +3,15 @@ const Account = require("../models/account");
 const Flat = require("../models/flat");
 const Resident = require("../models/resident");
 const Post = require("../models/post");
+const Bill = require("../models/billpayment");
 // Require Handle
 const { isAdmin, listFlat } = require("../utils/adminAuth");
 const moment = require("moment");
 const nodemailer = require("nodemailer");
 const rateLimit = require("express-rate-limit");
 const mongoose = require("mongoose");
+const { array } = require("@hapi/joi");
+const flat = require("../models/flat");
 
 /**
  *  !-----------------------------!
@@ -30,7 +33,7 @@ const dashboardView = async (req, res) => {
       user: req,
     });
   } catch (err) {
-    return res.status(403).redirect("/");
+    return res.status(403).redirect("/admin/dashboard");
   }
 };
 
@@ -54,7 +57,7 @@ const changePasswordView = async (req, res) => {
       user: req,
     });
   } catch (err) {
-    return res.status(403).redirect("/");
+    return res.status(403).redirect("/admin/dashboard");
   }
 };
 
@@ -76,7 +79,7 @@ const registerView = async (req, res) => {
       user: req,
     });
   } catch (err) {
-    return res.status(403).redirect("/");
+    return res.status(403).redirect("/admin/dashboard");
   }
 };
 
@@ -108,7 +111,7 @@ const registerResidentView = async (req, res) => {
 
 const accountResidentView = async (req, res) => {
   try {
-    const resident = await Resident.find({});
+    const resident = await Resident.find({ status: false });
     const account = await Account.find({ role: "user" });
     if (req.role == "admin") {
       return res.render("adminViews/residentAccount", {
@@ -125,7 +128,7 @@ const accountResidentView = async (req, res) => {
       user: req,
     });
   } catch (err) {
-    return res.send(err);
+    return res.status(403).redirect("/admin/dashboard");
   }
 };
 
@@ -187,7 +190,7 @@ const flatView = async (req, res) => {
       user: req,
     });
   } catch (err) {
-    return res.status(403).redirect("/");
+    return res.status(403).redirect("/admin/dashboard");
   }
 };
 
@@ -240,7 +243,7 @@ const announceView = async (req, res) => {
       post: post,
     });
   } catch (err) {
-    return res.status(403).redirect("/");
+    return res.status(403).redirect("/admin/dashboard");
   }
 };
 
@@ -268,36 +271,142 @@ const postView = async (req, res) => {
       post: post,
     });
   } catch (err) {
-    return res.status(403).redirect("/");
+    return res.status(403).redirect("/admin/dashboard");
+  }
+};
+
+/**
+ *  !-----------------------------!
+ * @description  Payment view
+ *  !-----------------------------!
+ */
+
+const electricView = async (req, res) => {
+  try {
+    const bill = await Bill.aggregate([
+      {
+        $match: {
+          type: "electric",
+        },
+      },
+      {
+        $lookup: {
+          from: "flats",
+          localField: "id_flat",
+          foreignField: "_id",
+          as: "flat",
+        },
+      },
+      {
+        $project: {
+          flat: {
+            numberOfPeople: 0,
+            _id: 0,
+            date: 0,
+            status: 0,
+            isPayment: 0,
+          },
+        },
+      },
+    ]);
+    const flat = await Flat.aggregate([
+      {
+        $match: {
+          status: true,
+        },
+      },
+    ]);
+    if (req.role == "admin") {
+      return res.render("adminViews/electric", {
+        layout: "adminLayout",
+        flat: flat,
+        user: req,
+        bills: bill,
+      });
+    }
+    return res.render("adminViews/electric", {
+      layout: "bossLayout",
+      flat: flat,
+      user: req,
+      bills: bill,
+    });
+  } catch (err) {
+    return res.status(403).redirect("/admin/dashboard");
+  }
+};
+
+const waterView = async (req, res) => {
+  try {
+    const bill = await Bill.aggregate([
+      {
+        $match: {
+          type: "water",
+        },
+      },
+      {
+        $lookup: {
+          from: "flats",
+          localField: "id_flat",
+          foreignField: "_id",
+          as: "flat",
+        },
+      },
+      {
+        $project: {
+          flat: {
+            numberOfPeople: 0,
+            _id: 0,
+            date: 0,
+            status: 0,
+            isPayment: 0,
+          },
+        },
+      },
+    ]);
+    const flat = await Flat.aggregate([
+      {
+        $match: {
+          status: true,
+        },
+      },
+    ]);
+    if (req.role == "admin") {
+      return res.render("adminViews/water", {
+        layout: "adminLayout",
+        flat: flat,
+        user: req,
+        bills: bill,
+      });
+    }
+    return res.render("adminViews/water", {
+      layout: "bossLayout",
+      flat: flat,
+      user: req,
+      bills: bill,
+    });
+  } catch (err) {
+    return res.status(403).redirect("/admin/dashboard");
   }
 };
 
 const test = async (req, res) => {
   try {
-    const flat = await Account.aggregate([
+    const abc = await Flat.aggregate([
       {
-        $match: { role: "user" },
+        $match: {
+          owner: mongoose.Types.ObjectId("5ee6709ed1528534f41ac6bb"),
+        },
       },
       {
         $lookup: {
-          from: "residents",
-          localField: "id_resident",
-          foreignField: "_id",
-          as: "Owner",
-        },
-      },
-      {
-        $project: {
-          _id: 0,
-          Owner: {
-            _id: 1,
-          },
+          from: "bills",
+          localField: "_id",
+          foreignField: "id_flat",
+          as: "flat",
         },
       },
     ]);
-    flat.forEach((f) => {
-      res.send(f.Owner[0]);
-    });
+    res.send(abc);
   } catch (err) {
     console.log(err);
   }
@@ -312,5 +421,7 @@ module.exports = {
   accountResidentView,
   announceView,
   postView,
+  electricView,
+  waterView,
   test,
 };

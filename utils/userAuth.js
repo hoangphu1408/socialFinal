@@ -26,6 +26,7 @@ const loginUser = async (data, res) => {
   if (error) {
     errors.push({ msg: error.details[0].message });
     return res.status(400).render("userViews/login", {
+      layout: "userLayout2",
       errors: errors,
     });
   }
@@ -33,6 +34,7 @@ const loginUser = async (data, res) => {
   if (!isMail) {
     errors.push({ msg: "Email or password incorrect" });
     return res.status(400).render("userViews/login", {
+      layout: "userLayout2",
       errors: errors,
     });
   }
@@ -41,6 +43,7 @@ const loginUser = async (data, res) => {
   if (!isMatch) {
     errors.push({ msg: "Email or password incorrect" });
     return res.status(400).render("userViews/login", {
+      layout: "userLayout2",
       errors: errors,
     });
   }
@@ -151,7 +154,7 @@ const postCreate = async (user, data, image, res) => {
 
   if (content === "" && image === "none") {
     errors.push({ msg: "Please add content" });
-    return res.render("userViews/homepage", {
+    return res.render("userViews/writing", {
       layout: "userLayout",
       user: user,
       errors: errors,
