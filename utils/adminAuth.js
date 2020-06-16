@@ -437,6 +437,7 @@ const accountResident = async (data, zemail, res) => {
     password: hashedPassword,
     date: Date.now(),
     status: true,
+    email_verify: true,
   });
   const updateResidentStatus = { status: true };
   const update = await Resident.findOneAndUpdate(
@@ -823,7 +824,6 @@ const electricManage = async (user, data, res) => {
     expiration_date: expiration_date.getTime(),
     status: false,
   });
-  res.send(newElectricBill);
   await newElectricBill.save();
   return res.redirect("back");
 };

@@ -2,14 +2,14 @@
   <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
     <div class="sb-sidenav-menu">
       <div class="nav">
-        <div class="sb-sidenav-menu-heading">Main</div>
+        <div class="sb-sidenav-menu-heading">Trang chính</div>
         <a class="nav-link" href="/admin/Dashboard">
           <div class="sb-nav-link-icon">
             <i class="fas fa-tachometer-alt"></i>
           </div>
           Dashboard
         </a>
-        <div class="sb-sidenav-menu-heading">Interface</div>
+        <div class="sb-sidenav-menu-heading">Tương tác</div>
         <!---------->
         <a
           class="nav-link collapsed"
@@ -22,7 +22,7 @@
           <div class="sb-nav-link-icon">
             <i class="fas fa-home"></i>
           </div>
-          Flat
+          Căn hộ
           <div class="sb-sidenav-collapse-arrow">
             <i class="fas fa-angle-down"></i>
           </div>
@@ -34,7 +34,7 @@
           data-parent="#sidenavAccordion"
         >
           <nav class="sb-sidenav-menu-nested nav">
-            <a class="nav-link" href="/admin/flat-manage">Manage</a>
+            <a class="nav-link" href="/admin/flat-manage">Quản lý căn hộ</a>
           </nav>
         </div>
 
@@ -50,7 +50,7 @@
           <div class="sb-nav-link-icon">
             <i class="far fa-user"></i>
           </div>
-          Resident
+          Cư dân
           <div class="sb-sidenav-collapse-arrow">
             <i class="fas fa-angle-down"></i>
           </div>
@@ -62,7 +62,7 @@
           data-parent="#sidenavAccordion"
         >
           <nav class="sb-sidenav-menu-nested nav">
-            <a class="nav-link" href="/admin/resident-manage">Manage</a>
+            <a class="nav-link" href="/admin/resident-manage">Quản lý cư dân</a>
           </nav>
         </div>
         <div
@@ -72,7 +72,9 @@
           data-parent="#sidenavAccordion"
         >
           <nav class="sb-sidenav-menu-nested nav">
-            <a class="nav-link" href="/admin/resident-account">Account</a>
+            <a class="nav-link" href="/admin/resident-account"
+              >Tài khoản cư dân</a
+            >
           </nav>
         </div>
 
@@ -87,7 +89,7 @@
           <div class="sb-nav-link-icon">
             <i class="fas fa-book-open"></i>
           </div>
-          Announce
+          Thông báo
           <div class="sb-sidenav-collapse-arrow">
             <i class="fas fa-angle-down"></i>
           </div>
@@ -99,7 +101,9 @@
           data-parent="#sidenavAccordion"
         >
           <nav class="sb-sidenav-menu-nested nav">
-            <a class="nav-link" href="/admin/announce-manage">Manage</a>
+            <a class="nav-link" href="/admin/announce-manage"
+              >Quản lý thông báo</a
+            >
           </nav>
         </div>
         <div
@@ -109,7 +113,88 @@
           data-parent="#sidenavAccordion"
         >
           <nav class="sb-sidenav-menu-nested nav">
-            <a class="nav-link" href="/admin/post-manage">List Posts</a>
+            <a class="nav-link" href="/admin/post-manage"
+              >Danh sách bài đăng
+            </a>
+          </nav>
+        </div>
+        <div
+          class="collapse"
+          id="collapseAnnounce"
+          aria-labelledby="headingOne"
+          data-parent="#sidenavAccordion"
+        >
+          <nav class="sb-sidenav-menu-nested nav">
+            <a class="nav-link" href="/admin/electric-bill-manage">Tiền Điện</a>
+          </nav>
+        </div>
+        <div
+          class="collapse"
+          id="collapseAnnounce"
+          aria-labelledby="headingOne"
+          data-parent="#sidenavAccordion"
+        >
+          <nav class="sb-sidenav-menu-nested nav">
+            <a class="nav-link" href="/admin/water-bill-manage">Tiền Nước</a>
+          </nav>
+        </div>
+        <div
+          class="collapse"
+          id="collapseAnnounce"
+          aria-labelledby="headingOne"
+          data-parent="#sidenavAccordion"
+        >
+          <nav class="sb-sidenav-menu-nested nav">
+            <a class="nav-link" href="/admin/col-manage">Phí sinh hoạt chung</a>
+          </nav>
+        </div>
+        <!---------->
+        <a
+          class="nav-link collapsed"
+          href="#"
+          data-toggle="collapse"
+          data-target="#collapsePayment"
+          aria-expanded="false"
+          aria-controls="collapsePayment"
+        >
+          <div class="sb-nav-link-icon">
+            <i class="fas fa-paste"></i>
+          </div>
+          Thanh toán
+          <div class="sb-sidenav-collapse-arrow">
+            <i class="fas fa-angle-down"></i>
+          </div>
+        </a>
+        <div
+          class="collapse"
+          id="collapsePayment"
+          aria-labelledby="headingOne"
+          data-parent="#sidenavAccordion"
+        >
+          <nav class="sb-sidenav-menu-nested nav">
+            <a class="nav-link" href="/admin/payment-manage">Tiền điện</a>
+          </nav>
+        </div>
+        <div
+          class="collapse"
+          id="collapsePayment"
+          aria-labelledby="headingOne"
+          data-parent="#sidenavAccordion"
+        >
+          <nav class="sb-sidenav-menu-nested nav">
+            <a class="nav-link" href="/admin/payment-manage">Tiền nước</a>
+          </nav>
+        </div>
+        <div
+          class="collapse"
+          id="collapsePayment"
+          aria-labelledby="headingOne"
+          data-parent="#sidenavAccordion"
+        >
+          <nav class="sb-sidenav-menu-nested nav">
+            <a class="nav-link" href="/admin/payment-manage"
+              >Phí sinh hoạt chung</a
+            >
           </nav>
         </div>
         <!---------->
