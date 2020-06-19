@@ -25,17 +25,16 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="index1.html"><strong> HOME </strong></a>
+                <a class="navbar-brand" href="index1.html"><strong> Trang Chủ </strong></a>
             </div>
             <div class="collapse navbar-collapse" id="myNavbar">
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a href="#login">LOGIN</a></li>
-                    <li><a href="#contact">CONTACT</a></li>
+                    <li><a href="#contact">Liên hệ</a></li>
                     <li>
                         <div class="input-group">
-                            <input type="search" class="form-control" size="50" placeholder="searching for ...">
+                            <input type="search" class="form-control" size="50" placeholder="Tìm kiếm ...">
                             <div class="input-group-btn">
-                                <button type="button" class="btn btn-primary">Search</button>
+                                <button type="button" class="btn btn-primary">Tìm kiếm</button>
                             </div>
                         </div>
                     </li>
@@ -52,23 +51,23 @@
     <div id="login" class="container" style="max-width: 500px;">
         <div class="panel panel-default text-center">
             <div class="panel-heading">
-                <h1>Log In Now</h1>
+                <h1>Đăng nhập ngay !</h1>
             </div>
             <form action="/login" method="POST">
                 <%-include("./partials/messages.ejs") %>
             <div class="panel-footer" style="max-width: 500px;">
                 <i class="design"></i>
-                <label for="txtname"> Username: </label>
+                <label for="txtname"> Email: </label>
                 <input class="form-control text-center" id="email" name="email" type="text" required autofocus>
                 </br>
-                <label for="txtpass"> Password: </label>
+                <label for="txtpass"> Mật khẩu: </label>
                 <input class="form-control text-center" id="password" name="password" type="password" required></br>
-                <input type="checkbox" name="remember"> Remember login
+                <input type="checkbox" name="remember"> Ghi nhơ đăng nhập
                 </br>
-                <button class="btn btn-primary btn-lg btn-block" type="submit"> Login </button>
+                <button class="btn btn-primary btn-lg btn-block" type="submit"> Đăng nhập </button>
                 </br>
                 <label id="forgot">
-                    <center> Forget your password ? </a> </center> <br /> Contact: (08)901374426 (Customer Room)
+                    <center> Quên mật khẩu ? </a> </center> <br /> Liên hệ: (08)901374426 (Phòng khách hàng)
                 </label>
             </div>
             </form>
@@ -77,30 +76,30 @@
 
     <!-- Container (Contact Section) -->
     <div id="contact" class="container-fluid bg-grey">
-        <h2 class="text-center">CONTACT</h2>
+        <h2 class="text-center">Liên hệ</h2>
         <div class="row">
             <div class="col-sm-5">
-                <p>Contact us to find your answer:</p>
+                <p>Liên hệ với chúng tôi để tìm câu trả lời của bạn:</p>
                 <p><span class="glyphicon glyphicon-map-marker"></span> 475A Điện Biên Phủ, P25, Q.Bình Thạnh, TPHCM</p>
                 <p><span class="glyphicon glyphicon-phone"></span> (028) 5445 777</p>
                 <p><span class="glyphicon glyphicon-envelope"></span> hutech@hutech.edu.vn</p>
-                <p> Folow: <a href="https://www.facebook.com/"><img src="Images/fb.png"> <a
+                <p> Theo dõi: <a href="https://www.facebook.com/"><img src="Images/fb.png"> <a
                             href="https://www.instagram.com/"><img src="Images/ins.jpg"> </a></p>
             </div>
             <div class="col-sm-7 slideanim">
                 <div class="row">
                     <div class="col-sm-6 form-group">
-                        <input class="form-control" id="name" name="name" placeholder="Name" type="text" required>
+                        <input class="form-control" id="name" name="name" placeholder="Tên" type="text" required>
                     </div>
                     <div class="col-sm-6 form-group">
                         <input class="form-control" id="email" name="email" placeholder="Email" type="email" required>
                     </div>
                 </div>
-                <textarea class="form-control" id="comments" name="comments" placeholder="Comment"
+                <textarea class="form-control" id="comments" name="comments" placeholder="Nội dung"
                     rows="5"></textarea><br>
                 <div class="row">
                     <div class="col-sm-12 form-group">
-                        <button class="btn btn-default pull-right" type="submit">Send</button>
+                        <button class="btn btn-default pull-right" type="submit">Gửi</button>
                     </div>
                 </div>
             </div>
