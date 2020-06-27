@@ -9,9 +9,9 @@
         <% bill.flat.forEach(bi => { %> <% if(bi.status == false){ %>
             <% var date = parseInt(bi.last_date); var time = new Date(date); %>
             <% if(bi.type =="electric"){ %>
-    <p> <strong>Tiền điện <%=time.toLocaleDateString()%> của căn hộ <%= bill.block %>-<%=bill.floorId%>-<%=bill.flatId %>  là <%=bi.total_cost.toLocaleString(); %> vnđ </p></strong>
+    <p> <strong>Tiền điện <%=time.toLocaleDateString()%> của căn hộ <%= bill.block %>-<%=bill.floorId%>-<%=bill.flatId %>  là <%=bi.total_cost.toLocaleString(); %> đồng </p></strong>
             <% }else{ %>
-    <p><strong> Tiền nước <%=time.toLocaleDateString()%> của căn hộ <%= bill.block %>-<%=bill.floorId%>-<%=bill.flatId %> là <%=bi.total_cost %> </p></strong>
+    <p><strong> Tiền nước <%=time.toLocaleDateString()%> của căn hộ <%= bill.block %>-<%=bill.floorId%>-<%=bill.flatId %> là <%=bi.total_cost.toLocaleString(); %> đồng </p></strong>
    
            <% } %> 
             <hr color="black">

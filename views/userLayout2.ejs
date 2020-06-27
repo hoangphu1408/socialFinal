@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet" type="text/css">
-    <link rel="stylesheet" href="CSS/style.css">
+    <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
@@ -48,31 +48,7 @@
     </div>
 
     <!-- Container -->
-    <div id="login" class="container" style="max-width: 500px;">
-        <div class="panel panel-default text-center">
-            <div class="panel-heading">
-                <h1>Đăng nhập ngay !</h1>
-            </div>
-            <form action="/login" method="POST">
-                <%-include("./partials/messages.ejs") %>
-            <div class="panel-footer" style="max-width: 500px;">
-                <i class="design"></i>
-                <label for="txtname"> Email: </label>
-                <input class="form-control text-center" id="email" name="email" type="text" required autofocus>
-                </br>
-                <label for="txtpass"> Mật khẩu: </label>
-                <input class="form-control text-center" id="password" name="password" type="password" required></br>
-                <input type="checkbox" name="remember"> Ghi nhơ đăng nhập
-                </br>
-                <button class="btn btn-primary btn-lg btn-block" type="submit"> Đăng nhập </button>
-                </br>
-                <label id="forgot">
-                    <center> Quên mật khẩu ? </a> </center> <br /> Liên hệ: (08)901374426 (Phòng khách hàng)
-                </label>
-            </div>
-            </form>
-        </div>
-    </div>
+   <%-body %>
 
     <!-- Container (Contact Section) -->
     <div id="contact" class="container-fluid bg-grey">

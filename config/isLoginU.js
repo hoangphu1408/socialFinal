@@ -8,7 +8,7 @@ module.exports = function (req, res, next) {
       res.clearCookie("auth");
       return res.redirect("/login");
     } else {
-      return res.redirect("/homepage");
+      return res.redirect("/");
     }
   } catch {
     res.clearCookie("auth");

@@ -62,7 +62,81 @@ const loginUser = async (data, res) => {
     maxAge: 50000000,
     httpOnly: true,
   });
-  return res.redirect("/homepage");
+  return res.redirect("/");
+};
+
+/**
+ * !-----------------------------!
+ * @description forgot password
+ * !-----------------------------!
+ */
+
+const forgotPassword = async (data, res) => {
+  const errors = [];
+  const success = [];
+  const email = data.email;
+  const isAccount = await Account.findOne({ email: email });
+  if (!isAccount) {
+    errors.push({ msg: "Email không tồn tại" });
+    return res.render("userViews/forgotPassword", {
+      layout: "userLayout2",
+      errors: errors,
+    });
+  }
+  success.push({
+    msg: "Gửi thành công, kiểm tra email để cập nhật mật khẩu mới!",
+  });
+  const payload = { email: email };
+  const mailToken = jwt.sign(payload, MAIL, {
+    expiresIn: "1 days",
+  });
+  await sendEmailFP(email, mailToken);
+  return res.render("userViews/forgotPassword", {
+    layout: "userLayout2",
+    success: success,
+  });
+};
+
+/**
+ * !-----------------------------!
+ * @description Update new Password
+ * !-----------------------------!
+ */
+
+const newPassword = async (token, res) => {
+  try {
+    const verified = jwt.verify(token, MAIL);
+    if (verified) {
+      return res.render("userViews/newPassword", {
+        layout: "userLayout2",
+        email: verified.email,
+      });
+    } else {
+      return res.redirect("/");
+    }
+  } catch (err) {
+    return res.send("Verify error");
+  }
+};
+
+/**
+ * !-----------------------------!
+ * @description update new Password
+ * !-----------------------------!
+ */
+
+const newPWD = async (email, data, res) => {
+  const errors = [];
+  const hashedPassword = await bcrypt.hash(data.pwd1, 12);
+  const update = { password: hashedPassword };
+  const updatePassword = await Account.findOneAndUpdate(
+    { email: email },
+    update,
+    {
+      new: true,
+    }
+  );
+  return res.redirect("/login");
 };
 
 /**
@@ -304,6 +378,45 @@ const validateEmail = async (email) => {
   return (await Account.findOne({ email: email })) ? true : false;
 };
 
+/**
+ * !-----------------------------!
+ * @description Mail forgotpass
+ * !-----------------------------!
+ */
+const sendEmailFP = (email, mailToken) => {
+  const transport = nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+      user: EMAIL,
+      pass: PASSWORD,
+    },
+  });
+  const url = `http://localhost:5000/forgot-password/${mailToken}`;
+  const mailOptions = {
+    from: "SocialNetWork<hoangphu1428@gmail.com>",
+    to: email,
+    subject: "Mail change password",
+    html: `
+           <p>Please click the link below if you want change your password</p>
+           <a href="${url}">Click here to do that ! </a>
+        `,
+  };
+  transport.sendMail(mailOptions, (error, res) => {
+    if (error) {
+      return console.log(error);
+    } else {
+      console.log("Success");
+      transport.close();
+    }
+  });
+};
+
+/**
+ * !-----------------------------!
+ * @description Mail changepass
+ * !-----------------------------!
+ */
+
 const sendEmailPW = (email, mailToken) => {
   const transport = nodemailer.createTransport({
     service: "gmail",
@@ -341,4 +454,7 @@ module.exports = {
   sendEmailPassword,
   changePassword,
   changePWD,
+  forgotPassword,
+  newPassword,
+  newPWD,
 };

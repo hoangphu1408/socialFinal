@@ -9,6 +9,9 @@ const {
   sendEmailPassword,
   changePassword,
   changePWD,
+  forgotPassword,
+  newPassword,
+  newPWD,
 } = require("../utils/userAuth");
 const {
   homePageView,
@@ -62,7 +65,14 @@ router.get("/login", isLogin, (req, res) => {
   });
 });
 
-router.get("/homepage", verify, (req, res) => {
+//
+router.get("/forgot-password", (req, res) => {
+  return res.render("userViews/forgotPassword", {
+    layout: "userLayout2",
+  });
+});
+
+router.get("/", verify, (req, res) => {
   return homePageView(req.user, res);
 });
 
@@ -118,6 +128,18 @@ router.post(
 
 router.post("/login", async (req, res) => {
   await loginUser(req.body, res);
+});
+
+router.post("/forgot-password", createLimit, async (req, res) => {
+  await forgotPassword(req.body, res);
+});
+
+router.get("/forgot-password/:token", async (req, res) => {
+  await newPassword(req.params.token, res);
+});
+
+router.post("/new-password", async (req, res) => {
+  await newPWD(req.body.email, req.body, res);
 });
 
 router.post(
