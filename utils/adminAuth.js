@@ -511,6 +511,7 @@ const deleteResident = async (id, res) => {
           const delAccount = await Account.findByIdAndDelete({
             _id: account._id,
           });
+          const delPost = await Post.deleteMany({ id_acc: account._id });
         }
         return res.redirect("back");
       }
