@@ -363,14 +363,18 @@ const updateActivation = async (data, res) => {
 };
 
 const deleteAdmin = async (id, res) => {
-  const admin = await Account.findByIdAndDelete({ _id: id }, (error, data) => {
-    if (error) {
-      alert("Cant delete now");
-      throw error;
-    } else {
-      return res.redirect("back");
+  const admin = await Account.findByIdAndDelete(
+    { _id: id },
+    async (error, data) => {
+      if (error) {
+        alert("Cant delete now");
+        throw error;
+      } else {
+        const delPost = await Post.deleteMany({ id_acc: id });
+        return res.redirect("back");
+      }
     }
-  });
+  );
 };
 
 /**
