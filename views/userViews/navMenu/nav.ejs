@@ -11,10 +11,12 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="/homepage"><strong> Trang Chủ </strong></a>
+      <a class="navbar-brand" href="/"><strong> Trang Chủ </strong></a>
     </div>
     <div style="margin-left: 950px;">
-      <img src="/avatar/<%=avatar%>" class="avatar" />
+      <a href="/profile/<%=user._id %>"
+        ><img src="/avatar/<%=avatar%>" class="avatar"
+      /></a>
       <a href="/logout" class="btn btn-primary">Đăng xuất</a>
     </div>
     <div class="collapse navbar-collapse" id="myNavbar">
@@ -24,6 +26,10 @@
         <li><a href="#attentions">Nổi bật</a></li>
         <li><a href="#pricing">Giá cả</a></li>
         <li><a href="#contact">Liên hệ</a></li>
+        <li><a href="/writing">Đăng bài</a></li>
+        <li><a href="/messages">Chi phí</a></li>
+        <li><a href="/online-payment">Thanh toán</a></li>
+        <li><a href="/about-customer">Lợi ích</a></li>
         <li>
           <div class="input-group">
             <input

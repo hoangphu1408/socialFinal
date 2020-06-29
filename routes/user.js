@@ -21,6 +21,7 @@ const {
   writingView,
   aboutUser,
   message,
+  onlpayView,
 } = require("../utils/userView");
 const isLogin = require("../config/isLoginU");
 const verify = require("../config/verifyTokenU");
@@ -97,6 +98,9 @@ router.get("/send-mail", verify, (req, res) => {
 router.get("/sellpage", verify, (req, res) => {
   return sellPageView(req.user, res);
 });
+router.get("/online-payment", verify, (req, res) => {
+  return onlpayView(req.user, res);
+});
 //Handle
 
 router.post(
@@ -152,7 +156,7 @@ router.post(
   }
 );
 
-router.post("/profile-update", verify, createLimit, async (req, res) => {
+router.post("/profile-update", verify, async (req, res) => {
   await profileUpdate(req.body, res);
 });
 

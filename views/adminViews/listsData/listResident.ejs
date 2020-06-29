@@ -16,6 +16,7 @@
               <th>STT</th>
               <th>ID</th>
               <th>Họ tên</th>
+              <th>Giới tính</th>
               <th>Năm sinh</th>
               <th>Giấy tờ tùy thân</th>
               <th>Hộ khẩu</th>
@@ -33,6 +34,13 @@
               <td>
                 <%=res.full_name %>
               </td>
+              <!---->
+              <% if(res.gender == "male") { %>
+              <td>Nam</td>
+              <%}else{ %>
+              <td>Nữ</td>
+              <%}%>
+              <!---->
               <td>
                 <%=res.year_of_birth%>
               </td>
@@ -130,6 +138,22 @@
                               />
                             </div>
                             <div class="form-group">
+                              <label for="gender">Giới tính</label>
+                              <select
+                                class="form-control"
+                                name="gender"
+                                id="gender"
+                              >
+                                <% if(res.gender == "male"){ %>
+                                <option value="male" selected>Nam</option>
+                                <option value="female">Nữ</option>
+                                <% }else{ %>
+                                <option value="male">Nam</option>
+                                <option value="female" selected>Nữ</option>
+                                <% } %>
+                              </select>
+                            </div>
+                            <div class="form-group">
                               <label for="yearOfBirth">Năm sinh</label>
                               <input
                                 id="yearOfBirth"
@@ -137,7 +161,7 @@
                                 class="form-control"
                                 type="number"
                                 value="<%=res.year_of_birth %>"
-                                min="1950"
+                                min="1900"
                                 max="2100"
                               />
                             </div>
@@ -259,6 +283,13 @@
               <td>
                 <%=res.full_name %>
               </td>
+              <!---->
+              <% if(res.gender == "male") { %>
+              <td>Nam</td>
+              <%}else{ %>
+              <td>Nữ</td>
+              <%}%>
+              <!---->
               <td>
                 <%=res.year_of_birth%>
               </td>
@@ -362,6 +393,23 @@
                               />
                             </div>
                             <div class="form-group">
+                              <label for="gender">Giới tính</label>
+                              <select
+                                class="form-control"
+                                name="gender"
+                                id="gender"
+                              >
+                                <% if(res.gender == "male"){ %>
+                                <option value="male" selected>Nam</option>
+                                <option value="female">Nữ</option>
+                                <% }else{ %>
+                                <option value="male">Nam</option>
+                                <option value="female" selected>Nữ</option>
+                                <% } %>
+                              </select>
+                            </div>
+
+                            <div class="form-group">
                               <label for="yearOfBirth">Năm sinh</label>
                               <input
                                 id="yearOfBirth"
@@ -369,7 +417,7 @@
                                 class="form-control"
                                 type="number"
                                 value="<%=res.year_of_birth %>"
-                                min="1950"
+                                min="1900"
                                 max="2100"
                               />
                             </div>

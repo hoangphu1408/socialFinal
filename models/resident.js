@@ -13,6 +13,10 @@ const residentSchema = new Schema({
     type: Number,
     default: 1900,
   },
+  gender: {
+    type: String,
+    enum: ["male", "female"],
+  },
   //! Thông tin cá nhân
   private_information: {},
   //! Hộ khẩu

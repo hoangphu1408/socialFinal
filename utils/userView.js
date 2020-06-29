@@ -173,8 +173,8 @@ const writingView = async (req, res) => {
   return res.render("userViews/writing", {
     layout: "userLayout",
     user: req,
-    announce: announces,
-    public: publicz,
+    announce: announces.reverse(),
+    public: publicz.reverse(),
     avatar: user.avatar,
   });
 };
@@ -253,6 +253,15 @@ const message = async (user, res) => {
   });
 };
 
+const onlpayView = async (user, res) => {
+  const account = await Account.findById({ _id: user._id });
+  return res.render("userViews/onlpay", {
+    layout: "userLayout",
+    user: user,
+    avatar: account.avatar,
+  });
+};
+
 module.exports = {
   homePageView,
   profileView,
@@ -262,4 +271,5 @@ module.exports = {
   writingView,
   aboutUser,
   message,
+  onlpayView,
 };

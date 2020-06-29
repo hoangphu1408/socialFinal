@@ -279,6 +279,7 @@ const registrationResident = async (data, user, res) => {
   const errors = [];
   const {
     full_name,
+    gender,
     yearOfBirth,
     ID_CARD,
     father_name,
@@ -316,6 +317,7 @@ const registrationResident = async (data, user, res) => {
   }
   const newResident = new Resident({
     full_name: full_name,
+    gender: gender,
     year_of_birth: yearOfBirth,
     private_information: private_information,
     household_registration: household,
@@ -460,6 +462,7 @@ const updateResident = async (data, res) => {
   const {
     id,
     full_name,
+    gender,
     yearOfBirth,
     ID_CARD,
     father_name,
@@ -479,6 +482,7 @@ const updateResident = async (data, res) => {
   }
   const update = {
     full_name: full_name,
+    gender: gender,
     year_of_birth: yearOfBirth,
     private_information: private_information,
     household_registration: household,
